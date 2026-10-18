@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
 import 'app_state_view.dart';
 
 class AppEmptyView extends StatelessWidget {
@@ -23,7 +22,7 @@ class AppEmptyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppStateView(
       icon: AppStateIcon(icon),
-      iconBackgroundColor: AppColors.primarySoft,
+      iconBackgroundColor: ColorScheme.of(context).primaryContainer,
       title: title,
       message: message,
       actionLabel: actionLabel,

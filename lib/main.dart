@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'app/router/app_router.dart';
+import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 
 void main() {
@@ -13,7 +13,7 @@ class WorkTrackApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'WorkTrack',
+      title: 'Efs WorkTrack',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       routerConfig: AppRouter.router,

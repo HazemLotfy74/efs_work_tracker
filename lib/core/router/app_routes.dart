@@ -1,5 +1,7 @@
 /// Route paths for every screen in the Figma design.
 abstract final class AppRoutes {
+  static const splash = '/';
+
   // Auth
   static const login = '/login';
   static const forgotPassword = '/forgot-password';

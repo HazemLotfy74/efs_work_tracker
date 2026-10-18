@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
-
 /// Full-width green button used for the main action on a screen.
 class AppPrimaryButton extends StatelessWidget {
-  const AppPrimaryButton({super.key, required this.label, this.onPressed});
+  const AppPrimaryButton({
+    super.key,
+    required this.child,
+    this.onPressed,
+    this.bgColor,
+  });
 
-  final String label;
+  final Widget child;
   final VoidCallback? onPressed;
+
+  /// Defaults to the theme's primary color.
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,8 @@ class AppPrimaryButton extends StatelessWidget {
             ? null
             : [
                 BoxShadow(
-                  color: AppColors.primary.withValues(alpha: 0.24),
+                  color: ColorScheme.of(context).primary
+                      .withValues(alpha: 0.24),
                   offset: const Offset(0, 10),
                   blurRadius: 12,
                 ),
@@ -31,13 +37,13 @@ class AppPrimaryButton extends StatelessWidget {
         child: FilledButton(
           onPressed: onPressed,
           style: FilledButton.styleFrom(
-            backgroundColor: AppColors.primary,
+            backgroundColor: bgColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            textStyle: AppTextStyles.button,
+            textStyle: TextTheme.of(context).labelLarge,
           ),
-          child: Text(label),
+          child: child,
         ),
       ),
     );

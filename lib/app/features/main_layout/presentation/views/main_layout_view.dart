@@ -20,12 +20,12 @@ class MainLayoutView extends StatelessWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
+            selectedIcon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.history_outlined),
-            selectedIcon: Icon(Icons.history_rounded),
+            icon: Icon(Icons.calendar_month_outlined),
+            selectedIcon: Icon(Icons.calendar_month_outlined),
             label: 'History',
           ),
           NavigationDestination(

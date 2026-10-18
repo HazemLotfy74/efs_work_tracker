@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
-import '../../theme/app_text_styles.dart';
 import '../app_primary_button.dart';
 
 /// Base layout for full-screen loading, empty, error and permission states.
@@ -49,7 +47,7 @@ class AppStateView extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: AppTextStyles.headline,
+              style: TextTheme.of(context).headlineMedium,
             ),
             const SizedBox(height: 12),
             ConstrainedBox(
@@ -57,7 +55,8 @@ class AppStateView extends StatelessWidget {
               child: Text(
                 message,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodySmall,
+                style: TextTheme.of(context).bodyMedium
+                    ?.copyWith(color: ColorScheme.of(context).onSurfaceVariant),
               ),
             ),
             const Spacer(),
@@ -65,12 +64,13 @@ class AppStateView extends StatelessWidget {
               Text(
                 note!,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodySmall,
+                style: TextTheme.of(context).bodyMedium
+                    ?.copyWith(color: ColorScheme.of(context).onSurfaceVariant),
               ),
               const SizedBox(height: 16),
             ],
             if (actionLabel != null)
-              AppPrimaryButton(label: actionLabel!, onPressed: onAction),
+              AppPrimaryButton(onPressed: onAction, child: Text(actionLabel!)),
           ],
         ),
       ),
@@ -80,11 +80,14 @@ class AppStateView extends StatelessWidget {
 
 /// Icon sized for [AppStateView].
 class AppStateIcon extends StatelessWidget {
-  const AppStateIcon(this.icon, {super.key, this.color = AppColors.primary});
+  const AppStateIcon(this.icon, {super.key, this.color});
 
   final IconData icon;
-  final Color color;
+
+  /// Defaults to the theme's primary color.
+  final Color? color;
 
   @override
-  Widget build(BuildContext context) => Icon(icon, size: 34, color: color);
+  Widget build(BuildContext context) =>
+      Icon(icon, size: 34, color: color ?? ColorScheme.of(context).primary);
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
 import 'app_state_view.dart';
 
 class AppLoadingView extends StatelessWidget {
@@ -16,14 +15,12 @@ class AppLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppStateView(
+      // CircularProgressIndicator uses the theme's primary color by default.
       icon: const SizedBox.square(
         dimension: 34,
-        child: CircularProgressIndicator(
-          strokeWidth: 3,
-          color: AppColors.primary,
-        ),
+        child: CircularProgressIndicator(strokeWidth: 3),
       ),
-      iconBackgroundColor: AppColors.primarySoft,
+      iconBackgroundColor: ColorScheme.of(context).primaryContainer,
       title: title,
       message: message,
     );

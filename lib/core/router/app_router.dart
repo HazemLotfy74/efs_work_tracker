@@ -1,14 +1,17 @@
+import 'package:efs_work_tracker/app/features/splash/presentation/views/splash_view.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../app/features/home/presentation/views/home_view.dart';
+import '../../app/features/main_layout/presentation/views/main_layout_view.dart';
 import '../../core/widgets/placeholder_view.dart';
-import '../features/main_layout/presentation/views/main_layout_view.dart';
 import 'app_routes.dart';
 
 /// Replace each [PlaceholderView] with the real view as its feature is built.
 abstract final class AppRouter {
   static final router = GoRouter(
-    initialLocation: AppRoutes.login,
+    initialLocation: AppRoutes.splash,
     routes: [
+      GoRoute(path: AppRoutes.splash,builder: (context, state) => SplashScreen(),),
       // Auth
       _route(AppRoutes.login, 'Sign in'),
       _route(AppRoutes.forgotPassword, 'Forgot password'),
@@ -18,7 +21,7 @@ abstract final class AppRouter {
         builder: (context, state, navigationShell) =>
             MainLayoutView(navigationShell: navigationShell),
         branches: [
-          StatefulShellBranch(routes: [_route(AppRoutes.home, 'Home')]),
+          StatefulShellBranch(routes: [GoRoute(path: AppRoutes.home, builder: (context, state) => HomeView(),)]),
           StatefulShellBranch(routes: [_route(AppRoutes.history, 'History')]),
           StatefulShellBranch(
             routes: [_route(AppRoutes.notifications, 'Notifications')],
