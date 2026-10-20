@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 /// theme only needs a second set of values in the theme layer.
 abstract final class AppColors {
   static const primary = Color(0xFF008C43);
+  static const lightPrimary = Color(0xFFE8F5EE);
   static const background = Color(0xFFF3F7F5);
   static const white = Colors.white;
 

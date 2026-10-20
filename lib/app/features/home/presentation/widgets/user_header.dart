@@ -2,6 +2,7 @@ import 'package:efs_work_tracker/core/theme/app_theme_colors.dart';
 import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 
 class UserHeader extends StatelessWidget {
@@ -24,7 +25,7 @@ class UserHeader extends StatelessWidget {
               ),
             ),
             Text(
-              "Good morning,",
+              context.l10n.goodMorning,
               style: textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w400,
               ),

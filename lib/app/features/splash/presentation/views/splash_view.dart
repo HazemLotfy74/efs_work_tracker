@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen>
           child: ScaleTransition(
             scale: _scaleAnimation,
             child: SvgPicture.asset(
-              Assets.assets.images.iconlogo.path,
+              Assets.images.iconlogo.path,
               width: 100,
               height: 100,
             ),

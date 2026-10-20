@@ -1,4 +1,5 @@
 import 'package:efs_work_tracker/core/constants/constants.dart';
+import 'package:efs_work_tracker/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 
 class TodayOverViewContainer extends StatelessWidget {
@@ -14,33 +15,21 @@ class TodayOverViewContainer extends StatelessWidget {
       constraints: BoxConstraints(
         minHeight: 75.5
       ),
-      child: Container(
-        width: width,
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        decoration: BoxDecoration(
-          color: ColorScheme.of(context).surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: ColorScheme.of(context).outlineVariant,
-            width: 1,
+      child: CustomContainer(containerWidth: width, borderWidth: 1, child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: getTextTheme(context).bodySmall!
+                .copyWith(color: ColorScheme.of(context).onSurfaceVariant),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: getTextTheme(context).bodySmall!
-                  .copyWith(color: ColorScheme.of(context).onSurfaceVariant),
-            ),
-            Text(
-              value,
-              style: getTextTheme(context).bodyMedium!
-                  .copyWith(color: ColorScheme.of(context).onSurface,fontWeight: FontWeight.w800),
-            ),
-          ],
-        ),
-      ),
+          Text(
+            value,
+            style: getTextTheme(context).bodyMedium!
+                .copyWith(color: ColorScheme.of(context).onSurface,fontWeight: FontWeight.w800),
+          ),
+        ],
+      ),),
     );
   }
 }

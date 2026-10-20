@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/extensions/context_l10n.dart';
+
 /// Shell with the bottom navigation bar: Home, History, Alerts, Profile.
 class MainLayoutView extends StatelessWidget {
   const MainLayoutView({super.key, required this.navigationShell});
@@ -17,26 +19,26 @@ class MainLayoutView extends StatelessWidget {
           index,
           initialLocation: index == navigationShell.currentIndex,
         ),
-        destinations: const [
+        destinations:  [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home_outlined),
-            label: 'Home',
+            label: context.l10n.home,
           ),
           NavigationDestination(
             icon: Icon(Icons.calendar_month_outlined),
             selectedIcon: Icon(Icons.calendar_month_outlined),
-            label: 'History',
+            label: context.l10n.history,
           ),
           NavigationDestination(
             icon: Icon(Icons.notifications_outlined),
             selectedIcon: Icon(Icons.notifications_rounded),
-            label: 'Alerts',
+            label: context.l10n.alerts,
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline_rounded),
             selectedIcon: Icon(Icons.person_rounded),
-            label: 'Profile',
+            label: context.l10n.profile,
           ),
         ],
       ),

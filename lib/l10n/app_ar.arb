@@ -1,0 +1,25 @@
+
+{
+  "@@locale": "ar",
+  "notCheckedIn": "لم يتم تسجيل الحضور",
+  "currentLocalTime": "الوقت المحلي الحالي",
+  "checkInNow": "سجّل الحضور الآن",
+  "officialShift": "مواعيد العمل الرسمية · {start}–{end}",
+  "hoursCount": "{count, plural, =0{لا ساعات} =1{ساعة واحدة} =2{ساعتان} few{{count} ساعات} many{{count} ساعة} other{{count} ساعة}}",
+  "home": "الرئيسية",
+  "profile": "ملفك الشخصي",
+  "history": "التواريخ",
+  "alerts": "الاشعارات",
+  "goodMorning": "صباح الخير",
+  "needToWorkLater": "هل تريد ساعات عمل اضافية؟",
+  "requestOverTime": "اطلب ساعات اضافية للعمل",
+  "needCash": "هل تحتاج طلب اعانة",
+  "sendRequest": "ارسل طلب للمدير",
+  "viewDetails": "المزيد",
+  "todayOverview": "سجل اليوم",
+  "recorded": "المسجل",
+  "lateness": "التأخير",
+  "earlyLeave": "الاذونات",
+  "approvedOT": "ساعات اضافية",
+  "today": "اليوم"
+}

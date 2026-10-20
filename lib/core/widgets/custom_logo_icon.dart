@@ -29,7 +29,7 @@ class CustomLogoIcon extends StatelessWidget {
             ],
           ),
           child: SvgPicture.asset(
-            Assets.assets.images.iconlogo.path,
+            Assets.images.iconlogo.path,
             width: AppSizes.icon,
             height: AppSizes.icon,
           ),

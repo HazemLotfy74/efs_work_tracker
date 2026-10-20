@@ -10,6 +10,7 @@ abstract final class AppTheme {
       seedColor: AppColors.primary,
       primary: AppColors.primary,
       primaryContainer: AppColors.primarySoft,
+      onPrimary: AppColors.lightPrimary,
       secondary: AppColors.textPrimary,
       surface: AppColors.white,
       onSurface: AppColors.textPrimary,

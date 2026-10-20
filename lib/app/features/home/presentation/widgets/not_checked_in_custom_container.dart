@@ -1,10 +1,10 @@
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/text_icon_widget.dart';
 import 'package:efs_work_tracker/core/constants/constants.dart';
-import 'package:efs_work_tracker/core/theme/app_theme_colors.dart';
 import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:efs_work_tracker/core/widgets/app_primary_button.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/widgets/custom_box_shadow.dart';
 
@@ -49,7 +49,7 @@ class NotCheckedInCustomContainer extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Not Checked In",
+                      context.l10n.notCheckedIn,
                       style: AppTextStyles.badge.copyWith(
                         color: getColors(context).onAttendanceCard,
                       ),
@@ -61,13 +61,13 @@ class NotCheckedInCustomContainer extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.lg),
           Text(
-            "4:48 PM",
+            "4:48",
             style: getTextTheme(context).displaySmall?.copyWith(
               color: getColors(context).onAttendanceCard,
             ),
           ),
           Text(
-            "Current Local Time",
+            context.l10n.currentLocalTime,
             style: getTextTheme(context).bodySmall?.copyWith(
               color: getColors(context).onAttendanceCardMuted,
             ),
@@ -77,7 +77,7 @@ class NotCheckedInCustomContainer extends StatelessWidget {
             onPressed: () {},
             bgColor: getColors(context).onAttendanceCard,
             child: TextIconWidget(
-              txt: 'Check In Now',
+              txt: context.l10n.checkInNow,
               icon: Icons.camera_alt_outlined,
               style: getTextTheme(context).labelLarge!.copyWith(
                 color: getColors(context).attendanceCard,
@@ -88,7 +88,7 @@ class NotCheckedInCustomContainer extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.lg),
           TextIconWidget(
-            txt: "Official shift · 8:00 AM–4:00 PM",
+            txt: context.l10n.officialShift("8:00", "4:00"),
             icon: Icons.work_history_outlined,
             style: getTextTheme(context).bodySmall!.copyWith(
               color: getColors(context).onAttendanceCardSubtle,
