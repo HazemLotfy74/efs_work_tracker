@@ -21,5 +21,19 @@
   "lateness": "التأخير",
   "earlyLeave": "الاذونات",
   "approvedOT": "ساعات اضافية",
-  "today": "اليوم"
+  "today": "اليوم",
+  "needsReview": "يحتاج إلى مراجعة",
+  "automaticClosed": "تسجيل انصراف تلقائي",
+  "noEmployee": "لم يتم تسجيل انصراف الموظف",
+  "noCheckout": "لم يتم تحديد الموقع أو التقاط صورة لهذه العملية",
+  "workSummary": "ملخص العمل",
+  "attendanceEvents": "أحداث الحضور والانصراف",
+  "withinGracePeriod": "ضمن فترة السماح",
+  "checkIn": "تسجيل الحضور",
+  "selfieAndGps": "تم التقاط صورة شخصية وتسجيل الموقع الجغرافي",
+  "systemGenerated": "تم إنشاؤه تلقائيًا بواسطة النظام",
+  "autoClosed": "تم تسجيل الانصراف تلقائيًا",
+  "noLocationOrSelfie": "لم يتم تسجيل الموقع الجغرافي أو التقاط صورة شخصية",
+  "flaggedForAdmin": "تمت إحالته للمراجعة الإدارية",
+  "attendanceDetails": "تفاصيل الحضور"
 }

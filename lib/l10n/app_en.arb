@@ -1,28 +1,33 @@
 {
   "@@locale": "en",
-
   "notCheckedIn": "Not Checked In",
   "@notCheckedIn": {
     "description": "Badge on the home attendance card when the user hasn't checked in today"
   },
-
   "currentLocalTime": "Current Local Time",
   "checkInNow": "Check In Now",
-
   "officialShift": "Official shift · {start}–{end}",
   "@officialShift": {
     "description": "Shift hours under the check-in button",
     "placeholders": {
-      "start": { "type": "String", "example": "8:00 AM" },
-      "end":   { "type": "String", "example": "4:00 PM" }
+      "start": {
+        "type": "String",
+        "example": "8:00 AM"
+      },
+      "end": {
+        "type": "String",
+        "example": "4:00 PM"
+      }
     }
   },
-
   "hoursCount": "{count, plural, =1{1 hour} other{{count} hours}}",
   "@hoursCount": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
-
   "goodMorning": "Good Morning",
   "home": "Home",
   "attendance": "Attendance",
@@ -44,6 +49,21 @@
   "alerts": "Alerts",
   "needToWorkLater": "Need to work later?",
   "requestOverTime": "Request Overtime For Manager Approval",
-"needCash": "Need a cash advance?",
-  "sendRequest": "Send a request to your administrator"
+  "needCash": "Need a cash advance?",
+  "sendRequest": "Send a request to your administrator",
+  "attendanceDetails": "Attendance Details",
+  "needsReview": "Needs Review",
+  "automaticClosed": "Automatically closed",
+  "noEmployee": "No employee checkout recorded",
+  "noCheckout": "No checkout selfie or GPS location exists for this event",
+  "workSummary": "Work summary",
+  "attendanceEvents": "Attendance events",
+  "withinGracePeriod": "Within grace period",
+  "checkIn": "Check-in",
+  "selfieAndGps": "Selfie and GPS evidence captured",
+  "systemGenerated": "System generated",
+  "autoClosed": "Auto-closed",
+  "noLocationOrSelfie": "No location or selfie captured",
+  "flaggedForAdmin": "Flagged for administrative review"
+
 }

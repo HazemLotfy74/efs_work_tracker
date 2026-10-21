@@ -7,6 +7,7 @@ import 'app_theme_colors.dart';
 abstract final class AppTheme {
   static ThemeData get light {
     final colorScheme = ColorScheme.fromSeed(
+      onPrimaryContainer: AppColors.background,
       seedColor: AppColors.primary,
       primary: AppColors.primary,
       primaryContainer: AppColors.primarySoft,
@@ -18,6 +19,8 @@ abstract final class AppTheme {
       outlineVariant: AppColors.border,
       error: AppColors.error,
       errorContainer: AppColors.errorSoft,
+      secondaryContainer: AppColors.warningBgColor,
+      onSecondaryContainer: AppColors.attendanceOnReview,
     );
 
     return _build(

@@ -33,4 +33,5 @@ abstract final class AppColors {
   static const autoClosedColor = Color(0xFFC33B4A);
   static const localTimeColor = Color(0xFF9FB1C1);
   static const lightGreyColor = Color(0xFFAEBDCA);
+  static const attendanceOnReview = Color(0xFFB56608);
 }

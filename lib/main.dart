@@ -20,7 +20,7 @@ class WorkTrackApp extends StatelessWidget {
       routerConfig: AppRouter.router,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      locale: const Locale('ar'),
+      locale: const Locale('en'),
     );
   }
 }

@@ -102,4 +102,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sendRequest => 'Send a request to your administrator';
+
+  @override
+  String get attendanceDetails => 'Attendance Details';
+
+  @override
+  String get needsReview => 'Needs Review';
+
+  @override
+  String get automaticClosed => 'Automatically closed';
+
+  @override
+  String get noEmployee => 'No employee checkout recorded';
+
+  @override
+  String get noCheckout =>
+      'No checkout selfie or GPS location exists for this event';
+
+  @override
+  String get workSummary => 'Work summary';
+
+  @override
+  String get attendanceEvents => 'Attendance events';
+
+  @override
+  String get withinGracePeriod => 'Within grace period';
+
+  @override
+  String get checkIn => 'Check-in';
+
+  @override
+  String get selfieAndGps => 'Selfie and GPS evidence captured';
+
+  @override
+  String get systemGenerated => 'System generated';
+
+  @override
+  String get autoClosed => 'Auto-closed';
+
+  @override
+  String get noLocationOrSelfie => 'No location or selfie captured';
+
+  @override
+  String get flaggedForAdmin => 'Flagged for administrative review';
 }
