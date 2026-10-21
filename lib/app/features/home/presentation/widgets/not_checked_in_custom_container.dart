@@ -1,4 +1,4 @@
-import 'package:efs_work_tracker/app/features/home/presentation/widgets/text_icon_widget.dart';
+import 'package:efs_work_tracker/core/widgets/text_icon_widget.dart';
 import 'package:efs_work_tracker/core/constants/constants.dart';
 import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:efs_work_tracker/core/widgets/app_primary_button.dart';

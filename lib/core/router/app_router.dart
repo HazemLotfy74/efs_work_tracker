@@ -1,3 +1,4 @@
+import 'package:efs_work_tracker/app/features/home/presentation/views/attendance_details_view.dart';
 import 'package:efs_work_tracker/app/features/splash/presentation/views/splash_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +13,7 @@ abstract final class AppRouter {
     initialLocation: AppRoutes.splash,
     routes: [
       GoRoute(path: AppRoutes.splash,builder: (context, state) => SplashScreen(),),
+
       // Auth
       _route(AppRoutes.login, 'Sign in'),
       _route(AppRoutes.forgotPassword, 'Forgot password'),
@@ -35,7 +37,7 @@ abstract final class AppRouter {
       _route(AppRoutes.checkInSuccess, 'Checked in'),
       _route(AppRoutes.checkOut, 'Check out'),
       _route(AppRoutes.checkOutSuccess, 'Checked out'),
-      _route(AppRoutes.attendanceDetails, 'Attendance details'),
+      GoRoute(path: AppRoutes.attendanceDetails,builder: (context, state) => AttendanceDetailsView(),),
       // Fixed overtime paths must come before /overtime/:id
       _route(AppRoutes.overtime, 'Overtime requests'),
       _route(AppRoutes.createOvertime, 'Request overtime'),

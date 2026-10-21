@@ -106,4 +106,47 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sendRequest => 'ارسل طلب للمدير';
+
+  @override
+  String get attendanceDetails => 'تفاصيل الحضور';
+
+  @override
+  String get needsReview => 'يحتاج إلى مراجعة';
+
+  @override
+  String get automaticClosed => 'تسجيل انصراف تلقائي';
+
+  @override
+  String get noEmployee => 'لم يتم تسجيل انصراف الموظف';
+
+  @override
+  String get noCheckout => 'لم يتم تحديد الموقع أو التقاط صورة لهذه العملية';
+
+  @override
+  String get workSummary => 'ملخص العمل';
+
+  @override
+  String get attendanceEvents => 'أحداث الحضور والانصراف';
+
+  @override
+  String get withinGracePeriod => 'ضمن فترة السماح';
+
+  @override
+  String get checkIn => 'تسجيل الحضور';
+
+  @override
+  String get selfieAndGps => 'تم التقاط صورة شخصية وتسجيل الموقع الجغرافي';
+
+  @override
+  String get systemGenerated => 'تم إنشاؤه تلقائيًا بواسطة النظام';
+
+  @override
+  String get autoClosed => 'تم تسجيل الانصراف تلقائيًا';
+
+  @override
+  String get noLocationOrSelfie =>
+      'لم يتم تسجيل الموقع الجغرافي أو التقاط صورة شخصية';
+
+  @override
+  String get flaggedForAdmin => 'تمت إحالته للمراجعة الإدارية';
 }

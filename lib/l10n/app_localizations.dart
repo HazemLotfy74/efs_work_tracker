@@ -265,6 +265,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send a request to your administrator'**
   String get sendRequest;
+
+  /// No description provided for @attendanceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance Details'**
+  String get attendanceDetails;
+
+  /// No description provided for @needsReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Review'**
+  String get needsReview;
+
+  /// No description provided for @automaticClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically closed'**
+  String get automaticClosed;
+
+  /// No description provided for @noEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'No employee checkout recorded'**
+  String get noEmployee;
+
+  /// No description provided for @noCheckout.
+  ///
+  /// In en, this message translates to:
+  /// **'No checkout selfie or GPS location exists for this event'**
+  String get noCheckout;
+
+  /// No description provided for @workSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Work summary'**
+  String get workSummary;
+
+  /// No description provided for @attendanceEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance events'**
+  String get attendanceEvents;
+
+  /// No description provided for @withinGracePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Within grace period'**
+  String get withinGracePeriod;
+
+  /// No description provided for @checkIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in'**
+  String get checkIn;
+
+  /// No description provided for @selfieAndGps.
+  ///
+  /// In en, this message translates to:
+  /// **'Selfie and GPS evidence captured'**
+  String get selfieAndGps;
+
+  /// No description provided for @systemGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'System generated'**
+  String get systemGenerated;
+
+  /// No description provided for @autoClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-closed'**
+  String get autoClosed;
+
+  /// No description provided for @noLocationOrSelfie.
+  ///
+  /// In en, this message translates to:
+  /// **'No location or selfie captured'**
+  String get noLocationOrSelfie;
+
+  /// No description provided for @flaggedForAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Flagged for administrative review'**
+  String get flaggedForAdmin;
 }
 
 class _AppLocalizationsDelegate
