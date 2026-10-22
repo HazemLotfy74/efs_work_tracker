@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 /// These are the single source of truth for font sizes, weights, line heights
 /// and letter spacing. [AppTheme] maps the Material roles of
 /// `ThemeData.textTheme` onto them, so widgets should prefer
-/// `TextTheme.of(context)` and only reach for the extra roles below
+/// `context.textTheme` and only reach for the extra roles below
 /// (marked "custom") when no Material role fits.
 ///
 /// Colors are not part of the tokens: the theme applies the default text
-/// colors and widgets add a color with `copyWith` where Figma differs.
+/// colors and widgets add a semantic color with `copyWith` where Figma
+/// differs. Avoid overriding size or weight in widgets; pick the role instead.
 abstract final class AppTextStyles {
   static const fontFamily = 'Manrope';
 
@@ -106,8 +107,8 @@ abstract final class AppTextStyles {
   /// Character counters. 8 / 12, Regular.
   static final counter = _style(8, FontWeight.w400);
 
-  /// "WorkTrack" wordmark next to the small logo. 13 / 19.5, ExtraBold, -0.2.
-  static final brandWordmark = _style(13, FontWeight.w800, letterSpacing: -0.2);
+  /// "WorkTrack" wordmark next to the small logo. 16 / 24, ExtraBold, -0.2.
+  static final brandWordmark = _style(16, FontWeight.w800, letterSpacing: -0.2);
 
   /// "WorkTrack" wordmark on auth screens. 22 / 33, ExtraBold, -0.6.
   static final brandWordmarkLarge = _style(

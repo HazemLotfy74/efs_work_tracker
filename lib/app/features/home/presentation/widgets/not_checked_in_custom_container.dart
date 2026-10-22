@@ -1,11 +1,13 @@
+import 'package:efs_work_tracker/core/router/app_routes.dart';
 import 'package:efs_work_tracker/core/widgets/text_icon_widget.dart';
-import 'package:efs_work_tracker/core/constants/constants.dart';
 import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:efs_work_tracker/core/widgets/app_primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/theme/app_text_styles.dart';
+import '../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../../core/widgets/custom_box_shadow.dart';
 
 class NotCheckedInCustomContainer extends StatelessWidget {
@@ -13,17 +15,19 @@ class NotCheckedInCustomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
+    final textTheme = context.textTheme;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 22, vertical: 22),
       decoration: BoxDecoration(
-        color: getColors(context).attendanceCard,
+        color: appColors.brandSurface,
         borderRadius: BorderRadius.circular(AppRadius.xl),
         boxShadow: [
           customBoxShadow(
             blur: 32,
             x: 0,
             y: 18,
-            color: ColorScheme.of(context).shadow.withAlpha(10),
+            color: context.colors.shadow.withAlpha(10),
           ),
         ],
       ),
@@ -34,7 +38,7 @@ class NotCheckedInCustomContainer extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
                 decoration: BoxDecoration(
-                  color: getColors(context).attendanceCardBadge,
+                  color: appColors.brandSurfaceBadge,
                   borderRadius: BorderRadius.circular(12.5),
                 ),
                 child: Row(
@@ -44,14 +48,14 @@ class NotCheckedInCustomContainer extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                       decoration: BoxDecoration(
-                        color: getColors(context).onAttendanceCard,
+                        color: appColors.onBrandSurface,
                         shape: BoxShape.circle,
                       ),
                     ),
                     Text(
                       context.l10n.notCheckedIn,
                       style: AppTextStyles.badge.copyWith(
-                        color: getColors(context).onAttendanceCard,
+                        color: appColors.onBrandSurface,
                       ),
                     ),
                   ],
@@ -62,27 +66,29 @@ class NotCheckedInCustomContainer extends StatelessWidget {
           SizedBox(height: AppSpacing.lg),
           Text(
             "4:48",
-            style: getTextTheme(context).displaySmall?.copyWith(
-              color: getColors(context).onAttendanceCard,
+            style: textTheme.displaySmall?.copyWith(
+              color: appColors.onBrandSurface,
             ),
           ),
           Text(
             context.l10n.currentLocalTime,
-            style: getTextTheme(context).bodySmall?.copyWith(
-              color: getColors(context).onAttendanceCardMuted,
+            style: textTheme.bodySmall?.copyWith(
+              color: appColors.onBrandSurfaceMuted,
             ),
           ),
           SizedBox(height: AppSpacing.lg),
           AppPrimaryButton(
-            onPressed: () {},
-            bgColor: getColors(context).onAttendanceCard,
+            onPressed: () {
+              context.push(AppRoutes.checkIn);
+            },
+            bgColor: appColors.onBrandSurface,
             child: TextIconWidget(
               txt: context.l10n.checkInNow,
               icon: Icons.camera_alt_outlined,
-              style: getTextTheme(context).labelLarge!.copyWith(
-                color: getColors(context).attendanceCard,
+              style: textTheme.labelLarge!.copyWith(
+                color: appColors.brandSurface,
               ),
-              iconColor: getColors(context).attendanceCard,
+              iconColor: appColors.brandSurface,
               iconSize: 24,
             ),
           ),
@@ -90,10 +96,10 @@ class NotCheckedInCustomContainer extends StatelessWidget {
           TextIconWidget(
             txt: context.l10n.officialShift("8:00", "4:00"),
             icon: Icons.work_history_outlined,
-            style: getTextTheme(context).bodySmall!.copyWith(
-              color: getColors(context).onAttendanceCardSubtle,
+            style: textTheme.bodySmall!.copyWith(
+              color: appColors.onBrandSurfaceSubtle,
             ),
-            iconColor: getColors(context).onAttendanceCardSubtle,
+            iconColor: appColors.onBrandSurfaceSubtle,
             iconSize: 16,
           ),
         ],

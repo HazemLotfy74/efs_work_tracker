@@ -198,4 +198,141 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get contactYourAdmin =>
       'إذا لم يعد بإمكانك الوصول إلى بريدك الإلكتروني الخاص بالعمل، يُرجى التواصل مع مسؤول النظام.';
+
+  @override
+  String get checkInPage => 'تسجيل الحضور';
+
+  @override
+  String get prepare => 'الاستعداد';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
+  String get selfie => 'صورة السيلفي';
+
+  @override
+  String get review => 'المراجعة';
+
+  @override
+  String get readyToStart => 'هل أنت مستعد للبدء؟';
+
+  @override
+  String get captureLocAndSelfie =>
+      'سيتم التقاط صورة سيلفي حديثة وتحديد موقعك الحالي عبر GPS كدليل على تسجيل الحضور.';
+
+  @override
+  String get date => 'التاريخ';
+
+  @override
+  String get currentTime => 'الوقت الحالي';
+
+  @override
+  String get shift => 'الوردية';
+
+  @override
+  String get yourSelfie =>
+      'تُستخدم صورة السيلفي وموقعك فقط للتحقق من عملية تسجيل الحضور.';
+
+  @override
+  String get continueTo => 'متابعة';
+
+  @override
+  String get verifyYourLocation => 'التحقق من موقعك';
+
+  @override
+  String get keepYourLocation =>
+      'تأكد من تفعيل خدمات الموقع أثناء تحديد موقعك الحالي بشكل آمن.';
+
+  @override
+  String get locationVerified => 'تم التحقق من الموقع';
+
+  @override
+  String get havingTrouble => 'هل تواجه مشكلة في تحديد الموقع؟';
+
+  @override
+  String get useThisLoc => 'استخدام هذا الموقع';
+
+  @override
+  String get takeQuickSelfie => 'التقط صورة سيلفي سريعة';
+
+  @override
+  String get positionYourFace =>
+      'ضع وجهك داخل الإطار المحدد، واحرص على وجود إضاءة جيدة.';
+
+  @override
+  String get reviewAndConfirm => 'المراجعة والتأكيد';
+
+  @override
+  String get makeSure => 'تأكد من صحة هذه البيانات قبل الإرسال.';
+
+  @override
+  String get selfieReady => 'صورة السيلفي جاهزة';
+
+  @override
+  String get attendanceEvidence => 'إثبات الحضور';
+
+  @override
+  String get captureAndContinue => 'التقاط الصورة والمتابعة';
+
+  @override
+  String get confirmCheckIn => 'تأكيد تسجيل الحضور';
+
+  @override
+  String get youAreAllSet => 'تم بنجاح!';
+
+  @override
+  String get yourSessionIsNowActive =>
+      'تم تسجيل حضورك بنجاح. نتمنى لك يوم عمل مثمرًا.';
+
+  @override
+  String get confirmedAt => 'وقت التأكيد';
+
+  @override
+  String get selfieSubmitted => 'تم إرسال صورة السيلفي';
+
+  @override
+  String get returnToHome => 'العودة إلى الصفحة الرئيسية';
+
+  @override
+  String get locating => 'جارٍ تحديد موقعك…';
+
+  @override
+  String get currentLocation => 'موقعك الحالي';
+
+  @override
+  String locationAccuracy(int meters, String time) {
+    return 'الدقة · $meters متر · تم الالتقاط $time';
+  }
+
+  @override
+  String get coordinatesPrivate => 'تُحفظ الإحداثيات الدقيقة بشكل خاص.';
+
+  @override
+  String get locationUnavailable => 'تعذّر تحديد الموقع';
+
+  @override
+  String get locationServiceDisabled =>
+      'خدمات الموقع متوقفة. قم بتشغيلها للمتابعة.';
+
+  @override
+  String get locationPermissionDenied =>
+      'يلزم السماح بالوصول إلى الموقع للتحقق من حضورك.';
+
+  @override
+  String get locationPermissionDeniedForever =>
+      'تم حظر الوصول إلى الموقع. اسمح به من إعدادات التطبيق للمتابعة.';
+
+  @override
+  String get locationTimeout =>
+      'تعذّر تحديد موقعك عبر GPS في الوقت المحدد. انتقل إلى مكان مفتوح وحاول مرة أخرى.';
+
+  @override
+  String get locationUnknownError => 'حدث خطأ أثناء تحديد موقعك.';
+
+  @override
+  String get tryAgain => 'حاول مرة أخرى';
+
+  @override
+  String get openSettings => 'فتح الإعدادات';
 }

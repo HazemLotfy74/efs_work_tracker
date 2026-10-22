@@ -1,4 +1,5 @@
 import 'package:efs_work_tracker/core/extensions/context_l10n.dart';
+import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,32 +21,30 @@ class ForgotPasswordAndCheckBoxWidget extends StatelessWidget {
               valueListenable: _checkBox,
               builder: (context, value, child) {
                 return Checkbox(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
                   value: _checkBox.value,
                   onChanged: (value) {
                     _checkBox.value = !_checkBox.value;
                   },
-                  activeColor: ColorScheme.of(context).primary,
                 );
               },
             ),
             Text(
               context.l10n.rememberMe,
-              style: TextTheme.of(context).bodyMedium!
-                  .copyWith(color: ColorScheme.of(context).primary),
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.colors.onSurfaceVariant,
+              ),
             ),
           ],
         ),
         InkWell(
           onTap: () {
-            context.push(AppRoutes.forgotPassword,);
+            context.push(AppRoutes.forgotPassword);
           },
           child: Text(
             context.l10n.forgotPassword,
-            style: TextTheme.of(context).bodyMedium!
-                .copyWith(color: ColorScheme.of(context).primary),
+            style: context.textTheme.labelMedium?.copyWith(
+              color: context.colors.primary,
+            ),
           ),
         ),
       ],

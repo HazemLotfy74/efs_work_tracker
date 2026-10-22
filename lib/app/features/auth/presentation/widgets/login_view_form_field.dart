@@ -3,6 +3,8 @@ import 'package:efs_work_tracker/app/features/auth/presentation/widgets/forgot_p
 import 'package:efs_work_tracker/core/extensions/context_l10n.dart';
 import 'package:efs_work_tracker/core/functions/form_validator_functions.dart';
 import 'package:efs_work_tracker/core/router/app_routes.dart';
+import 'package:efs_work_tracker/core/theme/app_text_styles.dart';
+import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:efs_work_tracker/core/widgets/app_primary_button.dart';
 import 'package:efs_work_tracker/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +35,6 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
       verticalPadding: 20,
       borderWidth: 1,
       borderRadius: 28,
-      containerColor: ColorScheme.of(context).surface,
       child: Form(
         key: _formKey,
         child: Column(
@@ -41,26 +42,20 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
           children: [
             Text(
               context.l10n.welcomeBack,
-              style: TextTheme.of(context).bodyMedium!.copyWith(
-                fontWeight: FontWeight.w800,
-                fontSize: 24,
-                color: ColorScheme.of(context).onSurface,
-              ),
+              style: context.textTheme.headlineMedium,
             ),
             Text(
               context.l10n.signWithAccount,
-              style: TextTheme.of(context).bodyMedium!
-                  .copyWith(fontWeight: FontWeight.w400, fontSize: 14),
+              style: AppTextStyles.lead.copyWith(
+                color: context.colors.onSurfaceVariant,
+              ),
             ),
             SizedBox(height: 20),
             CustomTextFormField(
               validator: (p0) {
                 return emailValidator(p0);
               },
-              prefixIcon: Icon(
-                Icons.email_outlined,
-                color: ColorScheme.of(context).onSecondaryFixedVariant,
-              ),
+              prefixIcon: const Icon(Icons.email_outlined),
               hintTxt: context.l10n.workEmail,
               obscureText: false,
               label: context.l10n.workEmail,
@@ -74,10 +69,7 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
                   validator: (p0) {
                     return passwordValidator(p0);
                   },
-                  prefixIcon: Icon(
-                    Icons.lock_outlined,
-                    color: ColorScheme.of(context).onSecondaryFixedVariant,
-                  ),
+                  prefixIcon: const Icon(Icons.lock_outlined),
                   hintTxt: context.l10n.password,
                   obscureText: widget._isObscure.value,
                   label: context.l10n.password,
@@ -90,7 +82,6 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
                       widget._isObscure.value
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
-                      color: ColorScheme.of(context).onSecondaryFixedVariant,
                     ),
                   ),
                 );
@@ -105,14 +96,7 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
                   context.push(AppRoutes.home);
                 } else {}
               },
-              child: Text(
-                context.l10n.signIn,
-                style: TextTheme.of(context).bodyMedium!.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: ColorScheme.of(context).surface,
-                ),
-              ),
+              child: Text(context.l10n.signIn),
             ),
           ],
         ),

@@ -1,6 +1,8 @@
-import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
+import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:flutter/material.dart';
 
+/// Labelled text field. Fill, border and icon colors come from the theme's
+/// `inputDecorationTheme`.
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
@@ -11,7 +13,8 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.textEditingController,
     this.onChanged,
-    this.keyboardType, required this.label,
+    this.keyboardType,
+    required this.label,
   });
 
   final String hintTxt;
@@ -30,9 +33,13 @@ class CustomTextFormField extends StatelessWidget {
       spacing: 5,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,style: TextTheme.of(context).bodyMedium!.copyWith(color: ColorScheme.of(context).onSurfaceVariant,fontWeight: FontWeight.w700),),
+        Text(
+          label,
+          style: context.textTheme.labelMedium?.copyWith(
+            color: context.appColors.fieldLabelText,
+          ),
+        ),
         TextFormField(
-          cursorColor: ColorScheme.of(context).primary,
           keyboardType: keyboardType,
           obscureText: obscureText,
           validator: validator,
@@ -42,22 +49,6 @@ class CustomTextFormField extends StatelessWidget {
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             hintText: hintTxt,
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: ColorScheme.of(context).outlineVariant,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(AppRadius.r14),
-            ),
-            filled: true,
-            fillColor: ColorScheme.of(context).surfaceContainer,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.r14),
-              borderSide: BorderSide(
-                color: ColorScheme.of(context).outlineVariant,
-                width: 1,
-              ),
-            ),
           ),
         ),
       ],

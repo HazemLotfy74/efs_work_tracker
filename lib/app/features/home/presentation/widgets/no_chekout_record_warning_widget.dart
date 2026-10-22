@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/extensions/context_l10n.dart';
+import '../../../../../core/theme/app_text_styles.dart';
+import '../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../../core/widgets/custom_container.dart';
 
 class NoChekoutRecordWarningWidget extends StatelessWidget {
@@ -8,37 +10,33 @@ class NoChekoutRecordWarningWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = context.appColors;
     return CustomContainer(
       borderWidth: 1,
-      containerColor: ColorScheme.of(context).secondaryContainer,
+      containerColor: appColors.warningContainer,
       child: Row(
         spacing: 10,
         children: [
-          Icon(
-            Icons.warning_amber_outlined,
-            color: ColorScheme.of(context).onSecondaryContainer,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 5,
-            children: [
-              Text(
-                context.l10n.noEmployee,
-                style: TextTheme.of(context).bodyMedium!.copyWith(
-                  color: ColorScheme.of(context).onSecondaryContainer,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 11,
+          Icon(Icons.warning_amber_outlined, color: appColors.warning),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 5,
+              children: [
+                Text(
+                  context.l10n.noEmployee,
+                  style: AppTextStyles.itemTitle.copyWith(
+                    color: appColors.warning,
+                  ),
                 ),
-              ),
-              Text(
-                context.l10n.noCheckout,
-                style: TextTheme.of(context).bodyMedium!.copyWith(
-                  color: ColorScheme.of(context).onSecondaryContainer,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 10,
+                Text(
+                  context.l10n.noCheckout,
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: appColors.warning,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

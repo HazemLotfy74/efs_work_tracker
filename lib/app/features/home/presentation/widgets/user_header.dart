@@ -1,4 +1,4 @@
-import 'package:efs_work_tracker/core/theme/app_theme_colors.dart';
+import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +10,8 @@ class UserHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = TextTheme.of(context);
-    final colorScheme = ColorScheme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colors;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -33,7 +33,7 @@ class UserHeader extends StatelessWidget {
             Text(
               "Mohamed",
               style: textTheme.headlineSmall?.copyWith(
-                color: AppThemeColors.of(context).textHeading,
+                color: context.appColors.headingText,
               ),
             ),
           ],

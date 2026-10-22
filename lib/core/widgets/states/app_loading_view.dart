@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
+
 import 'app_state_view.dart';
 
 class AppLoadingView extends StatelessWidget {
@@ -20,7 +22,7 @@ class AppLoadingView extends StatelessWidget {
         dimension: 34,
         child: CircularProgressIndicator(strokeWidth: 3),
       ),
-      iconBackgroundColor: ColorScheme.of(context).primaryContainer,
+      iconBackgroundColor: context.colors.primaryContainer,
       title: title,
       message: message,
     );

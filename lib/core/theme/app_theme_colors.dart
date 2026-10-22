@@ -2,130 +2,133 @@ import 'package:flutter/material.dart';
 
 /// Semantic colors that have no slot in Material's [ColorScheme].
 ///
-/// Registered on both [AppTheme.light] and [AppTheme.dark]. Read them with
-/// `AppThemeColors.of(context)`.
+/// Standard roles (primary, surface, onSurface, error, outlineVariant, ...)
+/// stay in the [ColorScheme]; only app-specific roles live here. Registered on
+/// both [AppTheme.light] and [AppTheme.dark]. Read them with
+/// `context.appColors`.
 @immutable
 class AppThemeColors extends ThemeExtension<AppThemeColors> {
   const AppThemeColors({
-    required this.textHeading,
-    required this.fieldLabel,
-    required this.navInactive,
-    required this.attendanceCard,
-    required this.onAttendanceCard,
-    required this.onAttendanceCardMuted,
-    required this.onAttendanceCardSubtle,
-    required this.attendanceCardBadge,
+    required this.headingText,
+    required this.fieldLabelText,
+    required this.inactiveNavText,
+    required this.secondaryIcon,
+    required this.inputBackground,
+    required this.inputIcon,
+    required this.brandSurface,
+    required this.onBrandSurface,
+    required this.onBrandSurfaceMuted,
+    required this.onBrandSurfaceSubtle,
+    required this.brandSurfaceBadge,
+    required this.brandGradient,
+    required this.warning,
     required this.warningContainer,
-    required this.onWarningContainer,
-    required this.autoClosed,
   });
 
   /// Emphasised headings and names, darker than `onSurface`.
-  final Color textHeading;
+  final Color headingText;
 
   /// Form field labels.
-  final Color fieldLabel;
+  final Color fieldLabelText;
 
   /// Unselected bottom navigation labels.
-  final Color navInactive;
+  final Color inactiveNavText;
 
-  /// Background of the dark attendance card on the dashboard.
-  final Color attendanceCard;
+  /// Supporting icons next to secondary text (location, metadata).
+  final Color secondaryIcon;
 
-  /// Main text and icons on [attendanceCard], and its button background.
-  final Color onAttendanceCard;
+  /// Fill of text fields.
+  final Color inputBackground;
 
-  /// Secondary text on [attendanceCard] ("Current local time").
-  final Color onAttendanceCardMuted;
+  /// Prefix and suffix icons inside text fields.
+  final Color inputIcon;
 
-  /// Tertiary text and icons on [attendanceCard] (shift note).
-  final Color onAttendanceCardSubtle;
+  /// Dark brand surface of hero cards (dashboard attendance card, attendance
+  /// details header).
+  final Color brandSurface;
 
-  /// Status badge background on [attendanceCard].
-  final Color attendanceCardBadge;
+  /// Main text and icons on [brandSurface], and its button background.
+  final Color onBrandSurface;
 
-  /// Warning status (late, pending) background.
+  /// Secondary text on [brandSurface] ("Current local time", dates).
+  final Color onBrandSurfaceMuted;
+
+  /// Tertiary text and icons on [brandSurface] (shift note, captions).
+  final Color onBrandSurfaceSubtle;
+
+  /// Status badge background on [brandSurface].
+  final Color brandSurfaceBadge;
+
+  /// Full-screen background of the auth screens.
+  final LinearGradient brandGradient;
+
+  /// Pending / needs-review status: badge dot, banner text and icons.
+  final Color warning;
+
+  /// Background of warning banners and pending badges.
   final Color warningContainer;
-
-  /// Text and icons on [warningContainer].
-  final Color onWarningContainer;
-
-  /// Attendance sessions closed automatically by the system.
-  final Color autoClosed;
-
-  static AppThemeColors of(BuildContext context) =>
-      Theme.of(context).extension<AppThemeColors>()!;
 
   @override
   AppThemeColors copyWith({
-    Color? textHeading,
-    Color? fieldLabel,
-    Color? navInactive,
-    Color? attendanceCard,
-    Color? onAttendanceCard,
-    Color? onAttendanceCardMuted,
-    Color? onAttendanceCardSubtle,
-    Color? attendanceCardBadge,
+    Color? headingText,
+    Color? fieldLabelText,
+    Color? inactiveNavText,
+    Color? secondaryIcon,
+    Color? inputBackground,
+    Color? inputIcon,
+    Color? brandSurface,
+    Color? onBrandSurface,
+    Color? onBrandSurfaceMuted,
+    Color? onBrandSurfaceSubtle,
+    Color? brandSurfaceBadge,
+    LinearGradient? brandGradient,
+    Color? warning,
     Color? warningContainer,
-    Color? onWarningContainer,
-    Color? autoClosed,
   }) {
     return AppThemeColors(
-      textHeading: textHeading ?? this.textHeading,
-      fieldLabel: fieldLabel ?? this.fieldLabel,
-      navInactive: navInactive ?? this.navInactive,
-      attendanceCard: attendanceCard ?? this.attendanceCard,
-      onAttendanceCard: onAttendanceCard ?? this.onAttendanceCard,
-      onAttendanceCardMuted:
-          onAttendanceCardMuted ?? this.onAttendanceCardMuted,
-      onAttendanceCardSubtle:
-          onAttendanceCardSubtle ?? this.onAttendanceCardSubtle,
-      attendanceCardBadge: attendanceCardBadge ?? this.attendanceCardBadge,
+      headingText: headingText ?? this.headingText,
+      fieldLabelText: fieldLabelText ?? this.fieldLabelText,
+      inactiveNavText: inactiveNavText ?? this.inactiveNavText,
+      secondaryIcon: secondaryIcon ?? this.secondaryIcon,
+      inputBackground: inputBackground ?? this.inputBackground,
+      inputIcon: inputIcon ?? this.inputIcon,
+      brandSurface: brandSurface ?? this.brandSurface,
+      onBrandSurface: onBrandSurface ?? this.onBrandSurface,
+      onBrandSurfaceMuted: onBrandSurfaceMuted ?? this.onBrandSurfaceMuted,
+      onBrandSurfaceSubtle: onBrandSurfaceSubtle ?? this.onBrandSurfaceSubtle,
+      brandSurfaceBadge: brandSurfaceBadge ?? this.brandSurfaceBadge,
+      brandGradient: brandGradient ?? this.brandGradient,
+      warning: warning ?? this.warning,
       warningContainer: warningContainer ?? this.warningContainer,
-      onWarningContainer: onWarningContainer ?? this.onWarningContainer,
-      autoClosed: autoClosed ?? this.autoClosed,
     );
   }
 
   @override
   AppThemeColors lerp(AppThemeColors? other, double t) {
     if (other == null) return this;
+    Color mix(Color a, Color b) => Color.lerp(a, b, t)!;
     return AppThemeColors(
-      textHeading: Color.lerp(textHeading, other.textHeading, t)!,
-      fieldLabel: Color.lerp(fieldLabel, other.fieldLabel, t)!,
-      navInactive: Color.lerp(navInactive, other.navInactive, t)!,
-      attendanceCard: Color.lerp(attendanceCard, other.attendanceCard, t)!,
-      onAttendanceCard: Color.lerp(
-        onAttendanceCard,
-        other.onAttendanceCard,
+      headingText: mix(headingText, other.headingText),
+      fieldLabelText: mix(fieldLabelText, other.fieldLabelText),
+      inactiveNavText: mix(inactiveNavText, other.inactiveNavText),
+      secondaryIcon: mix(secondaryIcon, other.secondaryIcon),
+      inputBackground: mix(inputBackground, other.inputBackground),
+      inputIcon: mix(inputIcon, other.inputIcon),
+      brandSurface: mix(brandSurface, other.brandSurface),
+      onBrandSurface: mix(onBrandSurface, other.onBrandSurface),
+      onBrandSurfaceMuted: mix(onBrandSurfaceMuted, other.onBrandSurfaceMuted),
+      onBrandSurfaceSubtle: mix(
+        onBrandSurfaceSubtle,
+        other.onBrandSurfaceSubtle,
+      ),
+      brandSurfaceBadge: mix(brandSurfaceBadge, other.brandSurfaceBadge),
+      brandGradient: LinearGradient.lerp(
+        brandGradient,
+        other.brandGradient,
         t,
       )!,
-      onAttendanceCardMuted: Color.lerp(
-        onAttendanceCardMuted,
-        other.onAttendanceCardMuted,
-        t,
-      )!,
-      onAttendanceCardSubtle: Color.lerp(
-        onAttendanceCardSubtle,
-        other.onAttendanceCardSubtle,
-        t,
-      )!,
-      attendanceCardBadge: Color.lerp(
-        attendanceCardBadge,
-        other.attendanceCardBadge,
-        t,
-      )!,
-      warningContainer: Color.lerp(
-        warningContainer,
-        other.warningContainer,
-        t,
-      )!,
-      onWarningContainer: Color.lerp(
-        onWarningContainer,
-        other.onWarningContainer,
-        t,
-      )!,
-      autoClosed: Color.lerp(autoClosed, other.autoClosed, t)!,
+      warning: mix(warning, other.warning),
+      warningContainer: mix(warningContainer, other.warningContainer),
     );
   }
 }

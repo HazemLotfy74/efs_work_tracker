@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 
-AppBar customAppBar({required BuildContext context,required String title,Widget? leading,Widget? trailing}) {
+/// In-page app bar. Colors, elevation and title style come from the theme's
+/// `appBarTheme`; only the compact height differs.
+AppBar customAppBar({
+  required BuildContext context,
+  required String title,
+  Widget? leading,
+  Widget? trailing,
+}) {
   return AppBar(
-    elevation: 0,
-    scrolledUnderElevation: 0,
     toolbarHeight: 50,
-    centerTitle: true,
-    title: Text(
-      title,
-      style: TextTheme.of(context).titleMedium!.copyWith(
-        color: ColorScheme.of(context).onSurface,
-        fontWeight: FontWeight.w900,
-      ),
-    ),
+    title: Text(title),
     leading: leading,
-    actions: [
-      trailing ?? Container(),
-    ],
+    actions: [trailing ?? Container()],
   );
 }

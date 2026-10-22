@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen>
     // Navigate after 3 seconds
     _navigationTimer = Timer(const Duration(seconds: 3), () {
       if (!mounted) return;
-      context.go(AppRoutes.login);
+      context.go(AppRoutes.home);
     });
   }
 

@@ -439,6 +439,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contact your administrator if you no longer have access to your work email.'**
   String get contactYourAdmin;
+
+  /// No description provided for @checkInPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in'**
+  String get checkInPage;
+
+  /// No description provided for @prepare.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare'**
+  String get prepare;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @selfie.
+  ///
+  /// In en, this message translates to:
+  /// **'Selfie'**
+  String get selfie;
+
+  /// No description provided for @review.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get review;
+
+  /// No description provided for @readyToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready To Start?'**
+  String get readyToStart;
+
+  /// No description provided for @captureLocAndSelfie.
+  ///
+  /// In en, this message translates to:
+  /// **'We’ll capture a current selfie and GPS location as attendance evidence.'**
+  String get captureLocAndSelfie;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @currentTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Time'**
+  String get currentTime;
+
+  /// No description provided for @shift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get shift;
+
+  /// No description provided for @yourSelfie.
+  ///
+  /// In en, this message translates to:
+  /// **'Your selfie and location are used only to verify this attendance event.'**
+  String get yourSelfie;
+
+  /// No description provided for @continueTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueTo;
+
+  /// No description provided for @verifyYourLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Location'**
+  String get verifyYourLocation;
+
+  /// No description provided for @keepYourLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep location services on while we securely capture your current position.'**
+  String get keepYourLocation;
+
+  /// No description provided for @locationVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Location verified'**
+  String get locationVerified;
+
+  /// No description provided for @havingTrouble.
+  ///
+  /// In en, this message translates to:
+  /// **'Having trouble with location?'**
+  String get havingTrouble;
+
+  /// No description provided for @useThisLoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location'**
+  String get useThisLoc;
+
+  /// No description provided for @takeQuickSelfie.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a quick selfie'**
+  String get takeQuickSelfie;
+
+  /// No description provided for @positionYourFace.
+  ///
+  /// In en, this message translates to:
+  /// **'Position your face inside the guide and use a well-lit area.'**
+  String get positionYourFace;
+
+  /// No description provided for @reviewAndConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Review & confirm'**
+  String get reviewAndConfirm;
+
+  /// No description provided for @makeSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure these details are correct before submitting.'**
+  String get makeSure;
+
+  /// No description provided for @selfieReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Selfie ready'**
+  String get selfieReady;
+
+  /// No description provided for @attendanceEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance evidence'**
+  String get attendanceEvidence;
+
+  /// No description provided for @captureAndContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture & continue'**
+  String get captureAndContinue;
+
+  /// No description provided for @confirmCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm check-in'**
+  String get confirmCheckIn;
+
+  /// No description provided for @youAreAllSet.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re all set!'**
+  String get youAreAllSet;
+
+  /// No description provided for @yourSessionIsNowActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Your attendance session is now active. Have a productive day.'**
+  String get yourSessionIsNowActive;
+
+  /// No description provided for @confirmedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed At'**
+  String get confirmedAt;
+
+  /// No description provided for @selfieSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Selfie submitted'**
+  String get selfieSubmitted;
+
+  /// No description provided for @returnToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to home'**
+  String get returnToHome;
+
+  /// No description provided for @locating.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding your location…'**
+  String get locating;
+
+  /// No description provided for @currentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Current location'**
+  String get currentLocation;
+
+  /// Reported GPS accuracy and the time of the reading on the Location step
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy · {meters} meters · Captured at {time}'**
+  String locationAccuracy(int meters, String time);
+
+  /// No description provided for @coordinatesPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact coordinates are kept private.'**
+  String get coordinatesPrivate;
+
+  /// No description provided for @locationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable'**
+  String get locationUnavailable;
+
+  /// No description provided for @locationServiceDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are turned off. Turn them on to continue.'**
+  String get locationServiceDisabled;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is needed to verify your attendance.'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @locationPermissionDeniedForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access is blocked. Allow it in the app settings to continue.'**
+  String get locationPermissionDeniedForever;
+
+  /// No description provided for @locationTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t get a GPS fix in time. Move to an open area and try again.'**
+  String get locationTimeout;
+
+  /// No description provided for @locationUnknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while getting your location.'**
+  String get locationUnknownError;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get tryAgain;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
 }
 
 class _AppLocalizationsDelegate

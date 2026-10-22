@@ -40,6 +40,11 @@ dependencies:
   go_router: ^18.1.0
   google_fonts: ^9.0.0
   flutter_svg: ^2.3.0
+  geolocator: ^14.1.2
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
+  geocoding: ^5.0.0
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:
@@ -95,5 +100,8 @@ flutter:
   # see https://flutter.dev/to/font-from-package
   assets:
     - assets/images/
+# Off: the app uses Flutter's gen-l10n (l10n.yaml -> lib/l10n/app_*.arb).
+# When on, the Flutter Intl IDE plugin adds lib/l10n/intl_en.arb, a second
+# English file that breaks gen-l10n.
 flutter_intl:
-  enabled: true
+  enabled: false
