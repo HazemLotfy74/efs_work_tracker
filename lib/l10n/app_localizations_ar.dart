@@ -149,4 +149,53 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get flaggedForAdmin => 'تمت إحالته للمراجعة الإدارية';
+
+  @override
+  String get welcomeBack => 'مرحبًا بعودتك';
+
+  @override
+  String get signWithAccount =>
+      'سجّل الدخول باستخدام حساب العمل الخاص بك للمتابعة.';
+
+  @override
+  String get workEmail => 'البريد الإلكتروني للعمل';
+
+  @override
+  String get password => 'كلمة المرور';
+
+  @override
+  String get rememberMe => 'تذكرني';
+
+  @override
+  String get signIn => 'تسجيل الدخول';
+
+  @override
+  String get forgotPassword => 'هل نسيت كلمة المرور؟';
+
+  @override
+  String get backToSignIn => 'العودة إلى تسجيل الدخول';
+
+  @override
+  String get accountRecovery => 'استعادة الحساب';
+
+  @override
+  String get resetPassword => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get enterRecEmailToSendLink =>
+      'أدخل بريدك الإلكتروني الخاص بالعمل، وسنرسل إليك تعليمات آمنة لاستعادة حسابك.';
+
+  @override
+  String get sendRecLink => 'إرسال رابط الاستعادة';
+
+  @override
+  String get attendanceMadeClear =>
+      'إدارة الحضور والانصراف بوضوح، أينما كان مكان العمل.';
+
+  @override
+  String get secureAccess => 'وصول آمن إلى حسابك على WorkTrack.';
+
+  @override
+  String get contactYourAdmin =>
+      'إذا لم يعد بإمكانك الوصول إلى بريدك الإلكتروني الخاص بالعمل، يُرجى التواصل مع مسؤول النظام.';
 }

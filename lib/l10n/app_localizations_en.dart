@@ -145,4 +145,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get flaggedForAdmin => 'Flagged for administrative review';
+
+  @override
+  String get welcomeBack => 'Welcome Back';
+
+  @override
+  String get signWithAccount =>
+      'Sign in with your company account to continue.';
+
+  @override
+  String get workEmail => 'Work email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get rememberMe => 'Remember me';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get backToSignIn => 'Back to Sign In';
+
+  @override
+  String get accountRecovery => 'Account recovery';
+
+  @override
+  String get resetPassword => 'Reset your password';
+
+  @override
+  String get enterRecEmailToSendLink =>
+      'Enter your work email and we’ll send secure recovery instructions.';
+
+  @override
+  String get sendRecLink => 'Send recovery link';
+
+  @override
+  String get attendanceMadeClear =>
+      'Attendance made clear, wherever work happens.';
+
+  @override
+  String get secureAccess => 'Secure access to your WorkTrack account.';
+
+  @override
+  String get contactYourAdmin =>
+      'Contact your administrator if you no longer have access to your work email.';
 }

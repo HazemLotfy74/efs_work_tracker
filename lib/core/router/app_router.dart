@@ -1,3 +1,5 @@
+import 'package:efs_work_tracker/app/features/auth/presentation/views/forgot_password_view.dart';
+import 'package:efs_work_tracker/app/features/auth/presentation/views/login_view.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/views/attendance_details_view.dart';
 import 'package:efs_work_tracker/app/features/splash/presentation/views/splash_view.dart';
 import 'package:go_router/go_router.dart';
@@ -15,9 +17,8 @@ abstract final class AppRouter {
       GoRoute(path: AppRoutes.splash,builder: (context, state) => SplashScreen(),),
 
       // Auth
-      _route(AppRoutes.login, 'Sign in'),
-      _route(AppRoutes.forgotPassword, 'Forgot password'),
-
+      GoRoute(path: AppRoutes.login,builder: (context, state) => LoginView(),),
+      GoRoute(path: AppRoutes.forgotPassword,builder: (context, state) => ForgotPasswordView(),),
       // Bottom navigation tabs, each keeps its own navigation stack
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

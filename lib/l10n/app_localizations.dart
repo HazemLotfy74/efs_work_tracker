@@ -349,6 +349,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Flagged for administrative review'**
   String get flaggedForAdmin;
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back'**
+  String get welcomeBack;
+
+  /// No description provided for @signWithAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with your company account to continue.'**
+  String get signWithAccount;
+
+  /// No description provided for @workEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Work email'**
+  String get workEmail;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @rememberMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember me'**
+  String get rememberMe;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// No description provided for @backToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Sign In'**
+  String get backToSignIn;
+
+  /// No description provided for @accountRecovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Account recovery'**
+  String get accountRecovery;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get resetPassword;
+
+  /// No description provided for @enterRecEmailToSendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your work email and we’ll send secure recovery instructions.'**
+  String get enterRecEmailToSendLink;
+
+  /// No description provided for @sendRecLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send recovery link'**
+  String get sendRecLink;
+
+  /// No description provided for @attendanceMadeClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance made clear, wherever work happens.'**
+  String get attendanceMadeClear;
+
+  /// No description provided for @secureAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure access to your WorkTrack account.'**
+  String get secureAccess;
+
+  /// No description provided for @contactYourAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact your administrator if you no longer have access to your work email.'**
+  String get contactYourAdmin;
 }
 
 class _AppLocalizationsDelegate
