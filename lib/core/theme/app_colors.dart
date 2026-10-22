@@ -19,6 +19,7 @@ abstract final class AppColors {
 
   /// Card and bottom navigation borders.
   static const border = Color(0xFFDFE9E4);
+  static const fillBorder = Color(0xFFF8FAFB);
 
   /// Dark attendance card on the dashboard.
   static const attendanceCard = Color(0xFF103B31);
@@ -33,5 +34,6 @@ abstract final class AppColors {
   static const autoClosedColor = Color(0xFFC33B4A);
   static const localTimeColor = Color(0xFF9FB1C1);
   static const lightGreyColor = Color(0xFFAEBDCA);
+  static const textFormIcons = Color(0xFF8190A0);
   static const attendanceOnReview = Color(0xFFB56608);
 }

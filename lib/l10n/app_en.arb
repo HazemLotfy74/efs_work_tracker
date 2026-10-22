@@ -64,6 +64,21 @@
   "systemGenerated": "System generated",
   "autoClosed": "Auto-closed",
   "noLocationOrSelfie": "No location or selfie captured",
-  "flaggedForAdmin": "Flagged for administrative review"
+  "flaggedForAdmin": "Flagged for administrative review",
+  "welcomeBack":"Welcome Back",
+  "signWithAccount": "Sign in with your company account to continue.",
+  "workEmail": "Work email",
+  "password": "Password",
+  "rememberMe": "Remember me",
+  "signIn": "Sign In",
+  "forgotPassword": "Forgot password?",
+  "backToSignIn": "Back to Sign In",
+  "accountRecovery": "Account recovery",
+  "resetPassword": "Reset your password",
+  "enterRecEmailToSendLink": "Enter your work email and we’ll send secure recovery instructions.",
+  "sendRecLink": "Send recovery link",
+  "attendanceMadeClear": "Attendance made clear, wherever work happens.",
+  "secureAccess": "Secure access to your WorkTrack account.",
+  "contactYourAdmin": "Contact your administrator if you no longer have access to your work email."
 
 }

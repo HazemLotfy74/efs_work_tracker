@@ -7,7 +7,10 @@ import '../theme/app_theme_colors.dart';
 import '../../generated/assets.dart';
 
 class CustomLogoIcon extends StatelessWidget {
-  const new({super.key});
+  const CustomLogoIcon({super.key, this.txtColor, this.txtSize});
+
+  final Color? txtColor;
+  final double? txtSize;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,8 @@ class CustomLogoIcon extends StatelessWidget {
         Text(
           "WorkTrack",
           style: AppTextStyles.brandWordmark.copyWith(
-            color: AppThemeColors.of(context).textHeading,
+            color: txtColor??AppThemeColors.of(context).textHeading,
+            fontSize: txtSize??16,
           ),
         ),
       ],
