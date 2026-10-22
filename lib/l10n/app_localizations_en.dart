@@ -194,4 +194,143 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get contactYourAdmin =>
       'Contact your administrator if you no longer have access to your work email.';
+
+  @override
+  String get checkInPage => 'Check in';
+
+  @override
+  String get prepare => 'Prepare';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get selfie => 'Selfie';
+
+  @override
+  String get review => 'Review';
+
+  @override
+  String get readyToStart => 'Ready To Start?';
+
+  @override
+  String get captureLocAndSelfie =>
+      'We’ll capture a current selfie and GPS location as attendance evidence.';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get currentTime => 'Current Time';
+
+  @override
+  String get shift => 'Shift';
+
+  @override
+  String get yourSelfie =>
+      'Your selfie and location are used only to verify this attendance event.';
+
+  @override
+  String get continueTo => 'Continue';
+
+  @override
+  String get verifyYourLocation => 'Verify Your Location';
+
+  @override
+  String get keepYourLocation =>
+      'Keep location services on while we securely capture your current position.';
+
+  @override
+  String get locationVerified => 'Location verified';
+
+  @override
+  String get havingTrouble => 'Having trouble with location?';
+
+  @override
+  String get useThisLoc => 'Use this location';
+
+  @override
+  String get takeQuickSelfie => 'Take a quick selfie';
+
+  @override
+  String get positionYourFace =>
+      'Position your face inside the guide and use a well-lit area.';
+
+  @override
+  String get reviewAndConfirm => 'Review & confirm';
+
+  @override
+  String get makeSure =>
+      'Make sure these details are correct before submitting.';
+
+  @override
+  String get selfieReady => 'Selfie ready';
+
+  @override
+  String get attendanceEvidence => 'Attendance evidence';
+
+  @override
+  String get captureAndContinue => 'Capture & continue';
+
+  @override
+  String get confirmCheckIn => 'Confirm check-in';
+
+  @override
+  String get youAreAllSet => 'You’re all set!';
+
+  @override
+  String get yourSessionIsNowActive =>
+      'Your attendance session is now active. Have a productive day.';
+
+  @override
+  String get confirmedAt => 'Confirmed At';
+
+  @override
+  String get selfieSubmitted => 'Selfie submitted';
+
+  @override
+  String get returnToHome => 'Return to home';
+
+  @override
+  String get locating => 'Finding your location…';
+
+  @override
+  String get currentLocation => 'Current location';
+
+  @override
+  String locationAccuracy(int meters, String time) {
+    return 'Accuracy · $meters meters · Captured at $time';
+  }
+
+  @override
+  String get coordinatesPrivate => 'Exact coordinates are kept private.';
+
+  @override
+  String get locationUnavailable => 'Location unavailable';
+
+  @override
+  String get locationServiceDisabled =>
+      'Location services are turned off. Turn them on to continue.';
+
+  @override
+  String get locationPermissionDenied =>
+      'Location permission is needed to verify your attendance.';
+
+  @override
+  String get locationPermissionDeniedForever =>
+      'Location access is blocked. Allow it in the app settings to continue.';
+
+  @override
+  String get locationTimeout =>
+      'We couldn\'t get a GPS fix in time. Move to an open area and try again.';
+
+  @override
+  String get locationUnknownError =>
+      'Something went wrong while getting your location.';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get openSettings => 'Open settings';
 }

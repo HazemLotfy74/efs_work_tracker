@@ -4,10 +4,13 @@ import 'package:efs_work_tracker/app/features/home/presentation/widgets/not_chec
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/user_header.dart';
 import 'package:efs_work_tracker/core/extensions/context_l10n.dart';
 import 'package:efs_work_tracker/core/router/app_routes.dart';
+import 'package:efs_work_tracker/core/theme/app_text_styles.dart';
+import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:efs_work_tracker/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../../core/widgets/custom_logo_icon.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -29,7 +32,7 @@ class HomeViewBody extends StatelessWidget {
             children: [
               Text(
                 context.l10n.todayOverview,
-                style: TextTheme.of(context).titleSmall,
+                style: context.textTheme.titleSmall,
               ),
               TextButton(
                 onPressed: () {
@@ -37,9 +40,8 @@ class HomeViewBody extends StatelessWidget {
                 },
                 child: Text(
                   context.l10n.viewDetails,
-                  style: TextTheme.of(context).bodySmall!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: ColorScheme.of(context).primary,
+                  style: AppTextStyles.captionStrong.copyWith(
+                    color: context.colors.primary,
                   ),
                 ),
               ),
@@ -63,7 +65,7 @@ class HomeViewBody extends StatelessWidget {
               child: CustomRequestRow(
                 title: context.l10n.needToWorkLater,
                 subTitle: context.l10n.requestOverTime,
-                child: Icon(Icons.access_time,color: ColorScheme.of(context).primary,),
+                child: Icon(Icons.access_time, color: context.colors.primary),
               ),
             ),
           ),
@@ -75,7 +77,7 @@ class HomeViewBody extends StatelessWidget {
               child: CustomRequestRow(
                 title: context.l10n.needCash,
                 subTitle: context.l10n.sendRequest,
-                child: Icon(Icons.request_quote,color: ColorScheme.of(context).primary,),
+                child: Icon(Icons.request_quote, color: context.colors.primary),
               ),
             ),
           ),

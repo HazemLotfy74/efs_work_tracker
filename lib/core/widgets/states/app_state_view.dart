@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
+
 import '../app_primary_button.dart';
 
 /// Base layout for full-screen loading, empty, error and permission states.
@@ -47,7 +49,7 @@ class AppStateView extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextTheme.of(context).headlineMedium,
+              style: context.textTheme.headlineMedium,
             ),
             const SizedBox(height: 12),
             ConstrainedBox(
@@ -55,8 +57,9 @@ class AppStateView extends StatelessWidget {
               child: Text(
                 message,
                 textAlign: TextAlign.center,
-                style: TextTheme.of(context).bodyMedium
-                    ?.copyWith(color: ColorScheme.of(context).onSurfaceVariant),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: context.colors.onSurfaceVariant,
+                ),
               ),
             ),
             const Spacer(),
@@ -64,8 +67,9 @@ class AppStateView extends StatelessWidget {
               Text(
                 note!,
                 textAlign: TextAlign.center,
-                style: TextTheme.of(context).bodyMedium
-                    ?.copyWith(color: ColorScheme.of(context).onSurfaceVariant),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: context.colors.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 16),
             ],
@@ -89,5 +93,5 @@ class AppStateIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Icon(icon, size: 34, color: color ?? ColorScheme.of(context).primary);
+      Icon(icon, size: 34, color: color ?? context.colors.primary);
 }

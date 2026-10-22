@@ -3,18 +3,19 @@ import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../theme/app_theme_colors.dart';
 import '../../generated/assets.dart';
+import '../theme/theme_context_extensions.dart';
 
 class CustomLogoIcon extends StatelessWidget {
-  const CustomLogoIcon({super.key, this.txtColor, this.txtSize});
+  const CustomLogoIcon({super.key, this.onBrandSurface = false});
 
-  final Color? txtColor;
-  final double? txtSize;
+  /// Large white wordmark for the dark auth background.
+  final bool onBrandSurface;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = ColorScheme.of(context);
+    final colorScheme = context.colors;
+    final appColors = context.appColors;
     return Row(
       spacing: 10,
       children: [
@@ -39,10 +40,13 @@ class CustomLogoIcon extends StatelessWidget {
         ),
         Text(
           "WorkTrack",
-          style: AppTextStyles.brandWordmark.copyWith(
-            color: txtColor??AppThemeColors.of(context).textHeading,
-            fontSize: txtSize??16,
-          ),
+          style: onBrandSurface
+              ? AppTextStyles.brandWordmarkLarge.copyWith(
+                  color: appColors.onBrandSurface,
+                )
+              : AppTextStyles.brandWordmark.copyWith(
+                  color: appColors.headingText,
+                ),
         ),
       ],
     );

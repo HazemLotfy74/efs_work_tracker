@@ -1,3 +1,4 @@
+import 'package:efs_work_tracker/app/features/attendance_session/presentation/views/check_in_view.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/views/forgot_password_view.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/views/login_view.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/views/attendance_details_view.dart';
@@ -34,7 +35,7 @@ abstract final class AppRouter {
       ),
 
       // Full-screen routes (no bottom navigation bar)
-      _route(AppRoutes.checkIn, 'Check in'),
+      GoRoute(path: AppRoutes.checkIn,builder: (context, state) => CheckInView(),),
       _route(AppRoutes.checkInSuccess, 'Checked in'),
       _route(AppRoutes.checkOut, 'Check out'),
       _route(AppRoutes.checkOutSuccess, 'Checked out'),

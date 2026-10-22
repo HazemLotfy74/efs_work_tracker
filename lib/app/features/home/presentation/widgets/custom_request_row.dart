@@ -1,8 +1,15 @@
-
 import 'package:flutter/material.dart';
 
+import '../../../../../core/theme/app_text_styles.dart';
+import '../../../../../core/theme/theme_context_extensions.dart';
+
 class CustomRequestRow extends StatelessWidget {
-  const CustomRequestRow({super.key, required this.child, required this.title, required this.subTitle});
+  const CustomRequestRow({
+    super.key,
+    required this.child,
+    required this.title,
+    required this.subTitle,
+  });
   final Widget child;
   final String title;
   final String subTitle;
@@ -15,7 +22,7 @@ class CustomRequestRow extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
           decoration: BoxDecoration(
-            color: ColorScheme.of(context).onPrimary,
+            color: context.colors.primaryContainer,
             borderRadius: BorderRadius.circular(12.5),
           ),
           child: child,
@@ -23,16 +30,11 @@ class CustomRequestRow extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: TextTheme.of(context).bodySmall!
-                  .copyWith(color: ColorScheme.of(context).onSurface),
-            ),
+            Text(title, style: AppTextStyles.itemTitle),
             Text(
               subTitle,
-              style: TextTheme.of(context).bodySmall!.copyWith(
-                color: ColorScheme.of(context).onSurfaceVariant,
-                fontSize: 8,
+              style: AppTextStyles.meta.copyWith(
+                color: context.colors.onSurfaceVariant,
               ),
             ),
           ],

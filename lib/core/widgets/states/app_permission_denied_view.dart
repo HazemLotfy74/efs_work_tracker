@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
+
 import 'app_state_view.dart';
 
 class AppPermissionDeniedView extends StatelessWidget {
@@ -22,7 +24,7 @@ class AppPermissionDeniedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = ColorScheme.of(context);
+    final colorScheme = context.colors;
     return AppStateView(
       icon: AppStateIcon(icon, color: colorScheme.error),
       iconBackgroundColor: colorScheme.errorContainer,

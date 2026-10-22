@@ -79,6 +79,63 @@
   "sendRecLink": "Send recovery link",
   "attendanceMadeClear": "Attendance made clear, wherever work happens.",
   "secureAccess": "Secure access to your WorkTrack account.",
-  "contactYourAdmin": "Contact your administrator if you no longer have access to your work email."
+  "contactYourAdmin": "Contact your administrator if you no longer have access to your work email.",
+
+
+  "checkInPage": "Check in",
+  "prepare": "Prepare",
+  "location": "Location",
+  "selfie": "Selfie",
+  "review": "Review",
+  "readyToStart": "Ready To Start?",
+  "captureLocAndSelfie": "We’ll capture a current selfie and GPS location as attendance evidence.",
+  "date": "Date",
+  "currentTime": "Current Time",
+  "shift": "Shift",
+  "yourSelfie": "Your selfie and location are used only to verify this attendance event.",
+  "continueTo": "Continue",
+  "verifyYourLocation": "Verify Your Location",
+  "keepYourLocation": "Keep location services on while we securely capture your current position.",
+  "locationVerified": "Location verified",
+  "havingTrouble": "Having trouble with location?",
+  "useThisLoc": "Use this location",
+  "takeQuickSelfie": "Take a quick selfie",
+  "positionYourFace": "Position your face inside the guide and use a well-lit area.",
+  "reviewAndConfirm": "Review & confirm",
+  "makeSure": "Make sure these details are correct before submitting.",
+  "selfieReady": "Selfie ready",
+  "attendanceEvidence":"Attendance evidence",
+  "captureAndContinue": "Capture & continue",
+  "confirmCheckIn": "Confirm check-in",
+  "youAreAllSet": "You’re all set!",
+  "yourSessionIsNowActive": "Your attendance session is now active. Have a productive day.",
+  "confirmedAt": "Confirmed At",
+  "selfieSubmitted": "Selfie submitted",
+  "returnToHome": "Return to home",
+  "locating": "Finding your location…",
+  "currentLocation": "Current location",
+  "locationAccuracy": "Accuracy · {meters} meters · Captured at {time}",
+  "@locationAccuracy": {
+    "description": "Reported GPS accuracy and the time of the reading on the Location step",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "example": "8"
+      },
+      "time": {
+        "type": "String",
+        "example": "8:07 AM"
+      }
+    }
+  },
+  "coordinatesPrivate": "Exact coordinates are kept private.",
+  "locationUnavailable": "Location unavailable",
+  "locationServiceDisabled": "Location services are turned off. Turn them on to continue.",
+  "locationPermissionDenied": "Location permission is needed to verify your attendance.",
+  "locationPermissionDeniedForever": "Location access is blocked. Allow it in the app settings to continue.",
+  "locationTimeout": "We couldn't get a GPS fix in time. Move to an open area and try again.",
+  "locationUnknownError": "Something went wrong while getting your location.",
+  "tryAgain": "Try again",
+  "openSettings": "Open settings"
 
 }

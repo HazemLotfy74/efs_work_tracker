@@ -20,43 +20,6 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(count) =>
-      "${Intl.plural(count, one: '1 hour', other: '${count} hours')}";
-
-  static String m1(start, end) => "Official shift · ${start}–${end}";
-
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "Alerts": MessageLookupByLibrary.simpleMessage("Alerts"),
-    "ApprovedOT": MessageLookupByLibrary.simpleMessage("Approved OT"),
-    "Attendance": MessageLookupByLibrary.simpleMessage("Attendance"),
-    "EarlyLeave": MessageLookupByLibrary.simpleMessage("Early Leave"),
-    "GoodMorning": MessageLookupByLibrary.simpleMessage("Good Morning"),
-    "History": MessageLookupByLibrary.simpleMessage("History"),
-    "Home": MessageLookupByLibrary.simpleMessage("Home"),
-    "LastMonth": MessageLookupByLibrary.simpleMessage("Last Month"),
-    "LastWeek": MessageLookupByLibrary.simpleMessage("Last Week"),
-    "LastYear": MessageLookupByLibrary.simpleMessage("Last Year"),
-    "Lateness": MessageLookupByLibrary.simpleMessage("Lateness"),
-    "Profile": MessageLookupByLibrary.simpleMessage("Profile"),
-    "Recorded": MessageLookupByLibrary.simpleMessage("Recorded"),
-    "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
-    "ThisMonth": MessageLookupByLibrary.simpleMessage("This Month"),
-    "ThisWeek": MessageLookupByLibrary.simpleMessage("This Week"),
-    "ThisYear": MessageLookupByLibrary.simpleMessage("This Year"),
-    "Today": MessageLookupByLibrary.simpleMessage("Today"),
-    "TodayAttendance": MessageLookupByLibrary.simpleMessage(
-      "Today\'s Attendance",
-    ),
-    "TodayOverview": MessageLookupByLibrary.simpleMessage("Today\'s Overview"),
-    "ViewDetails": MessageLookupByLibrary.simpleMessage("View Details"),
-    "Yesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
-    "checkInNow": MessageLookupByLibrary.simpleMessage("Check In Now"),
-    "currentLocalTime": MessageLookupByLibrary.simpleMessage(
-      "Current Local Time",
-    ),
-    "hoursCount": m0,
-    "notCheckedIn": MessageLookupByLibrary.simpleMessage("Not Checked In"),
-    "officialShift": m1,
-  };
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
 }

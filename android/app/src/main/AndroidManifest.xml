@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Map tiles are downloaded over the network (debug/profile add this on their own, release does not). -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="efs_work_tracker"
         android:name="${applicationName}"
