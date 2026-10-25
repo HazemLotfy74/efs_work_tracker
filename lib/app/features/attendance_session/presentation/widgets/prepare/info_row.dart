@@ -13,12 +13,16 @@ class InfoRow extends StatelessWidget {
     final style = context.textTheme.labelLarge;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      spacing: 12,
       children: [
         Text(
           label,
           style: style?.copyWith(color: context.colors.onSurfaceVariant),
         ),
-        Text(value, style: style),
+        // Wraps instead of overflowing with long values or large text.
+        Flexible(
+          child: Text(value, textAlign: TextAlign.end, style: style),
+        ),
       ],
     );
   }

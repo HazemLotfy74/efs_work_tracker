@@ -6,24 +6,27 @@ class AttendanceSteps extends StatelessWidget {
   const AttendanceSteps({
     super.key,
     required this.currentPage,
+    required this.unlockedStep,
     required this.onTap,
   });
 
   final int currentPage;
+
+  /// Steps after this one are locked and can't be tapped.
+  final int unlockedStep;
   final ValueChanged<int> onTap;
 
   @override
   Widget build(BuildContext context) {
+    final steps = getSteps(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: List.generate(getSteps(context).length, (index) {
+      children: List.generate(steps.length, (index) {
         return GestureDetector(
-          onTap: () {
-            onTap(index);
-          },
+          onTap: index <= unlockedStep ? () => onTap(index) : null,
           child: StepItem(
             index: index + 1,
-            text: getSteps(context)[index],
+            text: steps[index],
             isActive: index <= currentPage,
           ),
         );

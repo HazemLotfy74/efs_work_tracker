@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/extensions/context_l10n.dart';
+import '../../../../../../core/extensions/date_time_format.dart';
 import '../../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../home/presentation/widgets/custom_status_container.dart';
 import '../../../domain/entities/location_entity.dart';
@@ -15,7 +16,6 @@ class LocationDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final textTheme = context.textTheme;
-    final time = TimeOfDay.fromDateTime(location.capturedAt.toLocal());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +32,7 @@ class LocationDetails extends StatelessWidget {
         Text(
           l10n.locationAccuracy(
             location.accuracyMeters.round(),
-            time.format(context),
+            location.capturedAt.formatTime(context),
           ),
           style: textTheme.bodySmall,
         ),

@@ -7,7 +7,9 @@ class TextIconWidget extends StatelessWidget {
     required this.icon,
     required this.style,
     required this.iconColor,
-    required this.iconSize, this.mainAxisAlignment, this.crossAxisAlignment,
+    required this.iconSize,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   });
 
   final String txt;
@@ -20,8 +22,8 @@ class TextIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: mainAxisAlignment??MainAxisAlignment.center,
-      crossAxisAlignment: crossAxisAlignment??CrossAxisAlignment.center,
+      mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
+      crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
       spacing: 10,
       children: [
         Icon(icon, color: iconColor, size: iconSize),

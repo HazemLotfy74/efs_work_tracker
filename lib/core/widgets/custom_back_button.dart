@@ -17,7 +17,7 @@ class CustomBackButton extends StatelessWidget {
       verticalPadding: 10,
       borderWidth: 1,
       borderRadius: 13,
-      child: Icon(Icons.arrow_back_ios_new,color: context.colors.onSurface,),
+      child: Icon(Icons.arrow_back_ios_new, color: context.colors.onSurface),
     );
   }
 }

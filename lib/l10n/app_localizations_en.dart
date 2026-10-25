@@ -38,6 +38,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goodMorning => 'Good Morning';
 
   @override
+  String get goodAfternoon => 'Good Afternoon';
+
+  @override
+  String get goodEvening => 'Good Evening';
+
+  @override
+  String get checkedIn => 'Checked In';
+
+  @override
   String get home => 'Home';
 
   @override
@@ -333,4 +342,93 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openSettings => 'Open settings';
+
+  @override
+  String get clickHereToUpload => 'Click here to upload your selfie';
+
+  @override
+  String stepOf(int current, int total) {
+    return '$current of $total';
+  }
+
+  @override
+  String get checkInTime => 'Check-in time';
+
+  @override
+  String capturedAt(String time) {
+    return 'Captured at $time';
+  }
+
+  @override
+  String get checkOutPage => 'Check out';
+
+  @override
+  String get checkOutTime => 'Check-out time';
+
+  @override
+  String get confirmCheckOut => 'Confirm check-out';
+
+  @override
+  String get checkedOut => 'Checked Out';
+
+  @override
+  String get workdayRecorded => 'Workday recorded';
+
+  @override
+  String get checkoutRecorded => 'Your checkout was recorded successfully.';
+
+  @override
+  String get checkoutRecordedEarly =>
+      'Your checkout was recorded successfully. The early departure has been flagged for review.';
+
+  @override
+  String get finalDuration => 'Final duration';
+
+  @override
+  String get viewAttendanceDetails => 'View attendance details';
+
+  @override
+  String get recordedDuration => 'Recorded duration';
+
+  @override
+  String get earlyDeparture => 'Early departure';
+
+  @override
+  String earlyDepartureMessage(String duration) {
+    return 'This checkout is $duration before shift end and may require review.';
+  }
+
+  @override
+  String get elapsedWorkingTime => 'Elapsed working time';
+
+  @override
+  String get totalWorkingTime => 'Total working time';
+
+  @override
+  String get shiftEnds => 'Shift ends';
+
+  @override
+  String get live => 'LIVE';
+
+  @override
+  String durationHoursMinutes(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '${minutes}m';
+  }
+
+  @override
+  String get saveAttendanceFailed =>
+      'Couldn\'t save your attendance. Check your connection and try again.';
+
+  @override
+  String get attendanceLoadFailed => 'Couldn\'t load today\'s attendance.';
+
+  @override
+  String verifiedAccuracy(int meters) {
+    return 'Verified · ${meters}m';
+  }
 }

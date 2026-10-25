@@ -42,6 +42,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get goodMorning => 'صباح الخير';
 
   @override
+  String get goodAfternoon => 'نهارك سعيد';
+
+  @override
+  String get goodEvening => 'مساء الخير';
+
+  @override
+  String get checkedIn => 'تم تسجيل الحضور';
+
+  @override
   String get home => 'الرئيسية';
 
   @override
@@ -335,4 +344,93 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get openSettings => 'فتح الإعدادات';
+
+  @override
+  String get clickHereToUpload => 'اضغط هنا لالتقاط الصوره';
+
+  @override
+  String stepOf(int current, int total) {
+    return '$current من $total';
+  }
+
+  @override
+  String get checkInTime => 'وقت تسجيل الحضور';
+
+  @override
+  String capturedAt(String time) {
+    return 'تم الالتقاط $time';
+  }
+
+  @override
+  String get checkOutPage => 'تسجيل الانصراف';
+
+  @override
+  String get checkOutTime => 'وقت الانصراف';
+
+  @override
+  String get confirmCheckOut => 'تأكيد تسجيل الانصراف';
+
+  @override
+  String get checkedOut => 'تم تسجيل الانصراف';
+
+  @override
+  String get workdayRecorded => 'تم تسجيل يوم العمل';
+
+  @override
+  String get checkoutRecorded => 'تم تسجيل انصرافك بنجاح.';
+
+  @override
+  String get checkoutRecordedEarly =>
+      'تم تسجيل انصرافك بنجاح. تم تمييز الانصراف المبكر للمراجعة.';
+
+  @override
+  String get finalDuration => 'المدة النهائية';
+
+  @override
+  String get viewAttendanceDetails => 'عرض تفاصيل الحضور';
+
+  @override
+  String get recordedDuration => 'المدة المسجلة';
+
+  @override
+  String get earlyDeparture => 'انصراف مبكر';
+
+  @override
+  String earlyDepartureMessage(String duration) {
+    return 'هذا الانصراف قبل نهاية الوردية بـ $duration وقد يحتاج إلى مراجعة.';
+  }
+
+  @override
+  String get elapsedWorkingTime => 'وقت العمل المنقضي';
+
+  @override
+  String get totalWorkingTime => 'إجمالي وقت العمل';
+
+  @override
+  String get shiftEnds => 'نهاية الوردية';
+
+  @override
+  String get live => 'مباشر';
+
+  @override
+  String durationHoursMinutes(int hours, int minutes) {
+    return '$hours س $minutes د';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes د';
+  }
+
+  @override
+  String get saveAttendanceFailed =>
+      'تعذّر حفظ الحضور. تحقق من اتصالك وحاول مرة أخرى.';
+
+  @override
+  String get attendanceLoadFailed => 'تعذّر تحميل حضور اليوم.';
+
+  @override
+  String verifiedAccuracy(int meters) {
+    return 'تم التحقق · $meters م';
+  }
 }

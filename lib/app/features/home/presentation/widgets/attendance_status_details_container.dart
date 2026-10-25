@@ -2,12 +2,16 @@ import 'package:efs_work_tracker/app/features/home/presentation/widgets/custom_s
 import 'package:flutter/material.dart';
 
 import '../../../../../core/extensions/context_l10n.dart';
+import '../../../../../core/extensions/date_time_format.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../../core/widgets/custom_container.dart';
 
 class AttendanceStatusDetailsContainer extends StatelessWidget {
-  const new({super.key});
+  const new({super.key, required this.date});
+
+  /// Day of the attendance record.
+  final DateTime date;
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +29,15 @@ class AttendanceStatusDetailsContainer extends StatelessWidget {
           Column(
             spacing: 5,
             children: [
-              Text('Wed', style: dateStyle),
+              Text(date.formatWeekdayShort(context), style: dateStyle),
               Text(
-                '14',
+                date.formatDayOfMonth(context),
                 style: textTheme.displaySmall?.copyWith(
                   color: appColors.onBrandSurface,
                   fontSize: 30,
                 ),
               ),
-              Text('May 2025', style: dateStyle),
+              Text(date.formatMonthYear(context), style: dateStyle),
             ],
           ),
           SizedBox(width: 10),

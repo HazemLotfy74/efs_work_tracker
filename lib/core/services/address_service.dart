@@ -5,10 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart' show Geocoding, Placemark;
 import 'package:http/http.dart' as http;
 
-/// Turns coordinates into a readable "street, district, city" text.
-///
-/// Returns `null` when no address is found; it never throws, because a
-/// missing address must not block check-in.
 class AddressService {
   /// [httpClient] is only passed in tests.
   const AddressService({this._httpClient});
