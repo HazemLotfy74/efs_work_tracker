@@ -29,6 +29,12 @@
     }
   },
   "goodMorning": "Good Morning",
+  "goodAfternoon": "Good Afternoon",
+  "goodEvening": "Good Evening",
+  "checkedIn": "Checked In",
+  "@checkedIn": {
+    "description": "Badge on the check-in success screen"
+  },
   "home": "Home",
   "attendance": "Attendance",
   "viewDetails": "View Details",
@@ -136,6 +142,87 @@
   "locationTimeout": "We couldn't get a GPS fix in time. Move to an open area and try again.",
   "locationUnknownError": "Something went wrong while getting your location.",
   "tryAgain": "Try again",
-  "openSettings": "Open settings"
+  "openSettings": "Open settings",
+  "clickHereToUpload": "Click here to upload your selfie",
+  "stepOf": "{current} of {total}",
+  "@stepOf": {
+    "description": "Step counter in the check-in app bar",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "checkInTime": "Check-in time",
+  "capturedAt": "Captured at {time}",
+  "@capturedAt": {
+    "description": "Time the selfie was taken, on the Review step",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "8:07 AM"
+      }
+    }
+  },
+  "checkOutPage": "Check out",
+  "checkOutTime": "Check-out time",
+  "confirmCheckOut": "Confirm check-out",
+  "checkedOut": "Checked Out",
+  "workdayRecorded": "Workday recorded",
+  "checkoutRecorded": "Your checkout was recorded successfully.",
+  "checkoutRecordedEarly": "Your checkout was recorded successfully. The early departure has been flagged for review.",
+  "finalDuration": "Final duration",
+  "viewAttendanceDetails": "View attendance details",
+  "recordedDuration": "Recorded duration",
+  "earlyDeparture": "Early departure",
+  "earlyDepartureMessage": "This checkout is {duration} before shift end and may require review.",
+  "@earlyDepartureMessage": {
+    "placeholders": {
+      "duration": {
+        "type": "String",
+        "example": "34m"
+      }
+    }
+  },
+  "elapsedWorkingTime": "Elapsed working time",
+  "totalWorkingTime": "Total working time",
+  "shiftEnds": "Shift ends",
+  "live": "LIVE",
+  "durationHoursMinutes": "{hours}h {minutes}m",
+  "@durationHoursMinutes": {
+    "description": "A duration of an hour or more, e.g. 7h 19m",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationMinutes": "{minutes}m",
+  "@durationMinutes": {
+    "description": "A duration under an hour, e.g. 34m",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "saveAttendanceFailed": "Couldn't save your attendance. Check your connection and try again.",
+  "attendanceLoadFailed": "Couldn't load today's attendance.",
+  "verifiedAccuracy": "Verified · {meters}m",
+  "@verifiedAccuracy": {
+    "description": "Location row value on the Review step",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  }
 
 }

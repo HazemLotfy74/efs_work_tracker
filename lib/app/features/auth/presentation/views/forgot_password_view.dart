@@ -6,8 +6,6 @@ class ForgotPasswordView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ForgotPasswordViewBody(),
-    );
+    return Scaffold(body: ForgotPasswordViewBody());
   }
 }

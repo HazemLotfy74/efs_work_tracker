@@ -1,4 +1,4 @@
-String? emailValidator(String? email){
+String? emailValidator(String? email) {
   if (email!.isEmpty) {
     return 'Please enter your email';
   }
@@ -11,7 +11,7 @@ String? emailValidator(String? email){
   return null;
 }
 
-String? passwordValidator(String? password){
+String? passwordValidator(String? password) {
   if (password!.isEmpty) {
     return 'Please enter your password';
   }

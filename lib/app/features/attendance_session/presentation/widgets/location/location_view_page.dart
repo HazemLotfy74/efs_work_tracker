@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/extensions/context_l10n.dart';
+import '../../manager/attendance_flow_cubit/attendance_flow_cubit.dart';
 import '../../manager/location_cubit/location_cubit.dart';
 import '../step_header.dart';
 import 'location_action_button.dart';
 import 'location_card.dart';
 
 class LocationViewPage extends StatefulWidget {
-  const LocationViewPage({super.key, required this.onContinue});
-
-  /// Goes to the next step (Selfie).
-  final VoidCallback onContinue;
+  const LocationViewPage({super.key});
 
   @override
   State<LocationViewPage> createState() => _LocationViewPageState();
@@ -56,7 +54,9 @@ class _LocationViewPageState extends State<LocationViewPage> {
                 LocationCard(state: state),
                 LocationActionButton(
                   state: state,
-                  onContinue: widget.onContinue,
+                  // The location is already in the event (AttendanceFlowView
+                  // copies it), so this only moves to the Selfie step.
+                  onContinue: context.read<AttendanceFlowCubit>().next,
                 ),
               ],
             ),

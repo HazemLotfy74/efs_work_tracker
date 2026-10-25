@@ -24,7 +24,8 @@ class AttendanceDetailsViewBody extends StatelessWidget {
             title: context.l10n.attendanceDetails,
             leading: CustomBackButton(),
           ),
-          AttendanceStatusDetailsContainer(),
+          // Sample date until attendance records come from the backend.
+          AttendanceStatusDetailsContainer(date: DateTime(2025, 5, 14)),
           NoChekoutRecordWarningWidget(),
           CustomContainer(
             borderWidth: 1,

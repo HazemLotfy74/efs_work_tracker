@@ -3,7 +3,12 @@ import 'package:efs_work_tracker/core/extensions/context_l10n.dart';
 import 'package:flutter/material.dart';
 
 class CustomWorkSummaryWidget extends StatelessWidget {
-  const CustomWorkSummaryWidget({super.key, required this.spacing, required this.itemWidth, this.containerColor});
+  const CustomWorkSummaryWidget({
+    super.key,
+    required this.spacing,
+    required this.itemWidth,
+    this.containerColor,
+  });
 
   final double spacing;
   final double itemWidth;
@@ -19,25 +24,25 @@ class CustomWorkSummaryWidget extends StatelessWidget {
           width: itemWidth,
           label: context.l10n.recorded,
           value: '-',
-          containerColor:containerColor ,
+          containerColor: containerColor,
         ),
         TodayOverViewContainer(
           width: itemWidth,
           label: context.l10n.lateness,
           value: '-',
-          containerColor:containerColor ,
+          containerColor: containerColor,
         ),
         TodayOverViewContainer(
           width: itemWidth,
           label: context.l10n.earlyLeave,
           value: '0m',
-          containerColor:containerColor ,
+          containerColor: containerColor,
         ),
         TodayOverViewContainer(
           width: itemWidth,
           label: context.l10n.approvedOT,
           value: '0m',
-          containerColor:containerColor ,
+          containerColor: containerColor,
         ),
       ],
     );

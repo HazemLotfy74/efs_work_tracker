@@ -134,6 +134,24 @@ abstract class AppLocalizations {
   /// **'Good Morning'**
   String get goodMorning;
 
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Afternoon'**
+  String get goodAfternoon;
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Evening'**
+  String get goodEvening;
+
+  /// Badge on the check-in success screen
+  ///
+  /// In en, this message translates to:
+  /// **'Checked In'**
+  String get checkedIn;
+
   /// No description provided for @home.
   ///
   /// In en, this message translates to:
@@ -691,6 +709,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open settings'**
   String get openSettings;
+
+  /// No description provided for @clickHereToUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Click here to upload your selfie'**
+  String get clickHereToUpload;
+
+  /// Step counter in the check-in app bar
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total}'**
+  String stepOf(int current, int total);
+
+  /// No description provided for @checkInTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in time'**
+  String get checkInTime;
+
+  /// Time the selfie was taken, on the Review step
+  ///
+  /// In en, this message translates to:
+  /// **'Captured at {time}'**
+  String capturedAt(String time);
+
+  /// No description provided for @checkOutPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out'**
+  String get checkOutPage;
+
+  /// No description provided for @checkOutTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-out time'**
+  String get checkOutTime;
+
+  /// No description provided for @confirmCheckOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm check-out'**
+  String get confirmCheckOut;
+
+  /// No description provided for @checkedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked Out'**
+  String get checkedOut;
+
+  /// No description provided for @workdayRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Workday recorded'**
+  String get workdayRecorded;
+
+  /// No description provided for @checkoutRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Your checkout was recorded successfully.'**
+  String get checkoutRecorded;
+
+  /// No description provided for @checkoutRecordedEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'Your checkout was recorded successfully. The early departure has been flagged for review.'**
+  String get checkoutRecordedEarly;
+
+  /// No description provided for @finalDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Final duration'**
+  String get finalDuration;
+
+  /// No description provided for @viewAttendanceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View attendance details'**
+  String get viewAttendanceDetails;
+
+  /// No description provided for @recordedDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded duration'**
+  String get recordedDuration;
+
+  /// No description provided for @earlyDeparture.
+  ///
+  /// In en, this message translates to:
+  /// **'Early departure'**
+  String get earlyDeparture;
+
+  /// No description provided for @earlyDepartureMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This checkout is {duration} before shift end and may require review.'**
+  String earlyDepartureMessage(String duration);
+
+  /// No description provided for @elapsedWorkingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Elapsed working time'**
+  String get elapsedWorkingTime;
+
+  /// No description provided for @totalWorkingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Total working time'**
+  String get totalWorkingTime;
+
+  /// No description provided for @shiftEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift ends'**
+  String get shiftEnds;
+
+  /// No description provided for @live.
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE'**
+  String get live;
+
+  /// A duration of an hour or more, e.g. 7h 19m
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String durationHoursMinutes(int hours, int minutes);
+
+  /// A duration under an hour, e.g. 34m
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m'**
+  String durationMinutes(int minutes);
+
+  /// No description provided for @saveAttendanceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save your attendance. Check your connection and try again.'**
+  String get saveAttendanceFailed;
+
+  /// No description provided for @attendanceLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load today\'s attendance.'**
+  String get attendanceLoadFailed;
+
+  /// Location row value on the Review step
+  ///
+  /// In en, this message translates to:
+  /// **'Verified · {meters}m'**
+  String verifiedAccuracy(int meters);
 }
 
 class _AppLocalizationsDelegate

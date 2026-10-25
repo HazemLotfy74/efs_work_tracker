@@ -1,8 +1,12 @@
 import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/enums/day_part.dart';
 import '../../../../../core/extensions/context_l10n.dart';
+import '../../../../../core/extensions/date_time_format.dart';
+import '../../../../../core/manager/clock_cubit.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 
 class UserHeader extends StatelessWidget {
@@ -12,6 +16,8 @@ class UserHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colorScheme = context.colors;
+    // Live time: the date and greeting change at midnight / noon by themselves.
+    final now = context.watch<ClockCubit>().state;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -19,13 +25,14 @@ class UserHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "WEDNESDAY  MAY 14",
+              '${now.formatWeekday(context)}  ${now.formatMonthDay(context)}'
+                  .toUpperCase(),
               style: AppTextStyles.overline.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
             Text(
-              context.l10n.goodMorning,
+              DayPart.of(now).greeting(context.l10n),
               style: textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w400,
               ),

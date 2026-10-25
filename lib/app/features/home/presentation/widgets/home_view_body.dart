@@ -1,6 +1,6 @@
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/custom_request_row.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/custom_work_summary_widget.dart';
-import 'package:efs_work_tracker/app/features/home/presentation/widgets/not_checked_in_custom_container.dart';
+import 'package:efs_work_tracker/app/features/home/presentation/widgets/today_attendance_card.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/user_header.dart';
 import 'package:efs_work_tracker/core/extensions/context_l10n.dart';
 import 'package:efs_work_tracker/core/router/app_routes.dart';
@@ -26,7 +26,7 @@ class HomeViewBody extends StatelessWidget {
           const CustomLogoIcon(),
           SizedBox(height: AppSpacing.lg),
           UserHeader(),
-          NotCheckedInCustomContainer(),
+          const TodayAttendanceCard(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

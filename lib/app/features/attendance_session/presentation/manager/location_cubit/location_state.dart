@@ -15,8 +15,6 @@ final class LocationLoading extends LocationState {
 
 final class LocationLoaded extends LocationState {
   const LocationLoaded(this.location);
-
-  /// Everything to save: coordinates, accuracy, time, address.
   final LocationEntity location;
 }
 

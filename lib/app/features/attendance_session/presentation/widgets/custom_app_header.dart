@@ -1,12 +1,12 @@
-import 'package:efs_work_tracker/core/extensions/context_l10n.dart';
 import 'package:efs_work_tracker/core/widgets/custom_back_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/theme_context_extensions.dart';
 
 class CustomAppHeader extends StatelessWidget {
-  const CustomAppHeader({super.key, this.trailing});
+  const CustomAppHeader({super.key, required this.title, this.trailing});
 
+  final String title;
   final Widget? trailing;
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class CustomAppHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomBackButton(),
-        Text(context.l10n.checkInPage, style: context.textTheme.titleMedium),
+        Text(title, style: context.textTheme.titleMedium),
         trailing ?? SizedBox(),
       ],
     );
