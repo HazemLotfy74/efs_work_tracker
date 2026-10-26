@@ -3,7 +3,11 @@ import 'package:efs_work_tracker/app/features/attendance_session/presentation/vi
 import 'package:efs_work_tracker/app/features/attendance_session/presentation/views/attendance_success_view.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/views/forgot_password_view.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/views/login_view.dart';
+import 'package:efs_work_tracker/app/features/cash_request/presentation/views/all_cashes_view.dart';
+import 'package:efs_work_tracker/app/features/cash_request/presentation/views/new_cash_request_view.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/views/attendance_details_view.dart';
+import 'package:efs_work_tracker/app/features/overtime/presentation/views/add_overtime_request_view.dart';
+import 'package:efs_work_tracker/app/features/overtime/presentation/views/overtime_view.dart';
 import 'package:efs_work_tracker/app/features/splash/presentation/views/splash_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -76,7 +80,22 @@ abstract final class AppRouter {
         builder: (context, state) => AttendanceDetailsView(),
       ),
       // Fixed overtime paths must come before /overtime/:id
-      _route(AppRoutes.overtime, 'Overtime requests'),
+      GoRoute(
+        path: AppRoutes.overtime,
+        builder: (context, state) => OvertimeView(),
+      ),
+      GoRoute(
+        path: AppRoutes.createOvertime,
+        builder: (context, state) => AddOvertimeRequest(),
+      ),
+      GoRoute(
+        path: AppRoutes.cashRequest,
+        builder: (context, state) => AllCashesView(),
+      ),
+      GoRoute(
+        path: AppRoutes.newCashRequest,
+        builder: (context, state) => NewCashRequestView(),
+      ),
       _route(AppRoutes.createOvertime, 'Request overtime'),
       _route(AppRoutes.overtimeSubmitted, 'Request submitted'),
       _route(AppRoutes.overtimeDetails, 'Request details'),

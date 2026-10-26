@@ -58,7 +58,9 @@ class HomeViewBody extends StatelessWidget {
             },
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              context.push(AppRoutes.overtime);
+            },
             child: CustomContainer(
               containerWidth: double.infinity,
               borderWidth: 1,
@@ -70,7 +72,9 @@ class HomeViewBody extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              context.push(AppRoutes.cashRequest);
+            },
             child: CustomContainer(
               containerWidth: double.infinity,
               borderWidth: 1,

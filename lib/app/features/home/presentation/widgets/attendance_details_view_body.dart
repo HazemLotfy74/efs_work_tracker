@@ -1,3 +1,4 @@
+import 'package:efs_work_tracker/app/features/attendance_session/domain/entities/attendance_session_entity.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/attendance_event_widget.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/attendance_status_details_container.dart';
 import 'package:efs_work_tracker/core/widgets/custom_back_button.dart';
@@ -11,7 +12,8 @@ import '../../../../../core/widgets/custom_container.dart';
 import 'custom_work_summary_widget.dart';
 
 class AttendanceDetailsViewBody extends StatelessWidget {
-  const AttendanceDetailsViewBody({super.key});
+  const AttendanceDetailsViewBody({super.key,});
+
 
   @override
   Widget build(BuildContext context) {
