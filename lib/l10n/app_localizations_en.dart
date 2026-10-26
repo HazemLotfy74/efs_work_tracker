@@ -431,4 +431,109 @@ class AppLocalizationsEn extends AppLocalizations {
   String verifiedAccuracy(int meters) {
     return 'Verified · ${meters}m';
   }
+
+  @override
+  String get overTimeRequests => 'Overtime requests';
+
+  @override
+  String get approvedThisMonth => 'Approved this month';
+
+  @override
+  String get pendingDecision => 'Awaiting decision';
+
+  @override
+  String get pendingApproval => 'Pending approval';
+
+  @override
+  String get approved => 'Approved';
+
+  @override
+  String get rejected => 'Rejected';
+
+  @override
+  String get recentRequests => 'Recent requests';
+
+  @override
+  String get request => 'Request';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get createOverTimeRequest => 'Create Overtime Request';
+
+  @override
+  String get requestOverTimePage => 'Request Overtime For Manager Approval';
+
+  @override
+  String get approvalRequired => 'Approval required';
+
+  @override
+  String get workingAfter4 =>
+      'Working after 4:00 PM does not automatically mean overtime is approved.';
+
+  @override
+  String get requestedScheduled => 'Requested schedule';
+
+  @override
+  String get startTime => 'Start time';
+
+  @override
+  String get endTome => 'End time';
+
+  @override
+  String get requestedDuration => 'Requested duration';
+
+  @override
+  String get reasonForOverTime => 'Reason for overtime';
+
+  @override
+  String get requestSummary => 'Request summary';
+
+  @override
+  String get approvalStatus => 'Approval status';
+
+  @override
+  String get requestSubmitted => 'Request submitted';
+
+  @override
+  String get pendingRequests => 'Pending requests';
+
+  @override
+  String get cashRequestReview =>
+      'Cash requests are reviewed by your company administrator.';
+
+  @override
+  String get requestHistory => 'Request history';
+
+  @override
+  String get newCashRequest => 'New cash request';
+
+  @override
+  String get approvalRequiredForCash => 'Administrator approval required';
+
+  @override
+  String get submittingApproval =>
+      'Submitting this form does not guarantee that the request will be approved.';
+
+  @override
+  String get requestAmount => 'Requested amount';
+
+  @override
+  String get reasonForRequest => 'Reason for request';
+
+  @override
+  String get employee => 'Employee';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get statusAfterRequest => 'Status after sending';
+
+  @override
+  String get sendToAdmin => 'Send to administrator';
+
+  @override
+  String get cashRequests => 'Cash requests';
 }

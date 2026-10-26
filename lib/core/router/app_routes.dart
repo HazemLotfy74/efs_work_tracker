@@ -24,6 +24,8 @@ abstract final class AppRoutes {
 
   // Overtime
   static const overtime = '/overtime';
+  static const cashRequest = '/cash';
+  static const newCashRequest = '/new-cash';
   static const createOvertime = '/overtime/create';
   static const overtimeSubmitted = '/overtime/submitted';
   static const overtimeDetails = '/overtime/:id';

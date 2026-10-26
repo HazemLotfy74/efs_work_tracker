@@ -223,6 +223,42 @@
         "example": "8"
       }
     }
-  }
+  },
+
+
+  "overTimeRequests": "Overtime requests",
+  "approvedThisMonth": "Approved this month",
+  "pendingDecision": "Awaiting decision",
+  "pendingApproval": "Pending approval",
+  "approved": "Approved",
+  "rejected": "Rejected",
+  "recentRequests": "Recent requests",
+  "request": "Request",
+  "all": "All",
+  "createOverTimeRequest": "Create Overtime Request",
+  "requestOverTimePage": "Request Overtime For Manager Approval",
+  "approvalRequired": "Approval required",
+  "workingAfter4": "Working after 4:00 PM does not automatically mean overtime is approved.",
+  "requestedScheduled": "Requested schedule",
+  "startTime": "Start time",
+  "endTome": "End time",
+  "requestedDuration": "Requested duration",
+  "reasonForOverTime": "Reason for overtime",
+  "requestSummary": "Request summary",
+  "approvalStatus": "Approval status",
+  "requestSubmitted": "Request submitted",
+  "pendingRequests": "Pending requests",
+  "cashRequestReview": "Cash requests are reviewed by your company administrator.",
+  "requestHistory": "Request history",
+  "newCashRequest": "New cash request",
+  "approvalRequiredForCash": "Administrator approval required",
+  "submittingApproval": "Submitting this form does not guarantee that the request will be approved.",
+  "requestAmount": "Requested amount",
+  "reasonForRequest": "Reason for request",
+  "employee": "Employee",
+  "amount": "Amount",
+  "statusAfterRequest": "Status after sending",
+  "sendToAdmin": "Send to administrator",
+  "cashRequests": "Cash requests"
 
 }

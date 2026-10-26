@@ -433,4 +433,108 @@ class AppLocalizationsAr extends AppLocalizations {
   String verifiedAccuracy(int meters) {
     return 'تم التحقق · $meters م';
   }
+
+  @override
+  String get overTimeRequests => ' الساعات الإضافية';
+
+  @override
+  String get approvedThisMonth => 'تمت الموافقة عليها هذا الشهر';
+
+  @override
+  String get pendingDecision => 'بانتظار القرار';
+
+  @override
+  String get pendingApproval => 'بانتظار الموافقة';
+
+  @override
+  String get approved => 'تمت الموافقة';
+
+  @override
+  String get rejected => 'مرفوضة';
+
+  @override
+  String get recentRequests => 'الطلبات الأخيرة';
+
+  @override
+  String get request => 'طلب';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get createOverTimeRequest => 'طلب ساعات اضافية';
+
+  @override
+  String get requestOverTimePage => 'طلب عمل إضافي لموافقة المدير';
+
+  @override
+  String get approvalRequired => 'موافقة المدير مطلوبة';
+
+  @override
+  String get workingAfter4 =>
+      'الشغل بعد الساعة 4 مساءً مش معناه إن الوقت الإضافي اتوافق عليه تلقائيًا.';
+
+  @override
+  String get requestedScheduled => 'مواعيد العمل المطلوبة';
+
+  @override
+  String get startTime => 'وقت البداية';
+
+  @override
+  String get endTome => 'وقت النهاية';
+
+  @override
+  String get requestedDuration => 'مدة العمل الإضافي المطلوبة';
+
+  @override
+  String get reasonForOverTime => 'سبب طلب العمل الإضافي';
+
+  @override
+  String get requestSummary => 'ملخص الطلب';
+
+  @override
+  String get approvalStatus => 'حالة الموافقة';
+
+  @override
+  String get requestSubmitted => 'تم إرسال الطلب';
+
+  @override
+  String get pendingRequests => 'طلبات المصروفات المعلقة';
+
+  @override
+  String get cashRequestReview => 'طلبات المصروفات بيراجعها مسؤول الشركة.';
+
+  @override
+  String get requestHistory => 'سجل الطلبات';
+
+  @override
+  String get newCashRequest => 'طلب مصروفات جديد';
+
+  @override
+  String get approvalRequiredForCash => 'موافقة مسؤول الشركة مطلوبة';
+
+  @override
+  String get submittingApproval =>
+      'إرسال الطلب مش معناه إنه هيتوافق عليه تلقائيًا.';
+
+  @override
+  String get requestAmount => 'قيمة المصروفات المطلوبة';
+
+  @override
+  String get reasonForRequest => 'سبب طلب المصروفات';
+
+  @override
+  String get employee => 'الموظف';
+
+  @override
+  String get amount => 'المبلغ';
+
+  @override
+  String get statusAfterRequest => 'حالة الطلب بعد الإرسال';
+
+  @override
+  String get sendToAdmin => 'إرسال لمسؤول الشركة';
+
+  @override
+  String get cashRequests => 'طلبات المصروفات';
 }

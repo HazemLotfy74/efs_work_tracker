@@ -859,6 +859,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Verified · {meters}m'**
   String verifiedAccuracy(int meters);
+
+  /// No description provided for @overTimeRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Overtime requests'**
+  String get overTimeRequests;
+
+  /// No description provided for @approvedThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved this month'**
+  String get approvedThisMonth;
+
+  /// No description provided for @pendingDecision.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting decision'**
+  String get pendingDecision;
+
+  /// No description provided for @pendingApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending approval'**
+  String get pendingApproval;
+
+  /// No description provided for @approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get approved;
+
+  /// No description provided for @rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get rejected;
+
+  /// No description provided for @recentRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent requests'**
+  String get recentRequests;
+
+  /// No description provided for @request.
+  ///
+  /// In en, this message translates to:
+  /// **'Request'**
+  String get request;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @createOverTimeRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Overtime Request'**
+  String get createOverTimeRequest;
+
+  /// No description provided for @requestOverTimePage.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Overtime For Manager Approval'**
+  String get requestOverTimePage;
+
+  /// No description provided for @approvalRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval required'**
+  String get approvalRequired;
+
+  /// No description provided for @workingAfter4.
+  ///
+  /// In en, this message translates to:
+  /// **'Working after 4:00 PM does not automatically mean overtime is approved.'**
+  String get workingAfter4;
+
+  /// No description provided for @requestedScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested schedule'**
+  String get requestedScheduled;
+
+  /// No description provided for @startTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time'**
+  String get startTime;
+
+  /// No description provided for @endTome.
+  ///
+  /// In en, this message translates to:
+  /// **'End time'**
+  String get endTome;
+
+  /// No description provided for @requestedDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested duration'**
+  String get requestedDuration;
+
+  /// No description provided for @reasonForOverTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for overtime'**
+  String get reasonForOverTime;
+
+  /// No description provided for @requestSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Request summary'**
+  String get requestSummary;
+
+  /// No description provided for @approvalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval status'**
+  String get approvalStatus;
+
+  /// No description provided for @requestSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Request submitted'**
+  String get requestSubmitted;
+
+  /// No description provided for @pendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending requests'**
+  String get pendingRequests;
+
+  /// No description provided for @cashRequestReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash requests are reviewed by your company administrator.'**
+  String get cashRequestReview;
+
+  /// No description provided for @requestHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Request history'**
+  String get requestHistory;
+
+  /// No description provided for @newCashRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New cash request'**
+  String get newCashRequest;
+
+  /// No description provided for @approvalRequiredForCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator approval required'**
+  String get approvalRequiredForCash;
+
+  /// No description provided for @submittingApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting this form does not guarantee that the request will be approved.'**
+  String get submittingApproval;
+
+  /// No description provided for @requestAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested amount'**
+  String get requestAmount;
+
+  /// No description provided for @reasonForRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for request'**
+  String get reasonForRequest;
+
+  /// No description provided for @employee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee'**
+  String get employee;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @statusAfterRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Status after sending'**
+  String get statusAfterRequest;
+
+  /// No description provided for @sendToAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to administrator'**
+  String get sendToAdmin;
+
+  /// No description provided for @cashRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash requests'**
+  String get cashRequests;
 }
 
 class _AppLocalizationsDelegate

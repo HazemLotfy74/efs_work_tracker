@@ -25,6 +25,8 @@ abstract final class AppTheme {
       outlineVariant: AppPalette.neutral200,
       error: AppPalette.red500,
       errorContainer: AppPalette.red50,
+      onSecondaryContainer: AppPalette.amber600,
+      secondaryContainer: AppPalette.amber50,
     );
 
     return _build(
