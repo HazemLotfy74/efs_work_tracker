@@ -8,6 +8,8 @@ import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/extensions/date_time_format.dart';
 import '../../../../../core/manager/clock_cubit.dart';
 import '../../../../../core/theme/app_text_styles.dart';
+import '../../../auth/domain/entities/user_entity.dart';
+import '../../../auth/presentation/manager/auth_cubit/auth_cubit.dart';
 
 class UserHeader extends StatelessWidget {
   const new({super.key});
@@ -18,6 +20,12 @@ class UserHeader extends StatelessWidget {
     final colorScheme = context.colors;
     // Live time: the date and greeting change at midnight / noon by themselves.
     final now = context.watch<ClockCubit>().state;
+    final user = context.select<AuthCubit, UserEntity?>(
+      (cubit) => switch (cubit.state) {
+        AuthSignedIn(:final user) => user,
+        _ => null,
+      },
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -38,7 +46,7 @@ class UserHeader extends StatelessWidget {
               ),
             ),
             Text(
-              "Mohamed",
+              user?.fullName ?? '',
               style: textTheme.headlineSmall?.copyWith(
                 color: context.appColors.headingText,
               ),
@@ -66,7 +74,7 @@ class UserHeader extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.lg),
             ),
             child: Text(
-              "MH",
+              user?.initials ?? '',
               style: textTheme.titleMedium?.copyWith(
                 color: colorScheme.onSecondary,
               ),

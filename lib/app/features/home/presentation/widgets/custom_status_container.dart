@@ -44,7 +44,13 @@ class CustomStatusContainer extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          Text(text, style: AppTextStyles.badge.copyWith(color: foreground)),
+          // Long or translated text wraps instead of overflowing.
+          Flexible(
+            child: Text(
+              text,
+              style: AppTextStyles.badge.copyWith(color: foreground),
+            ),
+          ),
         ],
       ),
     );

@@ -42,7 +42,7 @@
   "recorded": "Recorded",
   "lateness": "Lateness",
   "earlyLeave": "Early Leave",
-  "approvedOT": "Approved OT",
+  "approvedOT": "Overtime",
   "today": "Today",
   "yesterday": "Yesterday",
   "thisWeek": "This Week",
@@ -178,7 +178,7 @@
   "viewAttendanceDetails": "View attendance details",
   "recordedDuration": "Recorded duration",
   "earlyDeparture": "Early departure",
-  "earlyDepartureMessage": "This checkout is {duration} before shift end and may require review.",
+  "earlyDepartureMessage": "This checkout is {duration} short of 8 regular hours and may require review.",
   "@earlyDepartureMessage": {
     "placeholders": {
       "duration": {
@@ -259,6 +259,261 @@
   "amount": "Amount",
   "statusAfterRequest": "Status after sending",
   "sendToAdmin": "Send to administrator",
-  "cashRequests": "Cash requests"
+  "cashRequests": "Cash requests",
+  "overtimeBefore4pm": "Before 4:00 PM",
+  "overtimeAfter4pm": "After 4:00 PM",
+  "overtimePeriod": "Period",
+  "fewerHours": "Fewer hours",
+  "moreHours": "More hours",
+  "overtimeLoadFailed": "Couldn’t load your overtime requests.",
+  "overtimeEmptyTitle": "No overtime requests",
+  "overtimeEmptyMessage": "Overtime requests you send will appear here.",
+  "overtimeSubmittedMessage": "Your request was sent to your administrator. Overtime counts only after an administrator approves it.",
+  "backToRequests": "Back to requests",
+  "requestDetails": "Request details",
+  "requestNotFound": "This request was not found.",
+  "submittedAt": "Submitted",
+  "reviewedAt": "Reviewed",
+  "reviewNote": "Administrator note",
+  "cashLoadFailed": "Couldn’t load your cash requests.",
+  "cashEmptyTitle": "No cash requests",
+  "cashEmptyMessage": "Cash requests you send will appear here.",
+  "cashSubmittedMessage": "Request sent. It is pending until your administrator reviews it.",
+  "cashAmountRequired": "Enter the amount.",
+  "cashAmountInvalid": "Enter an amount greater than 0 with at most 2 decimal places.",
+  "moneyAmount": "{amount} {currency}",
+  "@moneyAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "requestReasonRequired": "Enter a reason.",
+  "requestReasonTooLong": "The reason can have at most 2000 characters.",
+  "requestReasonInvalid": "Enter a reason of up to 2000 characters.",
+  "requestAccountNotReady": "Your account can’t send requests right now. Sign in again or contact your administrator.",
+  "overtimeDuplicate": "You already have a pending or approved overtime request for this day and period.",
+  "overtimeHoursInvalid": "Choose at least 1 hour.",
+  "requestInvalidCurrency": "This currency isn’t supported.",
+  "requestInvalidInput": "Some details aren’t valid. Check them and try again.",
+  "requestBusy": "A request is already being sent.",
+  "requestOutcomeUnknown": "We couldn’t confirm whether your request was sent. Check your connection, then tap send again: the app checks first and won’t send it twice.",
+  "requestNetworkError": "Can’t reach the server. Your request was not sent. Check your connection and try again.",
+  "requestServiceUnavailable": "Requests aren’t available right now.",
+  "requestUnknownError": "Something went wrong. Please try again.",
+  "authInvalidCredentials": "Email or password is incorrect.",
+  "authAccountUnavailable": "This account is not available. Contact your administrator.",
+  "authEmailNotConfirmed": "Your email address has not been confirmed yet.",
+  "authTooManyRequests": "Too many attempts. Wait a moment and try again.",
+  "authWeakPassword": "This password doesn’t meet the security rules. Choose a stronger one.",
+  "authSamePassword": "Choose a password different from your current one.",
+  "authReauthenticationNeeded": "For your security, sign in again before changing your password.",
+  "authPasswordCompletionPending": "Your password may have changed. Sign in with the new password and set another one to finish.",
+  "authSessionExpired": "Your session has ended. Please sign in again.",
+  "authNetworkError": "Can’t reach the server. Check your connection and try again.",
+  "authUnknownError": "Something went wrong. Please try again.",
+  "accountSetup": "Account setup",
+  "changePasswordTitle": "Set a new password",
+  "changePasswordSubtitle": "For your security, choose a new password before you continue.",
+  "newPassword": "New password",
+  "confirmNewPassword": "Confirm new password",
+  "passwordRules": "Use at least 12 characters.",
+  "savePassword": "Save password",
+  "signOut": "Sign out",
+  "recoveryLinkSent": "If this email belongs to an account, recovery instructions are on their way.",
+  "attendanceAccountNotReady": "Your account can’t record attendance right now. Sign in again or contact your administrator.",
+  "attendanceNoSchedule": "No work schedule is assigned to your account. Contact your administrator.",
+  "attendanceNotWorkingDay": "Today is not a working day in your schedule.",
+  "attendanceCheckInClosed": "Today’s shift has ended, so check-in is closed.",
+  "attendanceAlreadyCheckedIn": "You have already checked in today.",
+  "attendanceNotCheckedIn": "There is no check-in to check out from today.",
+  "attendanceAlreadyCheckedOut": "Your check-out was already recorded.",
+  "attendanceClosedAutomatically": "Your day was already closed automatically, so a check-out can’t be recorded. An administrator has to review this day.",
+  "regularHoursEnd": "8 hours at",
+  "attendanceWorkDateChanged": "The work day changed while saving. Please try again.",
+  "attendanceInvalidLocation": "Your location couldn’t be verified. Go back to the Location step and try again.",
+  "attendanceSelfieMissing": "Your selfie wasn’t received. Take it again and retry.",
+  "attendanceSelfieUploadFailed": "Your selfie couldn’t be uploaded. Check your connection and try again.",
+  "attendanceBusy": "Your attendance is already being saved.",
+  "attendanceOutcomeUnknown": "We couldn’t confirm whether your attendance was saved. Check the home screen before trying again.",
+  "attendanceServiceUnavailable": "Attendance is being updated. Please try again later.",
+  "attendanceUnknownError": "Something went wrong with your attendance. Please try again.",
+  "noShiftToday": "No shift today",
+  "closedAutomatically": "Closed automatically",
+  "closedAt": "Closed at",
+  "autoClosedNote": "Your day was closed automatically at {time} without a check-out, so your hours are not confirmed and an administrator has to review them. If you worked later, send an overtime request.",
+  "@autoClosedNote": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "4:00 PM"
+      }
+    }
+  },
+  "closesBeforeRegularHours": "Attendance closes automatically at {time}, before your 8 regular hours are complete. Check out before then.",
+  "@closesBeforeRegularHours": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "4:00 PM"
+      }
+    }
+  },
+  "notConfirmed": "Not confirmed",
+  "regularHours": "Regular hours",
+  "observedOvertime": "Overtime",
+  "observedOvertimeNote": "Counted automatically: every minute worked beyond 8 hours.",
+  "inProgress": "In progress",
+  "attendanceNotFound": "This attendance record was not found.",
+  "historyEmptyTitle": "No attendance yet",
+  "historyEmptyMessage": "Your attendance days will appear here.",
+  "historyLoadFailed": "Couldn’t load your attendance history.",
+  "lateMinutes": "{minutes} min late",
+  "@lateMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "onTime": "On time",
+  "employeeCode": "Employee code",
+  "username": "Username",
+  "email": "Email",
+  "role": "Role",
+  "roleAdmin": "Administrator",
+  "roleEmployee": "Employee",
+  "workSchedule": "Work schedule",
+  "requestCorrection": "Request correction",
+  "correctionTitle": "Correct attendance",
+  "correctionIntro": "This day was closed automatically, so its hours aren’t confirmed. Enter the times you actually worked; an administrator will review them.",
+  "correctionCheckIn": "Check-in time",
+  "correctionCheckOut": "Check-out time",
+  "correctionPickTime": "Select time",
+  "correctionReason": "Reason",
+  "correctionReasonHint": "Why is the check-out missing?",
+  "correctionTimezoneNote": "Times are in company time ({timezone}).",
+  "@correctionTimezoneNote": {
+    "placeholders": {
+      "timezone": {
+        "type": "String"
+      }
+    }
+  },
+  "correctionSubmit": "Send request",
+  "correctionSubmitted": "Correction request sent.",
+  "correctionRequest": "Correction request",
+  "correctionProposedTimes": "Proposed times",
+  "correctionReviewNote": "Reviewer note",
+  "correctionLoadFailed": "Couldn’t load the correction requests.",
+  "correctionResubmit": "You can send a new request.",
+  "correctionPendingNote": "An administrator will review this request.",
+  "adminCorrections": "Correction requests",
+  "adminCorrectionsEmptyTitle": "No pending requests",
+  "adminCorrectionsEmptyMessage": "Correction requests from employees will appear here.",
+  "adminCorrectionsLoadFailed": "Couldn’t load the correction requests.",
+  "correctionRecordedCheckIn": "Recorded check-in",
+  "correctionApprove": "Approve",
+  "correctionReject": "Reject",
+  "correctionApproveTitle": "Approve this correction?",
+  "correctionRejectTitle": "Reject this correction?",
+  "correctionApproveMessage": "The proposed times become the confirmed hours of this day.",
+  "correctionRejectMessage": "The day stays unconfirmed. The employee can send a new request.",
+  "correctionNoteOptional": "Note (optional)",
+  "correctionCancel": "Cancel",
+  "correctionApprovedDone": "Correction approved.",
+  "correctionRejectedDone": "Correction rejected.",
+  "correctionNotAllowed": "Your account can’t do this right now.",
+  "correctionOwnRequest": "You can’t review your own request.",
+  "correctionNotFound": "This attendance day or request no longer exists.",
+  "correctionNotClosed": "Only a closed day can be corrected.",
+  "correctionInvalidTimes": "The check-in must be on the work date and before the shift ends. The check-out must be after the check-in and before midnight.",
+  "correctionMissingCheckOut": "Select a check-out time.",
+  "correctionInvalidReason": "Enter a reason of up to 2000 characters.",
+  "correctionNoteTooLong": "The note can have at most 2000 characters.",
+  "correctionNoChange": "These are already the approved times.",
+  "correctionAlreadyPending": "A request for this day is already waiting for review.",
+  "correctionAlreadyReviewed": "This request has already been reviewed.",
+  "correctionAttendanceChanged": "This day changed after the request was sent. Reject it so the employee can send a new one.",
+  "correctionBusy": "A request is already being sent.",
+  "correctionNetwork": "Couldn’t reach the server. Check the request’s status before trying again.",
+  "correctionServiceUnavailable": "Corrections aren’t available right now.",
+  "correctionUnknownError": "Something went wrong. Please try again.",
+  "adminDashboard": "Admin dashboard",
+  "adminToday": "Today",
+  "adminCheckedInNow": "Checked in now",
+  "adminPastShiftEnd": "Still checked in after the shift end",
+  "adminSearchHint": "Search by name, username or code",
+  "adminStaleData": "Couldn’t refresh. Showing earlier data.",
+  "adminLoadFailed": "Couldn’t load the dashboard.",
+  "adminNoEmployees": "No employees found",
+  "adminInactive": "Inactive",
+  "adminFirstSignInPending": "Hasn’t signed in yet",
+  "adminSince": "Since {time}",
+  "@adminSince": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "adminHistoryEmpty": "No attendance days yet.",
+  "adminAddEmployee": "Add employee",
+  "adminRequests": "Cash requests",
+  "adminFullName": "Full name",
+  "adminInitialPassword": "First password",
+  "adminInitialPasswordHint": "At least 12 characters. The employee changes it at first sign-in.",
+  "adminCreateAccount": "Create account",
+  "adminAccountCreated": "Account created for {name}. They sign in with this email and the first password, then choose a new password.",
+  "@adminAccountCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminAddAnother": "Add another employee",
+  "adminSchedulesLoadFailed": "Couldn’t load the work schedules.",
+  "adminInvalidFullName": "Enter 1–200 characters.",
+  "adminInvalidUsername": "3–64 lowercase letters, digits, dots, dashes or underscores, starting with a letter or digit.",
+  "adminInvalidEmail": "Enter a valid email address.",
+  "adminInvalidEmployeeCode": "2–50 letters, digits, dashes or underscores.",
+  "adminInvalidSchedule": "Choose a work schedule.",
+  "adminInvalidPassword": "Use at least 12 characters (at most 72 bytes).",
+  "adminNotAllowed": "Only an active administrator can do this.",
+  "adminAccountConflict": "This username, employee code or email is already used.",
+  "adminInvalidInput": "The server refused these details. Check them and try again.",
+  "adminOutcomeUnknown": "We couldn’t confirm the result. Try again: the same request is never applied twice.",
+  "adminTooManyRequests": "Too many attempts. Wait a moment and try again.",
+  "adminOwnRequest": "You can’t review your own request.",
+  "adminAlreadyReviewed": "This request has already been reviewed.",
+  "adminNotFound": "This item no longer exists.",
+  "adminBusy": "This is already being sent.",
+  "adminNetwork": "Couldn’t reach the server. Check your connection and try again.",
+  "adminWebOriginBlocked": "The account service refused this web address, so no account was created. Use the mobile app, or allow this address in the service’s settings.",
+  "adminServiceUnavailable": "This isn’t available right now.",
+  "adminUnknownError": "Something went wrong. Please try again.",
+  "adminCashRequest": "Cash request",
+  "adminSubmitted": "Submitted",
+  "adminOvertimeHours": "{hours} h",
+  "@adminOvertimeHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "adminRequestsEmptyMessage": "Cash requests from employees will appear here.",
+  "adminApproveRequestTitle": "Approve this request?",
+  "adminRejectRequestTitle": "Reject this request?",
+  "adminRequestApproved": "Request approved.",
+  "adminRequestRejected": "Request rejected.",
+  "language": "Language",
+  "languageEnglish": "English",
+  "languageArabic": "العربية"
 
 }

@@ -5,6 +5,7 @@ abstract final class AppRoutes {
   // Auth
   static const login = '/login';
   static const forgotPassword = '/forgot-password';
+  static const changePassword = '/change-password';
 
   // Bottom navigation tabs
   static const home = '/home';
@@ -21,15 +22,22 @@ abstract final class AppRoutes {
   // Attendance history
   static const attendanceDetails = '/attendance/:id';
   static String attendanceDetailsOf(String id) => '/attendance/$id';
+  static const attendanceCorrection = '/attendance/:id/correction';
+  static String attendanceCorrectionOf(String id) =>
+      '/attendance/$id/correction';
 
-  // Overtime
-  static const overtime = '/overtime';
+  // Admin only (see AppRouter's redirect)
+  static const adminPrefix = '/admin';
+  static const adminDashboard = '/admin';
+  static const adminCorrections = '/admin/corrections';
+  static const adminRequests = '/admin/requests';
+  static const adminAddEmployee = '/admin/employees/new';
+  static const adminEmployee = '/admin/employees/:id';
+  static String adminEmployeeOf(String id) => '/admin/employees/$id';
+
+  // Cash requests. Overtime has no screens: it is calculated automatically.
   static const cashRequest = '/cash';
   static const newCashRequest = '/new-cash';
-  static const createOvertime = '/overtime/create';
-  static const overtimeSubmitted = '/overtime/submitted';
-  static const overtimeDetails = '/overtime/:id';
-  static String overtimeDetailsOf(String id) => '/overtime/$id';
 
   // Settings
   static const settings = '/settings';

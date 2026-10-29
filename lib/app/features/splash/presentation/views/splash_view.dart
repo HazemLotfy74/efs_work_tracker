@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:efs_work_tracker/generated/assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/router/app_routes.dart';
+import '../../../auth/presentation/manager/auth_cubit/auth_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -46,10 +48,18 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
 
     // Navigate after 3 seconds
-    _navigationTimer = Timer(const Duration(seconds: 3), () {
-      if (!mounted) return;
-      context.go(AppRoutes.home);
-    });
+    _navigationTimer = Timer(const Duration(seconds: 3), _leave);
+  }
+
+  /// Goes home once the session is restored; the router redirects to
+  /// sign-in or the password change when needed.
+  Future<void> _leave() async {
+    final auth = context.read<AuthCubit>();
+    if (auth.state is AuthChecking) {
+      await auth.stream.firstWhere((state) => state is! AuthChecking);
+    }
+    if (!mounted) return;
+    context.go(AppRoutes.login);
   }
 
   @override

@@ -25,9 +25,8 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(alwaysUse24HourFormat: use24Hour),
+          data: MediaQuery.of(context)
+              .copyWith(alwaysUse24HourFormat: use24Hour),
           child: child!,
         ),
         home: Builder(

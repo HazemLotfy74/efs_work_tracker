@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../../core/errors/attendance_errors.dart';
 import '../../../../../../core/extensions/context_l10n.dart';
 import '../../../../../../core/router/app_routes.dart';
 import '../../../../../../core/theme/app_text_styles.dart';
@@ -10,6 +11,7 @@ import '../../../../../../core/widgets/app_primary_button.dart';
 import '../../../domain/entities/attendance_type.dart';
 import '../../manager/attendance_flow_cubit/attendance_flow_cubit.dart';
 import '../../manager/attendance_session_cubit/attendance_session_cubit.dart';
+import '../attendance_failure_text.dart';
 import '../attendance_type_text.dart';
 import 'early_departure_notice.dart';
 import 'review_evidence_card.dart';
@@ -27,6 +29,7 @@ class _ReviewPageViewState extends State<ReviewPageView> {
   bool _isSaving = false;
 
   Future<void> _confirm() async {
+    if (_isSaving) return;
     final event = context.read<AttendanceFlowCubit>().event;
     setState(() => _isSaving = true);
     try {
@@ -37,11 +40,19 @@ class _ReviewPageViewState extends State<ReviewPageView> {
         AttendanceType.checkIn => AppRoutes.checkInSuccess,
         AttendanceType.checkOut => AppRoutes.checkOutSuccess,
       });
-    } catch (_) {
+    } catch (error) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.saveAttendanceFailed)),
+        SnackBar(content: Text(attendanceErrorMessage(error, context.l10n))),
       );
+      // The day is not what this flow expected (e.g. checked in on another
+      // phone): home shows the reloaded state. After an unknown outcome the
+      // user stays here; retrying is safe and is matched to the first try.
+      if (error is AttendanceFailure &&
+          error.needsReload &&
+          error != AttendanceFailure.outcomeUnknown) {
+        context.go(AppRoutes.home);
+      }
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -58,7 +69,7 @@ class _ReviewPageViewState extends State<ReviewPageView> {
     final time = event.time;
     final earlyLeave =
         event.type == AttendanceType.checkOut && session != null && time != null
-        ? session.shift.earlyLeaveFor(time)
+        ? session.earlyLeaveFor(time)
         : Duration.zero;
 
     return Column(

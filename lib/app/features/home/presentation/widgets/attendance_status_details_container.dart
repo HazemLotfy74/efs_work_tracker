@@ -6,17 +6,33 @@ import '../../../../../core/extensions/date_time_format.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../../core/widgets/custom_container.dart';
+import '../../../attendance_session/domain/entities/attendance_session_entity.dart';
+import '../../../attendance_session/presentation/widgets/attendance_day_status_text.dart';
 
+/// Date and status at the top of an attendance day's details.
 class AttendanceStatusDetailsContainer extends StatelessWidget {
-  const new({super.key, required this.date});
+  const new({super.key, required this.session, required this.status});
 
-  /// Day of the attendance record.
-  final DateTime date;
+  final AttendanceSessionEntity session;
+  final AttendanceDayStatus status;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final appColors = context.appColors;
     final textTheme = context.textTheme;
+    final date = session.workDate ?? session.checkInTime;
+    final (title, subtitle) = switch (status) {
+      AttendanceDayStatus.inProgress => (
+        l10n.checkedIn,
+        l10n.elapsedWorkingTime,
+      ),
+      AttendanceDayStatus.completed => (l10n.checkedOut, null),
+      AttendanceDayStatus.needsReview => (
+        l10n.automaticClosed,
+        l10n.noEmployee,
+      ),
+    };
     final dateStyle = textTheme.bodyMedium?.copyWith(
       color: appColors.onBrandSurfaceMuted,
     );
@@ -53,21 +69,22 @@ class AttendanceStatusDetailsContainer extends StatelessWidget {
               spacing: 5,
               children: [
                 CustomStatusContainer(
-                  tone: StatusTone.warning,
-                  text: context.l10n.needsReview,
+                  tone: status.tone,
+                  text: status.label(l10n),
                 ),
                 Text(
-                  context.l10n.automaticClosed,
+                  title,
                   style: textTheme.bodyLarge?.copyWith(
                     color: appColors.onBrandSurface,
                   ),
                 ),
-                Text(
-                  context.l10n.noEmployee,
-                  style: AppTextStyles.meta.copyWith(
-                    color: appColors.onBrandSurfaceSubtle,
+                if (subtitle != null)
+                  Text(
+                    subtitle,
+                    style: AppTextStyles.meta.copyWith(
+                      color: appColors.onBrandSurfaceSubtle,
+                    ),
                   ),
-                ),
               ],
             ),
           ),

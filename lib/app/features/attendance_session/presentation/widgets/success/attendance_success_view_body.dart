@@ -43,9 +43,7 @@ class AttendanceSuccessViewBody extends StatelessWidget {
             ? l10n.checkoutRecordedEarly
             : l10n.checkoutRecorded,
         l10n.finalDuration,
-        session == null
-            ? '--'
-            : session.workedDuration().formatHoursMinutes(context),
+        session?.verifiedDuration?.worked.formatHoursMinutes(context) ?? '--',
         session?.checkOutTime ?? now,
       ),
     };

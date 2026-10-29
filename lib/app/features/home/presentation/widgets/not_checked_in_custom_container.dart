@@ -14,10 +14,14 @@ import '../../../attendance_session/domain/entities/shift_entity.dart';
 import 'brand_card.dart';
 import 'brand_status_badge.dart';
 
+/// Home card before check-in. Without [canCheckIn] (a day off, or the shift
+/// is over) it explains why instead of showing the button.
 class NotCheckedInCustomContainer extends StatelessWidget {
-  const new({super.key, required this.shift});
+  const new({super.key, required this.shift, this.canCheckIn = true});
 
-  final ShiftEntity shift;
+  /// `null` on a day off.
+  final ShiftEntity? shift;
+  final bool canCheckIn;
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +47,34 @@ class NotCheckedInCustomContainer extends StatelessWidget {
             ),
           ),
           SizedBox(height: AppSpacing.lg),
-          AppPrimaryButton(
-            onPressed: () {
-              context.push(AppRoutes.checkIn);
-            },
-            bgColor: appColors.onBrandSurface,
-            child: TextIconWidget(
-              txt: context.l10n.checkInNow,
-              icon: Icons.camera_alt_outlined,
-              style: textTheme.labelLarge!.copyWith(
-                color: appColors.brandSurface,
+          if (canCheckIn)
+            AppPrimaryButton(
+              onPressed: () {
+                context.push(AppRoutes.checkIn);
+              },
+              bgColor: appColors.onBrandSurface,
+              child: TextIconWidget(
+                txt: context.l10n.checkInNow,
+                icon: Icons.camera_alt_outlined,
+                style: textTheme.labelLarge!.copyWith(
+                  color: appColors.brandSurface,
+                ),
+                iconColor: appColors.brandSurface,
+                iconSize: 24,
               ),
-              iconColor: appColors.brandSurface,
-              iconSize: 24,
+            )
+          else
+            Text(
+              shift == null
+                  ? context.l10n.attendanceNotWorkingDay
+                  : context.l10n.attendanceCheckInClosed,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyMedium?.copyWith(
+                color: appColors.onBrandSurface,
+              ),
             ),
-          ),
           SizedBox(height: AppSpacing.lg),
-          OfficialShiftNote(shift: shift),
+          if (shift case final shift?) OfficialShiftNote(shift: shift),
         ],
       ),
     );

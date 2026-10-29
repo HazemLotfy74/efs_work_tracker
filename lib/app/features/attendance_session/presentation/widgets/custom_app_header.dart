@@ -14,7 +14,14 @@ class CustomAppHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomBackButton(),
-        Text(title, style: context.textTheme.titleMedium),
+        // Long titles wrap instead of overflowing on narrow phones.
+        Flexible(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: context.textTheme.titleMedium,
+          ),
+        ),
         trailing ?? SizedBox(),
       ],
     );

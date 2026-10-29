@@ -21,7 +21,7 @@ class PrepareViewPage extends StatelessWidget {
     final now = context.watch<ClockCubit>().state;
     final attendance = context.watch<AttendanceSessionCubit>().state;
     final shift = attendance is AttendanceSessionLoaded
-        ? attendance.shift.rangeText(context)
+        ? attendance.shift?.rangeText(context) ?? context.l10n.noShiftToday
         : '--';
 
     return Column(

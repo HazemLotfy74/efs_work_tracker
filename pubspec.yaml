@@ -47,6 +47,12 @@ dependencies:
   http: ^1.6.0
   image_picker: ^1.2.4
   supabase_flutter: ^2.18.3
+  supabase: ^2.16.5
+  get_it: ^9.3.0
+  timezone: ^0.11.2
+  # Already used by supabase_flutter for the session; here for the language.
+  shared_preferences: ^2.5.6
+
 
 dev_dependencies:
   flutter_test:

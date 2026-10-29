@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/extensions/context_l10n.dart';
+import '../../../../../core/manager/clock_cubit.dart';
 import '../../../../../core/theme/theme_context_extensions.dart';
 import '../../../attendance_session/presentation/manager/attendance_session_cubit/attendance_session_cubit.dart';
 import 'attendance_session_card.dart';
@@ -15,6 +16,8 @@ class TodayAttendanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = context.appColors;
+    // Re-evaluated every minute, so the card changes when the shift ends.
+    final now = context.watch<ClockCubit>().state;
     return BlocBuilder<AttendanceSessionCubit, AttendanceSessionState>(
       builder: (context, state) => switch (state) {
         AttendanceSessionLoading() => BrandCard(
@@ -47,9 +50,11 @@ class TodayAttendanceCard extends StatelessWidget {
         ),
         AttendanceSessionLoaded(:final session?) => AttendanceSessionCard(
           session: session,
+          now: now,
         ),
         AttendanceSessionLoaded(:final shift) => NotCheckedInCustomContainer(
           shift: shift,
+          canCheckIn: state.canCheckInAt(now),
         ),
       },
     );
