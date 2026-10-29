@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:efs_work_tracker/app/features/auth/presentation/views/forgot_password_view.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/views/login_view.dart';
+import 'package:efs_work_tracker/app/features/history/presentation/views/history_view.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/views/attendance_details_view.dart';
+import 'package:efs_work_tracker/app/features/profile/presentation/views/profile_view.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/views/home_view.dart';
 import 'package:efs_work_tracker/core/theme/app_palette.dart';
 import 'package:efs_work_tracker/core/theme/app_theme.dart';
@@ -66,7 +68,9 @@ void main() {
 
   final screens = <String, Widget>{
     'home': const HomeView(),
-    'attendance details': const AttendanceDetailsView(),
+    'attendance details': const AttendanceDetailsView(id: 'none'),
+    'history': const HistoryView(),
+    'profile': const ProfileView(),
     'login': const LoginView(),
     'forgot password': const ForgotPasswordView(),
     'empty': const Scaffold(body: AppEmptyView()),

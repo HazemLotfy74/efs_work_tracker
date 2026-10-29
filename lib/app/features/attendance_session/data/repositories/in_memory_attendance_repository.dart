@@ -1,12 +1,13 @@
+import '../../../../../core/errors/attendance_errors.dart';
 import '../../domain/entities/attendance_event_entity.dart';
 import '../../domain/entities/attendance_session_entity.dart';
 import '../../domain/entities/shift_entity.dart';
 import '../../domain/repositories/attendance_repository.dart';
 
-/// Keeps today's session in memory until Supabase is added.
+/// Keeps today's session in memory, for tests and offline UI work.
 ///
-/// Follows the same rules the backend will: one session per day, and you
-/// can only check out of the active session.
+/// Follows the same rules as the backend: one session per day, and you
+/// can only check out of a session once.
 class InMemoryAttendanceRepository implements AttendanceRepository {
   InMemoryAttendanceRepository({this.shift = ShiftEntity.standard});
 
@@ -14,19 +15,30 @@ class InMemoryAttendanceRepository implements AttendanceRepository {
   AttendanceSessionEntity? _session;
 
   @override
-  Future<ShiftEntity> getShift() async => shift;
+  Future<AttendanceToday> getToday() async {
+    final session = _session;
+    if (session == null || !_isToday(session.checkInTime)) {
+      return (shift: shift, session: null);
+    }
+    return (shift: shift, session: session);
+  }
 
   @override
-  Future<AttendanceSessionEntity?> getTodaySession() async {
+  Future<List<AttendanceSessionEntity>> getHistory({int limit = 60}) async {
     final session = _session;
-    if (session == null || !_isToday(session.checkInTime)) return null;
-    return session;
+    return session == null ? const [] : [session];
+  }
+
+  @override
+  Future<AttendanceSessionEntity?> getSession(String id) async {
+    final session = _session;
+    return session?.id == id ? session : null;
   }
 
   @override
   Future<AttendanceSessionEntity> checkIn(AttendanceEventEntity event) async {
-    if (await getTodaySession() != null) {
-      throw StateError('Already checked in today.');
+    if ((await getToday()).session != null) {
+      throw AttendanceFailure.alreadyCheckedIn;
     }
     final session = AttendanceSessionEntity(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
@@ -43,9 +55,10 @@ class InMemoryAttendanceRepository implements AttendanceRepository {
     AttendanceEventEntity event,
   ) async {
     final current = _session;
-    if (current == null || current.id != session.id || !current.isActive) {
-      throw StateError('No active session to check out of.');
+    if (current == null || current.id != session.id) {
+      throw AttendanceFailure.notCheckedIn;
     }
+    if (!current.canCheckOut) throw AttendanceFailure.alreadyCheckedOut;
     final finished = current.copyWith(checkOut: event);
     _session = finished;
     return finished;

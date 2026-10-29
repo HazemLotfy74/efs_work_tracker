@@ -9,7 +9,11 @@ import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:efs_work_tracker/core/utils/app_dimensions.dart';
 import 'package:efs_work_tracker/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../../core/manager/clock_cubit.dart';
+import '../../../attendance_session/presentation/manager/attendance_session_cubit/attendance_session_cubit.dart';
 
 import '../../../../../core/widgets/custom_logo_icon.dart';
 
@@ -18,6 +22,11 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final now = context.watch<ClockCubit>().state;
+    final attendance = context.watch<AttendanceSessionCubit>().state;
+    final today = attendance is AttendanceSessionLoaded
+        ? attendance.session
+        : null;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,17 +43,18 @@ class HomeViewBody extends StatelessWidget {
                 context.l10n.todayOverview,
                 style: context.textTheme.titleSmall,
               ),
-              TextButton(
-                onPressed: () {
-                  context.push(AppRoutes.attendanceDetails);
-                },
-                child: Text(
-                  context.l10n.viewDetails,
-                  style: AppTextStyles.captionStrong.copyWith(
-                    color: context.colors.primary,
+              if (today != null)
+                TextButton(
+                  onPressed: () {
+                    context.push(AppRoutes.attendanceDetailsOf(today.id));
+                  },
+                  child: Text(
+                    context.l10n.viewDetails,
+                    style: AppTextStyles.captionStrong.copyWith(
+                      color: context.colors.primary,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
           LayoutBuilder(
@@ -54,23 +64,13 @@ class HomeViewBody extends StatelessWidget {
               return CustomWorkSummaryWidget(
                 spacing: spacing,
                 itemWidth: itemWidth,
+                session: today,
+                now: now,
               );
             },
           ),
-          InkWell(
-            onTap: () {
-              context.push(AppRoutes.overtime);
-            },
-            child: CustomContainer(
-              containerWidth: double.infinity,
-              borderWidth: 1,
-              child: CustomRequestRow(
-                title: context.l10n.needToWorkLater,
-                subTitle: context.l10n.requestOverTime,
-                child: Icon(Icons.access_time, color: context.colors.primary),
-              ),
-            ),
-          ),
+          // Overtime needs no request: every minute past 8 worked hours is
+          // counted automatically (see WorkDuration).
           InkWell(
             onTap: () {
               context.push(AppRoutes.cashRequest);

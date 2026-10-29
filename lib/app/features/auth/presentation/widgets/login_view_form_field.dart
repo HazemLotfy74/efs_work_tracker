@@ -1,14 +1,15 @@
+import 'package:efs_work_tracker/app/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:efs_work_tracker/app/features/auth/presentation/widgets/auth_failure_text.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/widgets/custom_text_form_field.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/widgets/forgot_password_and_check_box_widget.dart';
 import 'package:efs_work_tracker/core/extensions/context_l10n.dart';
 import 'package:efs_work_tracker/core/functions/form_validator_functions.dart';
-import 'package:efs_work_tracker/core/router/app_routes.dart';
 import 'package:efs_work_tracker/core/theme/app_text_styles.dart';
 import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:efs_work_tracker/core/widgets/app_primary_button.dart';
 import 'package:efs_work_tracker/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginViewFormField extends StatefulWidget {
   const LoginViewFormField({
@@ -27,6 +28,37 @@ class LoginViewFormField extends StatefulWidget {
 class _LoginViewFormFieldState extends State<LoginViewFormField> {
   final _formKey = GlobalKey<FormState>();
   final autoValidateMode = AutovalidateMode.disabled;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+  String? _error;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  // On success the router leaves this screen by itself.
+  Future<void> _signIn() async {
+    if (_isLoading || !_formKey.currentState!.validate()) return;
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      await context.read<AuthCubit>().signIn(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _error = authErrorMessage(error, context.l10n));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +84,7 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
             ),
             SizedBox(height: 20),
             CustomTextFormField(
+              textEditingController: _emailController,
               validator: (p0) {
                 return emailValidator(p0);
               },
@@ -66,6 +99,7 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
               valueListenable: widget._isObscure,
               builder: (context, value, child) {
                 return CustomTextFormField(
+                  textEditingController: _passwordController,
                   validator: (p0) {
                     return passwordValidator(p0);
                   },
@@ -89,14 +123,24 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
             ),
             SizedBox(height: 20),
             ForgotPasswordAndCheckBoxWidget(checkBox: widget._checkBox),
+            if (_error != null) ...[
+              SizedBox(height: 12),
+              Text(
+                _error!,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: context.colors.error,
+                ),
+              ),
+            ],
             SizedBox(height: 20),
             AppPrimaryButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  context.push(AppRoutes.home);
-                } else {}
-              },
-              child: Text(context.l10n.signIn),
+              onPressed: _isLoading ? null : _signIn,
+              child: _isLoading
+                  ? const SizedBox.square(
+                      dimension: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2.5),
+                    )
+                  : Text(context.l10n.signIn),
             ),
           ],
         ),

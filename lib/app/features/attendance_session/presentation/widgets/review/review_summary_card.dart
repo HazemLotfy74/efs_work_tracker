@@ -8,6 +8,7 @@ import '../../../../../../core/widgets/custom_container.dart';
 import '../../../domain/entities/attendance_event_entity.dart';
 import '../../../domain/entities/attendance_session_entity.dart';
 import '../../../domain/entities/attendance_type.dart';
+import '../../../domain/entities/work_duration.dart';
 import '../attendance_type_text.dart';
 import 'summary_row.dart';
 
@@ -33,6 +34,11 @@ class ReviewSummaryCard extends StatelessWidget {
     final time = event.time;
     final location = event.location;
     final session = this.session;
+    // Preview with the same rule the saved day uses; the server sets the
+    // real check-out time.
+    final preview = time == null || session == null
+        ? null
+        : WorkDuration(time.difference(session.checkInTime));
 
     final rows = [
       SummaryRow(
@@ -50,10 +56,15 @@ class ReviewSummaryCard extends StatelessWidget {
       if (event.type == AttendanceType.checkOut && session != null) ...[
         SummaryRow(
           label: l10n.recordedDuration,
-          value: time == null
+          value: preview == null
               ? '--'
-              : session.workedDuration(time).formatHoursMinutes(context),
+              : preview.worked.formatHoursMinutes(context),
         ),
+        if (preview != null && preview.overtime > Duration.zero)
+          SummaryRow(
+            label: l10n.observedOvertime,
+            value: preview.overtime.formatHoursMinutes(context),
+          ),
         SummaryRow(
           label: l10n.earlyLeave,
           value: earlyLeave.formatHoursMinutes(context),

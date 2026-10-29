@@ -38,14 +38,16 @@ class ClockCubit extends Cubit<DateTime> {
   void _scheduleNextTick() {
     _timer?.cancel();
     final now = _now();
-    final nextMinute = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      now.hour,
-      now.minute + 1,
-    );
-    _timer = Timer(nextMinute.difference(now), _tick);
+    // Counted from the seconds, not rebuilt as a local DateTime: a UTC
+    // clock would otherwise give a negative delay and re-fire at once.
+    final untilNextMinute =
+        const Duration(minutes: 1) -
+        Duration(
+          seconds: now.second,
+          milliseconds: now.millisecond,
+          microseconds: now.microsecond,
+        );
+    _timer = Timer(untilNextMinute, _tick);
   }
 
   @override

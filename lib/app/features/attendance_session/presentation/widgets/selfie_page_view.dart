@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:efs_work_tracker/app/features/attendance_session/presentation/widgets/step_header.dart';
 import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/widgets/app_primary_button.dart';
 import '../../../../../core/widgets/custom_container.dart';
+import '../../../../../core/widgets/local_image.dart';
 import '../manager/attendance_flow_cubit/attendance_flow_cubit.dart';
 
 class SelfiePageView extends StatefulWidget {
@@ -66,8 +65,8 @@ class _SelfiePageViewState extends State<SelfiePageView> {
               child: _isPicking
                   ? CircularProgressIndicator(color: context.colors.primary)
                   : selfiePath != null
-                  ? Image.file(
-                      File(selfiePath),
+                  ? LocalImage(
+                      selfiePath,
                       fit: BoxFit.contain,
                       width: 200,
                       height: 200,

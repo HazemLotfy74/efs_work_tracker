@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/extensions/context_l10n.dart';
@@ -7,6 +5,7 @@ import '../../../../../../core/extensions/date_time_format.dart';
 import '../../../../../../core/theme/app_text_styles.dart';
 import '../../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../../../core/widgets/custom_container.dart';
+import '../../../../../../core/widgets/local_image.dart';
 import '../../../../home/presentation/widgets/custom_status_container.dart';
 import '../../../domain/entities/attendance_event_entity.dart';
 
@@ -35,7 +34,7 @@ class ReviewEvidenceCard extends StatelessWidget {
               width: 76,
               height: 82,
               child: selfiePath != null
-                  ? Image.file(File(selfiePath), fit: BoxFit.cover)
+                  ? LocalImage(selfiePath, fit: BoxFit.cover)
                   : ColoredBox(
                       color: context.colors.surfaceContainerLow,
                       child: Icon(

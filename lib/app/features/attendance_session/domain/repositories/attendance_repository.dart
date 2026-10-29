@@ -2,22 +2,31 @@ import '../entities/attendance_event_entity.dart';
 import '../entities/attendance_session_entity.dart';
 import '../entities/shift_entity.dart';
 
+/// Today's shift and session, read together so they always match.
+///
+/// [shift] is `null` on a day off; [session] is `null` before check-in.
+typedef AttendanceToday = ({
+  ShiftEntity? shift,
+  AttendanceSessionEntity? session,
+});
+
 /// Where attendance is loaded from and saved to.
 ///
 /// The app only talks to this interface, never to a database directly.
-/// Today `InMemoryAttendanceRepository` implements it (data is lost when the
-/// app restarts). To move to Supabase:
-/// 1. Add `SupabaseAttendanceRepository implements AttendanceRepository` in
-///    `data/repositories/`, with models in `data/models/` (like
-///    `LocationModel`) to turn rows into entities.
-/// 2. Change the one line in `main.dart` that creates the repository.
-/// Nothing in the UI or cubits has to change.
+/// `SupabaseAttendanceRepository` is the real one; the in-memory one is for
+/// tests. Every method throws an `AttendanceFailure`
+/// (core/errors/attendance_errors.dart) on error.
 abstract interface class AttendanceRepository {
-  /// The signed-in employee's shift.
-  Future<ShiftEntity> getShift();
+  /// The signed-in employee's attendance for today's work date, in the
+  /// company's timezone.
+  Future<AttendanceToday> getToday();
 
-  /// Today's session, or `null` when the user has not checked in today.
-  Future<AttendanceSessionEntity?> getTodaySession();
+  /// The signed-in employee's own attendance days, newest first.
+  Future<List<AttendanceSessionEntity>> getHistory({int limit = 60});
+
+  /// One of the signed-in employee's own days, with the overtime approved
+  /// for its date; `null` when there is no such record.
+  Future<AttendanceSessionEntity?> getSession(String id);
 
   /// Saves a finished check-in flow and returns the new, active session.
   Future<AttendanceSessionEntity> checkIn(AttendanceEventEntity event);

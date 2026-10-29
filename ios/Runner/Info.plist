@@ -6,6 +6,21 @@
     <string>We use your location to verify your attendance at work.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<!-- Password-reset email link (Constants.passwordResetRedirect), read by supabase_flutter. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.efs.efsWorkTracker.reset-password</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>efsworktracker</string>
+			</array>
+		</dict>
+	</array>
+	<!-- The link is for Supabase, not a screen: keep it out of go_router. -->
+	<key>FlutterDeepLinkingEnabled</key>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

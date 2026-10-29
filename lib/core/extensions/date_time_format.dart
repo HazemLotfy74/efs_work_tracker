@@ -42,6 +42,10 @@ extension DateTimeFormatX on DateTime {
   String formatDayOfMonth(BuildContext context) =>
       DateFormat.d(_locale(context)).format(toLocal());
 
+  /// May
+  String formatMonthShort(BuildContext context) =>
+      DateFormat.MMM(_locale(context)).format(toLocal());
+
   /// May 14
   String formatMonthDay(BuildContext context) =>
       DateFormat.MMMMd(_locale(context)).format(toLocal());
