@@ -1178,6 +1178,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get adminRequestRejected => 'تم رفض الطلب.';
 
   @override
+  String get adminLeftEarly => 'انصراف مبكر';
+
+  @override
+  String adminLeftEarlyBy(String duration) {
+    return 'مبكرًا بـ $duration';
+  }
+
+  @override
+  String get adminEarlyDepartures => 'انصراف مبكر يحتاج إلى مراجعة';
+
+  @override
+  String get adminShiftEnd => 'نهاية الوردية';
+
+  @override
   String get language => 'اللغة';
 
   @override

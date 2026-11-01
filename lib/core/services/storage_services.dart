@@ -14,6 +14,14 @@ abstract class StorageServices {
   /// other content. For paths without an extension, such as the `blob:`
   /// URLs a web browser gives for a photo.
   Future<String?> imageTypeOf(String localPath);
+
+  /// A link to the private object at [path] that works for [expiresIn].
+  /// Storage only signs it when the signed-in user may read the object.
+  Future<String> signedUrl({
+    required String bucket,
+    required String path,
+    required Duration expiresIn,
+  });
 }
 
 /// The image type of [bytes] from its signature (magic number).

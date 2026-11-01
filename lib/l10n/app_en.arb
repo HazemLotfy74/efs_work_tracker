@@ -512,6 +512,17 @@
   "adminRejectRequestTitle": "Reject this request?",
   "adminRequestApproved": "Request approved.",
   "adminRequestRejected": "Request rejected.",
+  "adminLeftEarly": "Left early",
+  "adminLeftEarlyBy": "{duration} early",
+  "@adminLeftEarlyBy": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "adminEarlyDepartures": "Early departures to review",
+  "adminShiftEnd": "Shift end",
   "language": "Language",
   "languageEnglish": "English",
   "languageArabic": "العربية"

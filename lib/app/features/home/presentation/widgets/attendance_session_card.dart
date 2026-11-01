@@ -57,11 +57,17 @@ class AttendanceSessionCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               BrandStatusBadge(
+                key: const Key('attendanceStatusBadge'),
                 text: active
                     ? l10n.checkedIn
                     : closedAutomatically
                     ? l10n.closedAutomatically
                     : l10n.checkedOut,
+                tone: active
+                    ? BrandBadgeTone.active
+                    : closedAutomatically
+                    ? BrandBadgeTone.warning
+                    : BrandBadgeTone.neutral,
               ),
               if (active) const _LiveLabel(),
             ],

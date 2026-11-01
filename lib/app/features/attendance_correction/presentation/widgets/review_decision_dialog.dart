@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/extensions/context_l10n.dart';
-import '../../../../../core/theme/theme_context_extensions.dart';
+import '../../../../../core/widgets/feedback/app_dialog.dart';
+import '../../../../../core/widgets/feedback/app_message_type.dart';
 import '../../domain/correction_rules.dart';
 
 /// Confirms an approve or reject decision and takes an optional note.
@@ -45,38 +46,28 @@ class _ReviewDecisionDialogState extends State<_ReviewDecisionDialog> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final approve = widget.approve;
-    return AlertDialog(
-      title: Text(widget.title),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: 12,
-          children: [
-            Text(widget.message),
-            TextField(
-              key: const Key('reviewNote'),
-              controller: _note,
-              maxLines: 3,
-              maxLength: CorrectionRules.maxTextLength,
-              decoration: InputDecoration(
-                hintText: l10n.correctionNoteOptional,
-              ),
-            ),
-          ],
-        ),
+    return AppDialog(
+      title: widget.title,
+      message: widget.message,
+      type: approve ? AppMessageType.success : AppMessageType.error,
+      content: TextField(
+        key: const Key('reviewNote'),
+        controller: _note,
+        maxLines: 3,
+        maxLength: CorrectionRules.maxTextLength,
+        decoration: InputDecoration(hintText: l10n.correctionNoteOptional),
       ),
       actions: [
-        TextButton(
+        AppDialogAction(
+          label: l10n.correctionCancel,
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.correctionCancel),
         ),
-        TextButton(
+        AppDialogAction(
           key: const Key('confirmReview'),
-          style: approve
-              ? null
-              : TextButton.styleFrom(foregroundColor: context.colors.error),
+          label: approve ? l10n.correctionApprove : l10n.correctionReject,
+          primary: true,
+          destructive: !approve,
           onPressed: () => Navigator.of(context).pop(_note.text),
-          child: Text(approve ? l10n.correctionApprove : l10n.correctionReject),
         ),
       ],
     );

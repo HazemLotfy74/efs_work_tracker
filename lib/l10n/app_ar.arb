@@ -349,6 +349,10 @@
   "adminRejectRequestTitle": "رفض هذا الطلب؟",
   "adminRequestApproved": "تم قبول الطلب.",
   "adminRequestRejected": "تم رفض الطلب.",
+  "adminLeftEarly": "انصراف مبكر",
+  "adminLeftEarlyBy": "مبكرًا بـ {duration}",
+  "adminEarlyDepartures": "انصراف مبكر يحتاج إلى مراجعة",
+  "adminShiftEnd": "نهاية الوردية",
   "language": "اللغة",
   "languageEnglish": "English",
   "languageArabic": "العربية"

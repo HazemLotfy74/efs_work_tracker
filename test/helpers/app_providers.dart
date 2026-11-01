@@ -2,6 +2,7 @@ import 'package:efs_work_tracker/app/features/attendance_correction/domain/repos
 import 'package:efs_work_tracker/app/features/attendance_session/data/repositories/in_memory_attendance_repository.dart';
 import 'package:efs_work_tracker/app/features/attendance_session/domain/repositories/attendance_repository.dart';
 import 'package:efs_work_tracker/app/features/attendance_session/presentation/manager/attendance_session_cubit/attendance_session_cubit.dart';
+import 'package:efs_work_tracker/app/features/auth/domain/entities/user_entity.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:efs_work_tracker/app/features/admin/domain/repositories/admin_repository.dart';
 import 'package:efs_work_tracker/core/manager/clock_cubit.dart';
@@ -19,6 +20,7 @@ Widget withAppProviders(
   AttendanceRepository? repository,
   CorrectionRepository? corrections,
   AdminRepository? admin,
+  UserEntity? user,
 }) {
   final repo = repository ?? InMemoryAttendanceRepository();
   return MultiRepositoryProvider(
@@ -35,7 +37,8 @@ Widget withAppProviders(
       providers: [
         BlocProvider(
           create: (_) =>
-              AuthCubit(FakeAuthRepository(signedInUser: testUser()))..start(),
+              AuthCubit(FakeAuthRepository(signedInUser: user ?? testUser()))
+                ..start(),
         ),
         BlocProvider(create: (_) => ClockCubit()),
         BlocProvider(create: (_) => AttendanceSessionCubit(repo)..load()),

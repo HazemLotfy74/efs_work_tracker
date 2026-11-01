@@ -13,6 +13,7 @@ class EmployeeEntity {
     required this.isActive,
     required this.mustChangePassword,
     required this.scheduleId,
+    this.createdAt,
   });
 
   final String id;
@@ -25,6 +26,9 @@ class EmployeeEntity {
   /// A new account that hasn't signed in and changed its password yet.
   final bool mustChangePassword;
   final String scheduleId;
+
+  /// When the account was created; `null` when not loaded.
+  final DateTime? createdAt;
 
   /// Case-insensitive match on name, username or employee code.
   bool matches(String query) {
@@ -71,6 +75,7 @@ class NewEmployeeDraft {
     required String employeeCode,
     required this.scheduleId,
     required this.password,
+    this.role = UserRole.employee,
   }) : fullName = fullName.trim(),
        username = username.trim().toLowerCase(),
        email = email.trim().toLowerCase(),
@@ -84,6 +89,10 @@ class NewEmployeeDraft {
 
   /// The first password; the employee must change it at first sign-in.
   final String password;
+
+  /// Employee unless the admin chose Admin (only when the backend accepts
+  /// a role, see `Constants.roleOnAccountCreation`).
+  final UserRole role;
 
   static final _username = RegExp(r'^[a-z0-9][a-z0-9._-]{2,63}$');
   static final _employeeCode = RegExp(r'^[A-Z0-9][A-Z0-9_-]{1,49}$');
@@ -110,7 +119,8 @@ class NewEmployeeDraft {
       other.email == email &&
       other.employeeCode == employeeCode &&
       other.scheduleId == scheduleId &&
-      other.password == password;
+      other.password == password &&
+      other.role == role;
 
   @override
   int get hashCode => Object.hash(
@@ -120,5 +130,6 @@ class NewEmployeeDraft {
     employeeCode,
     scheduleId,
     password,
+    role,
   );
 }

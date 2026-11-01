@@ -24,19 +24,32 @@ class AdminDashboardCubit extends Cubit<AdminDashboardState> {
       final employees = await _repository.getEmployees();
       final schedules = await _repository.getSchedules();
       final today = await _repository.getToday(employees, schedules);
+      final recent = await _repository.getRecentDays();
       if (isClosed || loadId != _loadId) return;
+      final byId = {for (final employee in employees) employee.id: employee};
       emit(
-        AdminDashboardLoaded([
-          for (final employee in employees)
-            (employee: employee, today: today[employee.id]),
-        ]),
+        AdminDashboardLoaded(
+          [
+            for (final employee in employees)
+              (employee: employee, today: today[employee.id]),
+          ],
+          earlyDepartures: [
+            for (final day in recent)
+              if (day.session.leftEarly && byId[day.employeeId] != null)
+                (employee: byId[day.employeeId]!, today: day.session),
+          ],
+        ),
       );
     } catch (_) {
       if (isClosed || loadId != _loadId) return;
       final current = state;
       emit(
         current is AdminDashboardLoaded
-            ? AdminDashboardLoaded(current.rows, stale: true)
+            ? AdminDashboardLoaded(
+                current.rows,
+                earlyDepartures: current.earlyDepartures,
+                stale: true,
+              )
             : const AdminDashboardError(),
       );
     }

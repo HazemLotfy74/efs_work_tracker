@@ -45,6 +45,15 @@ class FakeAdminRepository implements AdminRepository {
     return today;
   }
 
+  /// Everyone's recent days, newest first.
+  List<EmployeeDay> recent = [];
+
+  @override
+  Future<List<EmployeeDay>> getRecentDays({int limit = 300}) async {
+    _fail();
+    return recent;
+  }
+
   @override
   Future<List<AttendanceSessionEntity>> getHistory(
     String employeeId, {

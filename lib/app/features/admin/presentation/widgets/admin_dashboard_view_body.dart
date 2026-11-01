@@ -12,7 +12,12 @@ import '../../../../../core/widgets/custom_back_button.dart';
 import '../../../../../core/widgets/custom_container.dart';
 import '../../../../../core/widgets/states/app_error_view.dart';
 import '../../../../../core/widgets/states/app_loading_view.dart';
+import '../../../../../core/extensions/date_time_format.dart';
+import '../../../../../core/extensions/duration_format.dart';
+import '../../../attendance_correction/domain/correction_rules.dart';
 import '../../../attendance_session/domain/entities/attendance_session_entity.dart';
+import '../../../attendance_session/presentation/widgets/prepare/info_row.dart';
+import '../../../home/presentation/widgets/custom_status_container.dart';
 import '../manager/admin_dashboard_cubit/admin_dashboard_cubit.dart';
 import 'admin_day_status.dart';
 
@@ -49,12 +54,18 @@ class _AdminDashboardViewBodyState extends State<AdminDashboardViewBody> {
                 message: l10n.authNetworkError,
                 onRetry: context.read<AdminDashboardCubit>().load,
               ),
-              AdminDashboardLoaded(:final rows, :final stale) => _Loaded(
-                rows: rows,
-                stale: stale,
-                query: _query,
-                onQuery: (query) => setState(() => _query = query),
-              ),
+              AdminDashboardLoaded(
+                :final rows,
+                :final earlyDepartures,
+                :final stale,
+              ) =>
+                _Loaded(
+                  rows: rows,
+                  earlyDepartures: earlyDepartures,
+                  stale: stale,
+                  query: _query,
+                  onQuery: (query) => setState(() => _query = query),
+                ),
             },
           ),
         ),
@@ -66,12 +77,14 @@ class _AdminDashboardViewBodyState extends State<AdminDashboardViewBody> {
 class _Loaded extends StatelessWidget {
   const _Loaded({
     required this.rows,
+    required this.earlyDepartures,
     required this.stale,
     required this.query,
     required this.onQuery,
   });
 
   final List<EmployeeToday> rows;
+  final List<EmployeeToday> earlyDepartures;
   final bool stale;
   final String query;
   final ValueChanged<String> onQuery;
@@ -110,6 +123,10 @@ class _Loaded extends StatelessWidget {
                 ),
               ),
               _Count(
+                label: l10n.adminLeftEarly,
+                value: count((r) => r.today?.leftEarly ?? false),
+              ),
+              _Count(
                 label: l10n.notCheckedIn,
                 value: count((r) => r.today == null && r.employee.isActive),
               ),
@@ -142,6 +159,18 @@ class _Loaded extends StatelessWidget {
             label: l10n.adminRequests,
             onTap: () => context.push(AppRoutes.adminRequests),
           ),
+          if (earlyDepartures.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            Text(
+              l10n.adminEarlyDepartures,
+              style: context.textTheme.titleMedium,
+            ),
+            const SizedBox(height: 10),
+            for (final day in earlyDepartures) ...[
+              _EarlyDepartureTile(day: day),
+              const SizedBox(height: 10),
+            ],
+          ],
           const SizedBox(height: 16),
           Text(l10n.adminToday, style: context.textTheme.titleMedium),
           const SizedBox(height: 10),
@@ -306,6 +335,78 @@ class _EmployeeTile extends StatelessWidget {
                   )
                 : AdminDayStatus(session: today, now: now),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// One day on which an employee checked out before their shift ended:
+/// who, the date, the shift, the actual check-out and the shift end, in
+/// the day's own timezone. Opens the employee's history.
+class _EarlyDepartureTile extends StatelessWidget {
+  const _EarlyDepartureTile({required this.day});
+
+  final EmployeeToday day;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final session = day.today!;
+    final employee = day.employee;
+    String time(DateTime instant) => CorrectionRules.wallClock(
+      session.timezone,
+      instant,
+    ).formatTime(context);
+    final date = session.workDate ?? session.checkInTime;
+    return CustomContainer(
+      key: Key('earlyDeparture-${session.id}'),
+      borderWidth: 1,
+      horizontalPadding: 14,
+      verticalPadding: 12,
+      borderColor: context.appColors.warning,
+      onTap: () => context.push(
+        AppRoutes.adminEmployeeOf(employee.id),
+        extra: employee.fullName,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 6,
+        children: [
+          Row(
+            spacing: 8,
+            children: [
+              Expanded(
+                child: Text(
+                  employee.fullName,
+                  style: context.textTheme.labelLarge,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Flexible(
+                child: CustomStatusContainer(
+                  tone: StatusTone.warning,
+                  text: l10n.adminLeftEarlyBy(
+                    session.leftEarlyBy.formatHoursMinutes(context),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Text(
+            date.formatFullDate(context),
+            style: AppTextStyles.meta.copyWith(
+              color: context.colors.onSurfaceVariant,
+            ),
+          ),
+          InfoRow(
+            label: l10n.workSchedule,
+            value:
+                '${time(session.shift.startsAt ?? session.checkInTime)}'
+                ' – ${time(session.scheduledEnd)}',
+          ),
+          InfoRow(label: l10n.checkedOut, value: time(session.checkOutTime!)),
+          InfoRow(label: l10n.adminShiftEnd, value: time(session.scheduledEnd)),
         ],
       ),
     );

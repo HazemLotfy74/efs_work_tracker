@@ -253,6 +253,13 @@ class FakeStorage implements StorageServices {
 
   @override
   Future<String?> imageTypeOf(String localPath) async => sniffedType;
+
+  @override
+  Future<String> signedUrl({
+    required String bucket,
+    required String path,
+    required Duration expiresIn,
+  }) async => 'https://storage.test/$bucket/$path';
 }
 
 void main() {

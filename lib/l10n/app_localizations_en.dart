@@ -1191,6 +1191,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminRequestRejected => 'Request rejected.';
 
   @override
+  String get adminLeftEarly => 'Left early';
+
+  @override
+  String adminLeftEarlyBy(String duration) {
+    return '$duration early';
+  }
+
+  @override
+  String get adminEarlyDepartures => 'Early departures to review';
+
+  @override
+  String get adminShiftEnd => 'Shift end';
+
+  @override
   String get language => 'Language';
 
   @override

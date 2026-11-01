@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/widgets/feedback/app_message_type.dart';
+import '../../../../../core/widgets/feedback/app_snack_bar.dart';
+
 import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/extensions/date_time_format.dart';
 import '../../../../../core/theme/theme_context_extensions.dart';
@@ -160,13 +163,11 @@ class _RequestCard extends StatelessWidget {
     );
     if (note == null) return;
     final failure = await cubit.review(request, approve: approve, note: note);
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text(
-          failure?.message(l10n) ??
-              (approve ? l10n.adminRequestApproved : l10n.adminRequestRejected),
-        ),
-      ),
+    showAppSnackBar(
+      messenger,
+      failure?.message(l10n) ??
+          (approve ? l10n.adminRequestApproved : l10n.adminRequestRejected),
+      type: failure == null ? AppMessageType.success : AppMessageType.error,
     );
   }
 }

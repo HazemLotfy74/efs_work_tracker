@@ -2210,6 +2210,30 @@ abstract class AppLocalizations {
   /// **'Request rejected.'**
   String get adminRequestRejected;
 
+  /// No description provided for @adminLeftEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'Left early'**
+  String get adminLeftEarly;
+
+  /// No description provided for @adminLeftEarlyBy.
+  ///
+  /// In en, this message translates to:
+  /// **'{duration} early'**
+  String adminLeftEarlyBy(String duration);
+
+  /// No description provided for @adminEarlyDepartures.
+  ///
+  /// In en, this message translates to:
+  /// **'Early departures to review'**
+  String get adminEarlyDepartures;
+
+  /// No description provided for @adminShiftEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift end'**
+  String get adminShiftEnd;
+
   /// No description provided for @language.
   ///
   /// In en, this message translates to:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/constants/constants.dart';
 import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../../core/widgets/app_primary_button.dart';
@@ -10,12 +11,19 @@ import '../../../../../core/widgets/custom_back_button.dart';
 import '../../../../../core/widgets/custom_container.dart';
 import '../../../../../core/widgets/states/app_error_view.dart';
 import '../../../../../core/widgets/states/app_loading_view.dart';
+import '../../../auth/domain/entities/user_entity.dart';
 import '../../domain/entities/employee_entity.dart';
 import '../manager/add_employee_cubit/add_employee_cubit.dart';
 import 'admin_failure_text.dart';
 
 class AddEmployeeViewBody extends StatelessWidget {
-  const AddEmployeeViewBody({super.key});
+  const AddEmployeeViewBody({
+    super.key,
+    this.showRoleSelector = Constants.roleOnAccountCreation,
+  });
+
+  /// Offer Employee / Admin; only once the backend accepts a role.
+  final bool showRoleSelector;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +51,10 @@ class AddEmployeeViewBody extends StatelessWidget {
                 message: l10n.authNetworkError,
                 onRetry: context.read<AddEmployeeCubit>().load,
               ),
-              AddEmployeeReady() => _Form(state: state),
+              AddEmployeeReady() => _Form(
+                state: state,
+                showRoleSelector: showRoleSelector,
+              ),
               AddEmployeeCreated(:final draft) => _Created(draft: draft),
             },
           ),
@@ -54,9 +65,10 @@ class AddEmployeeViewBody extends StatelessWidget {
 }
 
 class _Form extends StatefulWidget {
-  const _Form({required this.state});
+  const _Form({required this.state, required this.showRoleSelector});
 
   final AddEmployeeReady state;
+  final bool showRoleSelector;
 
   @override
   State<_Form> createState() => _FormState();
@@ -72,6 +84,7 @@ class _FormState extends State<_Form> {
       ? widget.state.schedules.single.id
       : null;
   bool _obscure = true;
+  UserRole _role = UserRole.employee;
 
   @override
   void dispose() {
@@ -91,6 +104,7 @@ class _FormState extends State<_Form> {
         employeeCode: _code.text,
         scheduleId: _scheduleId,
         password: _password.text,
+        role: _role,
       ),
     );
   }
@@ -160,6 +174,27 @@ class _FormState extends State<_Form> {
             _code,
             NewEmployeeField.employeeCode,
           ),
+          if (widget.showRoleSelector)
+            SegmentedButton<UserRole>(
+              key: const Key('roleSelector'),
+              showSelectedIcon: false,
+              segments: [
+                ButtonSegment(
+                  value: UserRole.employee,
+                  label: Text(l10n.roleEmployee),
+                  icon: const Icon(Icons.person_outline),
+                ),
+                ButtonSegment(
+                  value: UserRole.admin,
+                  label: Text(l10n.roleAdmin),
+                  icon: const Icon(Icons.admin_panel_settings_outlined),
+                ),
+              ],
+              selected: {_role},
+              onSelectionChanged: enabled
+                  ? (selection) => setState(() => _role = selection.single)
+                  : null,
+            ),
           DropdownButtonFormField<String>(
             key: const Key('schedule'),
             initialValue: _scheduleId,

@@ -15,6 +15,12 @@ abstract class Constants {
   /// Redirect URLs.
   static const String passwordResetRedirect = 'efsworktracker://reset-password';
 
+  /// Whether the Add Employee form offers the Employee / Admin role.
+  /// Off until the backend accepts a role: today `employee-accounts`
+  /// refuses the field and the account trigger always creates employees.
+  /// See docs/proposal_roles_and_cash_guard.md.
+  static const bool roleOnAccountCreation = false;
+
   /// Private bucket for check-in and check-out selfies.
   static const String attendanceEvidenceBucket = 'attendance-evidence';
 }

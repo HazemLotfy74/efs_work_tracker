@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/widgets/feedback/app_message_type.dart';
+import '../../../../../core/widgets/feedback/app_snack_bar.dart';
+
 import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/extensions/date_time_format.dart';
 import '../../../../../core/theme/theme_context_extensions.dart';
@@ -133,8 +136,11 @@ class _CorrectionFormState extends State<_CorrectionForm> {
     return BlocConsumer<CorrectionFormCubit, CorrectionFormState>(
       listener: (context, state) {
         if (state is CorrectionFormSubmitted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(l10n.correctionSubmitted)));
+          showAppSnackBar(
+            ScaffoldMessenger.of(context),
+            l10n.correctionSubmitted,
+            type: AppMessageType.success,
+          );
           context.pop(true);
         }
       },
