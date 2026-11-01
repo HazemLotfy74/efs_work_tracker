@@ -12,6 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'fake_admin_repository.dart';
 import 'fake_auth_repository.dart';
 import 'fake_correction_repository.dart';
+import 'attendance_history_adapter.dart';
+
+import 'package:efs_work_tracker/app/features/history/domain/repositories/history_repository.dart';
 
 /// The app-wide providers from main.dart, for widget tests.
 Widget withAppProviders(
@@ -19,10 +22,14 @@ Widget withAppProviders(
   AttendanceRepository? repository,
   CorrectionRepository? corrections,
   AdminRepository? admin,
+  HistoryRepository? history,
 }) {
   final repo = repository ?? InMemoryAttendanceRepository();
   return MultiRepositoryProvider(
     providers: [
+      RepositoryProvider<HistoryRepository>.value(
+        value: history ?? AttendanceHistoryAdapter(repo),
+      ),
       RepositoryProvider<AttendanceRepository>.value(value: repo),
       RepositoryProvider<CorrectionRepository>.value(
         value: corrections ?? FakeCorrectionRepository(),

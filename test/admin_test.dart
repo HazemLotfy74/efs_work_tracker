@@ -137,6 +137,8 @@ class FakeAdminServer implements DatabaseServices {
     String? orderBy,
     bool descending = false,
     int? limit,
+    Map<String, Object>? greaterThanOrEqual,
+    Map<String, Object>? lessThan,
   }) async {
     reads.add((path, column, query));
     if (nextError case final error?) {

@@ -2227,6 +2227,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'العربية'**
   String get languageArabic;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance history'**
+  String get historyTitle;
+
+  /// No description provided for @historyRecordedWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded work'**
+  String get historyRecordedWork;
+
+  /// No description provided for @historyLateArrivals.
+  ///
+  /// In en, this message translates to:
+  /// **'Late arrivals'**
+  String get historyLateArrivals;
+
+  /// No description provided for @historySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search attendance'**
+  String get historySearch;
+
+  /// No description provided for @historyRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent attendance'**
+  String get historyRecent;
+
+  /// No description provided for @historyAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get historyAll;
+
+  /// No description provided for @historyLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get historyLate;
+
+  /// No description provided for @historyPreviousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get historyPreviousMonth;
+
+  /// No description provided for @historyNextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get historyNextMonth;
+
+  /// No description provided for @historyChooseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a date'**
+  String get historyChooseDate;
+
+  /// No description provided for @historyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter attendance'**
+  String get historyFilters;
+
+  /// No description provided for @historyNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching attendance'**
+  String get historyNoMatches;
+
+  /// No description provided for @historyNoMatchesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another search, filter or month.'**
+  String get historyNoMatchesMessage;
+
+  /// No description provided for @historyStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t refresh. Showing previously loaded records.'**
+  String get historyStale;
+
+  /// No description provided for @historyAttendanceDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 attendance day} other{{count} attendance days}}'**
+  String historyAttendanceDays(int count);
+
+  /// No description provided for @historyRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record} other{{count} records}}'**
+  String historyRecords(int count);
+
+  /// No description provided for @historyOvertimeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 overtime day} other{{count} overtime days}}'**
+  String historyOvertimeDays(int count);
+
+  /// No description provided for @historyMinutesTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m total'**
+  String historyMinutesTotal(int minutes);
 }
 
 class _AppLocalizationsDelegate

@@ -144,7 +144,10 @@ class SupabaseAttendanceRepository implements AttendanceRepository {
   }
 
   @override
-  Future<List<AttendanceSessionEntity>> getHistory({int limit = 60}) async {
+  Future<List<AttendanceSessionEntity>> getHistory({
+    int limit = 60,
+    DateTime? month,
+  }) async {
     final userId = _currentUserId();
     if (userId == null) throw AttendanceFailure.accountNotReady;
     // Filtered by employee: an admin's RLS policy shows everyone's rows.
@@ -154,6 +157,12 @@ class SupabaseAttendanceRepository implements AttendanceRepository {
         path: 'attendance_records',
         column: _recordColumns,
         query: {'employee_id': userId},
+        greaterThanOrEqual: month == null
+            ? null
+            : {'work_date': _dateText(DateTime(month.year, month.month))},
+        lessThan: month == null
+            ? null
+            : {'work_date': _dateText(DateTime(month.year, month.month + 1))},
         orderBy: 'work_date',
         descending: true,
         limit: limit,

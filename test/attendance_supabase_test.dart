@@ -29,6 +29,9 @@ import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'helpers/fake_correction_repository.dart';
+import 'helpers/attendance_history_adapter.dart';
+
+import 'package:efs_work_tracker/app/features/history/domain/repositories/history_repository.dart';
 
 // Times are UTC. Cairo is UTC+3 until Thursday 29 October 2026 (DST), so
 // the 8:00–16:00 shift on Sunday 25 October is 05:00–13:00 UTC.
@@ -136,6 +139,8 @@ class FakeServer implements DatabaseServices {
 
   final rpcCalls = <(String, Map<String, dynamic>?)>[];
   final reads = <(String, Map<String, dynamic>?)>[];
+  Map<String, Object>? historyLower;
+  Map<String, Object>? historyUpper;
 
   @override
   Future<dynamic> getData({
@@ -146,8 +151,12 @@ class FakeServer implements DatabaseServices {
     String? orderBy,
     bool descending = false,
     int? limit,
+    Map<String, Object>? greaterThanOrEqual,
+    Map<String, Object>? lessThan,
   }) async {
     reads.add((path, query));
+    historyLower = greaterThanOrEqual;
+    historyUpper = lessThan;
     if (readFailure case final failure?) throw failure;
     if (path == readFailureFor) throw TimeoutException(path);
     switch (path) {
@@ -885,6 +894,9 @@ void main() {
         MultiRepositoryProvider(
           providers: [
             RepositoryProvider<AttendanceRepository>.value(value: repository),
+            RepositoryProvider<HistoryRepository>.value(
+              value: AttendanceHistoryAdapter(repository),
+            ),
             RepositoryProvider<CorrectionRepository>.value(
               value: FakeCorrectionRepository(),
             ),
@@ -940,7 +952,7 @@ void main() {
         ..history = [closedDay()];
       await showPage(tester, const HistoryView(), repository);
       expect(tester.takeException(), isNull);
-      expect(find.text('Needs Review'), findsOneWidget);
+      expect(find.text('Needs Review'), findsWidgets);
       expect(find.text('Not confirmed'), findsOneWidget);
     });
 
@@ -1230,7 +1242,10 @@ class _ScriptedRepository implements AttendanceRepository {
   }
 
   @override
-  Future<List<AttendanceSessionEntity>> getHistory({int limit = 60}) async {
+  Future<List<AttendanceSessionEntity>> getHistory({
+    int limit = 60,
+    DateTime? month,
+  }) async {
     if (historyFailure case final failure?) throw failure;
     return history;
   }

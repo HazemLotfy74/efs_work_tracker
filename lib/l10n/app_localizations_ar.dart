@@ -1185,4 +1185,66 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get languageArabic => 'العربية';
+
+  @override
+  String get historyTitle => 'سجل الحضور';
+
+  @override
+  String get historyRecordedWork => 'العمل المسجل';
+
+  @override
+  String get historyLateArrivals => 'مرات التأخير';
+
+  @override
+  String get historySearch => 'البحث في الحضور';
+
+  @override
+  String get historyRecent => 'سجلات الحضور';
+
+  @override
+  String get historyAll => 'الكل';
+
+  @override
+  String get historyLate => 'متأخر';
+
+  @override
+  String get historyPreviousMonth => 'الشهر السابق';
+
+  @override
+  String get historyNextMonth => 'الشهر التالي';
+
+  @override
+  String get historyChooseDate => 'اختيار تاريخ';
+
+  @override
+  String get historyFilters => 'تصفية الحضور';
+
+  @override
+  String get historyNoMatches => 'لا توجد سجلات مطابقة';
+
+  @override
+  String get historyNoMatchesMessage => 'جرّب بحثًا أو تصفية أو شهرًا آخر.';
+
+  @override
+  String get historyStale => 'تعذّر التحديث. تُعرض السجلات المحمّلة سابقًا.';
+
+  @override
+  String historyAttendanceDays(int count) {
+    return '$count أيام حضور';
+  }
+
+  @override
+  String historyRecords(int count) {
+    return '$count سجلات';
+  }
+
+  @override
+  String historyOvertimeDays(int count) {
+    return '$count أيام بعمل إضافي';
+  }
+
+  @override
+  String historyMinutesTotal(int minutes) {
+    return 'الإجمالي $minutes دقيقة';
+  }
 }

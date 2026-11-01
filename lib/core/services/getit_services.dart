@@ -11,6 +11,8 @@ import '../../app/features/auth/domain/repositories/auth_repository.dart';
 import '../../app/features/cash_request/data/repositories/supabase_expense_advance_repository.dart';
 import '../../app/features/cash_request/domain/repositories/expense_advance_repository.dart';
 import 'accounts_function.dart';
+import '../../app/features/history/data/repositories/supabase_history_repository.dart';
+import '../../app/features/history/domain/repositories/history_repository.dart';
 import 'database_services.dart';
 import 'storage_services.dart';
 import 'supabase_auth_service.dart';
@@ -24,6 +26,12 @@ void setup() {
   getIt.registerSingleton<SupabaseAuthService>(SupabaseAuthService());
   getIt.registerSingleton<DatabaseServices>(SupabaseDatabaseServices());
   getIt.registerSingleton<StorageServices>(SupabaseStorageServices());
+  getIt.registerSingleton<HistoryRepository>(
+    SupabaseHistoryRepository(
+      databaseServices: getIt<DatabaseServices>(),
+      currentUserId: () => getIt<SupabaseAuthService>().currentUser?.id,
+    ),
+  );
   getIt.registerSingleton<AuthRepository>(
     SupabaseAuthRepository(
       authService: getIt<SupabaseAuthService>(),

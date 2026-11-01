@@ -1198,4 +1198,85 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageArabic => 'العربية';
+
+  @override
+  String get historyTitle => 'Attendance history';
+
+  @override
+  String get historyRecordedWork => 'Recorded work';
+
+  @override
+  String get historyLateArrivals => 'Late arrivals';
+
+  @override
+  String get historySearch => 'Search attendance';
+
+  @override
+  String get historyRecent => 'Recent attendance';
+
+  @override
+  String get historyAll => 'All';
+
+  @override
+  String get historyLate => 'Late';
+
+  @override
+  String get historyPreviousMonth => 'Previous month';
+
+  @override
+  String get historyNextMonth => 'Next month';
+
+  @override
+  String get historyChooseDate => 'Choose a date';
+
+  @override
+  String get historyFilters => 'Filter attendance';
+
+  @override
+  String get historyNoMatches => 'No matching attendance';
+
+  @override
+  String get historyNoMatchesMessage => 'Try another search, filter or month.';
+
+  @override
+  String get historyStale =>
+      'Couldn’t refresh. Showing previously loaded records.';
+
+  @override
+  String historyAttendanceDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count attendance days',
+      one: '1 attendance day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String historyRecords(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count records',
+      one: '1 record',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String historyOvertimeDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count overtime days',
+      one: '1 overtime day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String historyMinutesTotal(int minutes) {
+    return '${minutes}m total';
+  }
 }
