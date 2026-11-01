@@ -24,9 +24,17 @@ class InMemoryAttendanceRepository implements AttendanceRepository {
   }
 
   @override
-  Future<List<AttendanceSessionEntity>> getHistory({int limit = 60}) async {
+  Future<List<AttendanceSessionEntity>> getHistory({
+    int limit = 60,
+    DateTime? month,
+  }) async {
     final session = _session;
-    return session == null ? const [] : [session];
+    final date = session?.workDate ?? session?.checkInTime;
+    return session == null ||
+            (month != null &&
+                (date!.year != month.year || date.month != month.month))
+        ? const []
+        : [session];
   }
 
   @override

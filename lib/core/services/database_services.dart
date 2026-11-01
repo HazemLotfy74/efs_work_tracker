@@ -12,7 +12,8 @@ abstract class DatabaseServices {
 
   /// Rows of [path] matching [query] (equality filters), or the one row with
   /// id [documentId] (`null` if none). Lists can be sorted by [orderBy] and
-  /// capped at [limit].
+  /// capped at [limit]. Optional range maps apply inclusive lower and
+  /// exclusive upper bounds (for example, a calendar month of work dates).
   Future<dynamic> getData({
     required String path,
     String? documentId,
@@ -21,6 +22,8 @@ abstract class DatabaseServices {
     String? orderBy,
     bool descending = false,
     int? limit,
+    Map<String, Object>? greaterThanOrEqual,
+    Map<String, Object>? lessThan,
   });
   Stream<dynamic> getStreamData({
     required String path,
