@@ -21,10 +21,13 @@ class AdminDashboardCubit extends Cubit<AdminDashboardState> {
     final loadId = ++_loadId;
     if (state is! AdminDashboardLoaded) emit(const AdminDashboardLoading());
     try {
-      final employees = await _repository.getEmployees();
-      final schedules = await _repository.getSchedules();
+      // Independent reads run together; today's days need the first two.
+      final (employees, schedules, recent) = await (
+        _repository.getEmployees(),
+        _repository.getSchedules(),
+        _repository.getRecentDays(),
+      ).wait;
       final today = await _repository.getToday(employees, schedules);
-      final recent = await _repository.getRecentDays();
       if (isClosed || loadId != _loadId) return;
       final byId = {for (final employee in employees) employee.id: employee};
       emit(

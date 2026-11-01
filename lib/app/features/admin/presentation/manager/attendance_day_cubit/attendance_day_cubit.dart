@@ -23,8 +23,10 @@ class AttendanceDayCubit extends Cubit<AttendanceDayState> {
         if (!isClosed) emit(const AttendanceDayNotFound());
         return;
       }
-      final employee = await _repository.getEmployee(day.employeeId);
-      final corrections = await _repository.getCorrections(day.employeeId);
+      final (employee, corrections) = await (
+        _repository.getEmployee(day.employeeId),
+        _repository.getCorrections(day.employeeId),
+      ).wait;
       if (isClosed) return;
       emit(
         AttendanceDayLoaded(

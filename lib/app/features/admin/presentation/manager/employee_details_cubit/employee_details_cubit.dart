@@ -40,12 +40,11 @@ class EmployeeDetailsCubit extends Cubit<EmployeeDetailsState> {
         }
         return;
       }
-      final schedules = await _repository.getSchedules();
-      final days = await _repository.getHistory(
-        employeeId,
-        limit: historyLimit,
-      );
-      final corrections = await _repository.getCorrections(employeeId);
+      final (schedules, days, corrections) = await (
+        _repository.getSchedules(),
+        _repository.getHistory(employeeId, limit: historyLimit),
+        _repository.getCorrections(employeeId),
+      ).wait;
       if (isClosed || loadId != _loadId) return;
       emit(
         EmployeeDetailsLoaded(
@@ -70,9 +69,8 @@ class EmployeeDetailsCubit extends Cubit<EmployeeDetailsState> {
     }
   }
 
-  Future<AdminFailure?> setActive(bool active) => _act(
-    () => _repository.setEmployeeActive(employeeId, active: active),
-  );
+  Future<AdminFailure?> setActive(bool active) =>
+      _act(() => _repository.setEmployeeActive(employeeId, active: active));
 
   Future<AdminFailure?> assignSchedule(String scheduleId) =>
       _act(() => _repository.assignSchedule(employeeId, scheduleId));

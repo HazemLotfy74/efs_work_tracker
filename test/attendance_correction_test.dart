@@ -132,6 +132,8 @@ class FakeCorrectionServer implements DatabaseServices {
     String? orderBy,
     bool descending = false,
     int? limit,
+    Map<String, Object>? greaterThanOrEqual,
+    Map<String, Object>? lessThan,
   }) async {
     reads.add((path, column, query));
     _failIfAsked();
@@ -352,9 +354,10 @@ class _OneDayRepository implements AttendanceRepository {
   Future<AttendanceToday> getToday() async => (shift: null, session: null);
 
   @override
-  Future<List<AttendanceSessionEntity>> getHistory({int limit = 60}) async => [
-    ?session,
-  ];
+  Future<List<AttendanceSessionEntity>> getHistory({
+    int limit = 60,
+    DateTime? month,
+  }) async => [?session];
 
   @override
   Future<AttendanceSessionEntity> checkIn(AttendanceEventEntity event) =>

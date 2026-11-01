@@ -60,6 +60,16 @@ abstract interface class AdminRepository {
   /// `admin_set_employee_active`: employee accounts only, never yourself.
   Future<void> setEmployeeActive(String employeeId, {required bool active});
 
+  /// `admin_correct_attendance`: sets the confirmed times of a closed day
+  /// of another employee. The recorded times and evidence are kept; the
+  /// change is stored as an approved correction with [reason], and audited.
+  Future<void> correctAttendance(
+    String attendanceId, {
+    required DateTime checkIn,
+    required DateTime checkOut,
+    required String reason,
+  });
+
   /// `admin_assign_schedule`: the schedule for future days. Days already
   /// recorded keep the schedule they were saved with.
   Future<void> assignSchedule(String employeeId, String scheduleId);

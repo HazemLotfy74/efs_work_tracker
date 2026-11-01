@@ -33,14 +33,14 @@ class SupabaseAdminRepository implements AdminRepository {
     this._now = DateTime.now,
     this.timeout = const Duration(seconds: 20),
     this.isWeb = kIsWeb,
-    this.sendsRole = Constants.roleOnAccountCreation,
+    this.sendsRole = Constants.accountRoleAndPhone,
   });
 
   /// Running in a web browser, where CORS applies.
   final bool isWeb;
 
   /// The backend accepts a role for new accounts (see
-  /// `Constants.roleOnAccountCreation`); otherwise it is never sent.
+  /// `Constants.accountRoleAndPhone`); otherwise it is never sent.
   final bool sendsRole;
 
   final DatabaseServices _databaseServices;
@@ -52,15 +52,25 @@ class SupabaseAdminRepository implements AdminRepository {
   final DateTime Function() _now;
   final Duration timeout;
 
-  static const _employeeColumns =
+  static const _baseEmployeeColumns =
       'id, full_name, username, employee_code, role, is_active, '
       'must_change_password, schedule_id, created_at';
 
-  static const recordColumns =
+  /// `profiles.phone` only exists once the role-and-phone migration ran.
+  String get _employeeColumns =>
+      sendsRole ? '$_baseEmployeeColumns, phone' : _baseEmployeeColumns;
+
+  /// A day's times and flags, without its evidence: lists only need these.
+  static const summaryColumns =
       'id, employee_id, work_date, timezone, scheduled_start, scheduled_end, '
       'grace_minutes, actual_checkin, actual_checkout, auto_closed, '
       'auto_closed_at, auto_close_policy, auto_close_deadline, '
-      'effective_checkin, effective_checkout, has_correction, late_minutes, '
+      'effective_checkin, effective_checkout, has_correction, late_minutes';
+
+  /// A day with its check-in / check-out evidence (photos, locations), for
+  /// the one day being looked at.
+  static const recordColumns =
+      '$summaryColumns, '
       'attendance_events(event_type, occurred_at, latitude, longitude, '
       'accuracy_m, selfie_path)';
 
@@ -94,6 +104,7 @@ class SupabaseAdminRepository implements AdminRepository {
       mustChangePassword: json['must_change_password'] != false,
       scheduleId: json['schedule_id'] as String,
       createdAt: createdAt == null ? null : DateTime.parse(createdAt),
+      phone: json['phone'] as String?,
     );
   }
 
@@ -178,6 +189,28 @@ class SupabaseAdminRepository implements AdminRepository {
       () => _databaseServices.rpc(
         function: 'admin_set_employee_active',
         params: {'p_employee_id': employeeId, 'p_is_active': active},
+      ),
+    );
+  }
+
+  @override
+  Future<void> correctAttendance(
+    String attendanceId, {
+    required DateTime checkIn,
+    required DateTime checkOut,
+    required String reason,
+  }) async {
+    _requireUser();
+    await _guard(
+      'admin_correct_attendance',
+      () => _databaseServices.rpc(
+        function: 'admin_correct_attendance',
+        params: {
+          'p_attendance_id': attendanceId,
+          'p_checkin': checkIn.toUtc().toIso8601String(),
+          'p_checkout': checkOut.toUtc().toIso8601String(),
+          'p_reason': reason.trim(),
+        },
       ),
     );
   }
@@ -287,7 +320,7 @@ class SupabaseAdminRepository implements AdminRepository {
         'attendance_records',
         () => _databaseServices.getData(
           path: 'attendance_records',
-          column: recordColumns,
+          column: summaryColumns,
           query: {'work_date': date},
         ),
       );
@@ -308,7 +341,7 @@ class SupabaseAdminRepository implements AdminRepository {
       'attendance_records',
       () => _databaseServices.getData(
         path: 'attendance_records',
-        column: recordColumns,
+        column: summaryColumns,
         orderBy: 'work_date',
         descending: true,
         limit: limit,
@@ -332,7 +365,7 @@ class SupabaseAdminRepository implements AdminRepository {
       'attendance_records',
       () => _databaseServices.getData(
         path: 'attendance_records',
-        column: recordColumns,
+        column: summaryColumns,
         query: {'employee_id': employeeId},
         orderBy: 'work_date',
         descending: true,
@@ -361,6 +394,7 @@ class SupabaseAdminRepository implements AdminRepository {
         'employee_code': draft.employeeCode,
         'schedule_id': draft.scheduleId,
         if (sendsRole) 'role': draft.role.name,
+        if (sendsRole && draft.phone != null) 'phone': draft.phone,
       }).timeout(timeout);
     } on AccountsFunctionException catch (e) {
       // A refused preflight never reaches the function, so nothing was
@@ -499,8 +533,13 @@ class SupabaseAdminRepository implements AdminRepository {
     }
     if (message.startsWith('Request not found') ||
         message.startsWith('Employee profile not found') ||
-        message.startsWith('Schedule not found')) {
+        message.startsWith('Schedule not found') ||
+        message.startsWith('Attendance record not found')) {
       return AdminFailure.notFound;
+    }
+    // admin_correct_attendance (supabase/migrations/…_admin_correct_attendance).
+    for (final (prefix, failure) in _correctionFailures) {
+      if (message.startsWith(prefix)) return failure;
     }
     return switch (code) {
       '42501' || 'PGRST301' || 'PGRST303' => AdminFailure.notAllowed,
@@ -509,6 +548,15 @@ class SupabaseAdminRepository implements AdminRepository {
       _ => AdminFailure.unknown,
     };
   }
+
+  static const _correctionFailures = [
+    ('You cannot correct your own attendance', AdminFailure.ownAttendance),
+    ('A reason of 1-2000 characters', AdminFailure.invalidReason),
+    ('Attendance must be closed', AdminFailure.notClosed),
+    ('Proposed', AdminFailure.invalidTimes),
+    ('No change was requested', AdminFailure.noChange),
+    ('A pending correction already exists', AdminFailure.pendingCorrection),
+  ];
 
   /// Maps an `employee-accounts` error answer.
   @visibleForTesting

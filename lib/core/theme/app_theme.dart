@@ -165,6 +165,79 @@ abstract final class AppTheme {
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
       ),
+      // Used by core/widgets/pickers/app_pickers.dart.
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        headerBackgroundColor: colorScheme.primary,
+        headerForegroundColor: colorScheme.onPrimary,
+        headerHeadlineStyle: textTheme.headlineSmall?.copyWith(
+          color: colorScheme.onPrimary,
+        ),
+        headerHelpStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.onPrimary,
+        ),
+        weekdayStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        dayStyle: textTheme.bodyLarge,
+        todayBorder: BorderSide(color: colorScheme.primary),
+        todayForegroundColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.onPrimary
+              : colorScheme.primary,
+        ),
+        rangeSelectionBackgroundColor: colorScheme.primaryContainer,
+        rangePickerBackgroundColor: colorScheme.surface,
+        rangePickerHeaderBackgroundColor: colorScheme.primary,
+        rangePickerHeaderForegroundColor: colorScheme.onPrimary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+        ),
+        cancelButtonStyle: TextButton.styleFrom(
+          foregroundColor: colorScheme.onSurfaceVariant,
+        ),
+        confirmButtonStyle: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          textStyle: textTheme.labelLarge,
+        ),
+      ),
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+        ),
+        hourMinuteColor: WidgetStateColor.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.primaryContainer
+              : colorScheme.surfaceContainerHighest,
+        ),
+        hourMinuteTextColor: WidgetStateColor.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : colorScheme.onSurface,
+        ),
+        dayPeriodColor: colorScheme.primaryContainer,
+        dayPeriodTextColor: colorScheme.onSurface,
+        dialBackgroundColor: colorScheme.surfaceContainerHighest,
+        dialHandColor: colorScheme.primary,
+        dialTextColor: WidgetStateColor.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.onPrimary
+              : colorScheme.onSurface,
+        ),
+        entryModeIconColor: colorScheme.primary,
+        helpTextStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        cancelButtonStyle: TextButton.styleFrom(
+          foregroundColor: colorScheme.onSurfaceVariant,
+        ),
+        confirmButtonStyle: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          textStyle: textTheme.labelLarge,
+        ),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(textStyle: textTheme.labelLarge),
       ),

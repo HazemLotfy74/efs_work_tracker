@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../../core/constants/constants.dart';
 import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/extensions/date_time_format.dart';
 import '../../../../../core/extensions/duration_format.dart';
 import '../../../../../core/manager/clock_cubit.dart';
+import '../../../../../core/router/app_routes.dart';
 import '../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../../core/widgets/custom_app_bar.dart';
 import '../../../../../core/widgets/custom_back_button.dart';
@@ -17,6 +20,7 @@ import '../../../attendance_correction/presentation/widgets/correction_request_d
 import '../../../attendance_correction/presentation/widgets/correction_text.dart';
 import '../../../attendance_session/presentation/widgets/attendance_day_status_text.dart';
 import '../../../attendance_session/presentation/widgets/prepare/info_row.dart';
+import '../../../auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import '../../../home/presentation/widgets/custom_status_container.dart';
 import '../../domain/repositories/admin_repository.dart';
 import '../manager/attendance_day_cubit/attendance_day_cubit.dart';
@@ -30,12 +34,16 @@ class AdminAttendanceDayView extends StatelessWidget {
     super.key,
     required this.attendanceId,
     this.showMaps = true,
+    this.showEditAction = Constants.adminAttendanceCorrection,
   });
 
   final String attendanceId;
 
   /// Off in tests (map tiles come from the network).
   final bool showMaps;
+
+  /// Offer "Edit times" (needs `admin_correct_attendance` in the database).
+  final bool showEditAction;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +83,7 @@ class AdminAttendanceDayView extends StatelessWidget {
                     AttendanceDayLoaded() => _Day(
                       state: state,
                       showMaps: showMaps,
+                      showEditAction: showEditAction,
                     ),
                   },
                 ),
@@ -88,10 +97,15 @@ class AdminAttendanceDayView extends StatelessWidget {
 }
 
 class _Day extends StatelessWidget {
-  const _Day({required this.state, required this.showMaps});
+  const _Day({
+    required this.state,
+    required this.showMaps,
+    required this.showEditAction,
+  });
 
   final AttendanceDayLoaded state;
   final bool showMaps;
+  final bool showEditAction;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +121,18 @@ class _Day extends StatelessWidget {
     final duration = session.durationAt(now);
     final effectiveIn = session.effectiveCheckIn;
     final effectiveOut = session.effectiveCheckOut;
+    final me = context.select<AuthCubit, String?>(
+      (auth) => switch (auth.state) {
+        AuthSignedIn(:final user) => user.uID,
+        _ => null,
+      },
+    );
+    // admin_correct_attendance: closed days of other employees only. It is
+    // the database that enforces this and the admin role.
+    final canEdit =
+        showEditAction &&
+        state.day.employeeId != me &&
+        (session.checkOut != null || session.isAutoClosed);
 
     return ListView(
       children: [
@@ -146,10 +172,7 @@ class _Day extends StatelessWidget {
                     '${time(session.shift.startsAt ?? session.checkInTime)}'
                     ' – ${time(session.scheduledEnd)}',
               ),
-              InfoRow(
-                label: l10n.checkedIn,
-                value: time(session.checkInTime),
-              ),
+              InfoRow(label: l10n.checkedIn, value: time(session.checkInTime)),
               InfoRow(
                 label: l10n.checkedOut,
                 value: switch (session.checkOutTime) {
@@ -169,9 +192,8 @@ class _Day extends StatelessWidget {
               ),
               InfoRow(
                 label: l10n.adminLateBy,
-                value: Duration(
-                  minutes: session.lateMinutes,
-                ).formatHoursMinutes(context),
+                value: Duration(minutes: session.lateMinutes)
+                    .formatHoursMinutes(context),
               ),
               InfoRow(
                 label: l10n.adminEarlyBy,
@@ -194,6 +216,20 @@ class _Day extends StatelessWidget {
             ],
           ),
         ),
+        if (canEdit) ...[
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
+            key: const Key('editTimes'),
+            onPressed: () async {
+              final saved = await context.push<bool>(
+                AppRoutes.adminEditAttendanceOf(session.id),
+              );
+              if (saved == true) await cubit.load();
+            },
+            icon: const Icon(Icons.edit_calendar_outlined),
+            label: Text(l10n.adminEditTimes),
+          ),
+        ],
         const SizedBox(height: 12),
         CustomContainer(
           borderWidth: 1,

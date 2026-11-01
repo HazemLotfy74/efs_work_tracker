@@ -1,7 +1,7 @@
 # Proposal (NOT applied): choose a role when creating an account, and block admin cash requests in the database
 
 Status: **waiting for your approval.** Nothing below has been run. The Flutter side is
-ready behind `Constants.roleOnAccountCreation` (currently `false`).
+ready behind `Constants.accountRoleAndPhone` (currently `false`).
 
 ## Why a backend change is needed
 
@@ -126,7 +126,7 @@ Block admins from sending cash requests (`public.request_expense_advance`, after
 
 ## 3. After approval (app side, already prepared)
 
-1. Set `Constants.roleOnAccountCreation = true` in `lib/core/constants/constants.dart`.
+1. Set `Constants.accountRoleAndPhone = true` in `lib/core/constants/constants.dart`.
    The Add Employee form then shows an Employee / Admin selector (Employee by default) and
    sends `role` to `create_employee`.
 2. Test: create one employee and one admin; sign in with each; confirm the admin sees the

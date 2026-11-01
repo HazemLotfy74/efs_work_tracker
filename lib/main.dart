@@ -11,6 +11,7 @@ import 'app/features/auth/domain/repositories/auth_repository.dart';
 import 'app/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'app/features/cash_request/domain/repositories/expense_advance_repository.dart';
 import 'core/constants/constants.dart';
+import 'app/features/history/domain/repositories/history_repository.dart';
 import 'core/manager/clock_cubit.dart';
 import 'core/manager/locale_cubit.dart';
 import 'core/router/app_router.dart';
@@ -68,6 +69,9 @@ class WorkTrackApp extends StatelessWidget {
     // Everything here sits above the router, so every screen shares it.
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<HistoryRepository>.value(
+          value: getIt<HistoryRepository>(),
+        ),
         RepositoryProvider<AttendanceRepository>.value(
           value: getIt<AttendanceRepository>(),
         ),

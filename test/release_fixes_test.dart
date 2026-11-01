@@ -10,6 +10,7 @@ import 'package:efs_work_tracker/app/features/auth/domain/entities/user_entity.d
 import 'package:efs_work_tracker/app/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/attendance_session_card.dart';
 import 'package:efs_work_tracker/app/features/home/presentation/widgets/home_view_body.dart';
+import 'package:efs_work_tracker/core/constants/constants.dart';
 import 'package:efs_work_tracker/core/manager/clock_cubit.dart';
 import 'package:efs_work_tracker/core/router/app_router.dart';
 import 'package:efs_work_tracker/core/router/app_routes.dart';
@@ -26,6 +27,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers/app_providers.dart';
 import 'helpers/fake_admin_repository.dart';
+import 'helpers/fake_evidence_storage.dart';
 import 'helpers/fake_auth_repository.dart';
 
 // Sunday 1 November 2026. Cairo is UTC+2 (summer time ended 29 October).
@@ -391,6 +393,7 @@ void main() {
 
         SupabaseAdminRepository repository({required bool sendsRole}) =>
             SupabaseAdminRepository(
+              storageServices: FakeEvidenceStorage(),
               databaseServices: _NoDatabase(),
               accountsFunction: accounts,
               currentUserId: () => 'admin-1',
@@ -445,9 +448,12 @@ void main() {
         expect(admin.created.single.$1.role, UserRole.admin);
       });
 
-      testWidgets('no selector while the backend can\'t set roles', (
+      testWidgets('the role selector and phone are shown by default', (
         tester,
       ) async {
+        tester.view.physicalSize = const Size(430, 1400);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.reset);
         await tester.pumpWidget(
           withAppProviders(
             app(const AddEmployeeView()),
@@ -455,7 +461,26 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
+        expect(Constants.accountRoleAndPhone, isTrue);
+        expect(find.byKey(const Key('roleSelector')), findsOneWidget);
+        expect(find.byKey(const Key('phone')), findsOneWidget);
+        // Employee is preselected.
+        final selector = tester.widget<SegmentedButton<UserRole>>(
+          find.byKey(const Key('roleSelector')),
+        );
+        expect(selector.selected, {UserRole.employee});
+      });
+
+      testWidgets('switched off, neither is shown', (tester) async {
+        await tester.pumpWidget(
+          withAppProviders(
+            app(const AddEmployeeView(showRoleSelector: false)),
+            admin: FakeAdminRepository(),
+          ),
+        );
+        await tester.pumpAndSettle();
         expect(find.byKey(const Key('roleSelector')), findsNothing);
+        expect(find.byKey(const Key('phone')), findsNothing);
       });
     },
   );

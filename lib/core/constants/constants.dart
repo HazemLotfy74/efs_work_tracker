@@ -15,11 +15,34 @@ abstract class Constants {
   /// Redirect URLs.
   static const String passwordResetRedirect = 'efsworktracker://reset-password';
 
-  /// Whether the Add Employee form offers the Employee / Admin role.
-  /// Off until the backend accepts a role: today `employee-accounts`
-  /// refuses the field and the account trigger always creates employees.
-  /// See docs/proposal_roles_and_cash_guard.md.
-  static const bool roleOnAccountCreation = false;
+  /// The reset link's target: the app on phones; on the web, the page's
+  /// own origin (development or production, never a hard-coded localhost).
+  /// Each value must be listed in Auth → URL Configuration → Redirect URLs.
+  static String passwordResetRedirectFor({required bool isWeb, Uri? page}) {
+    final current = page ?? Uri.base;
+    final served = current.isScheme('http') || current.isScheme('https');
+    return isWeb && served ? '${current.origin}/' : passwordResetRedirect;
+  }
+
+  /// The Add Employee form offers the Employee / Admin role and an optional
+  /// phone number, and admin screens read `profiles.phone`. Needs
+  /// supabase/migrations/20261102090100_account_role_and_phone.sql and
+  /// employee-accounts version 2 (both live since 2026-11-02).
+  static const bool accountRoleAndPhone = true;
+
+  /// Admins can edit a closed day's check-in / check-out (Edit times on the
+  /// admin day page). Needs `admin_correct_attendance` from
+  /// supabase/migrations/20261102090000_admin_correct_attendance.sql (live
+  /// since 2026-11-02).
+  static const bool adminAttendanceCorrection = true;
+
+  /// Whether selfies are named after the employee, e.g.
+  /// `<uid>/Ahmed_Mohamed_EMP-125_check_in_20261101_060530_a81f2c0d.jpg`.
+  /// Off until the bucket's upload policy (`attendance_selfie_upload`)
+  /// accepts such names: today it only allows `<uid>/<uuid>.<ext>`, so a
+  /// descriptive name would make every check-in fail.
+  /// See docs/proposal_evidence_file_names.md.
+  static const bool descriptiveEvidenceNames = false;
 
   /// Private bucket for check-in and check-out selfies.
   static const String attendanceEvidenceBucket = 'attendance-evidence';

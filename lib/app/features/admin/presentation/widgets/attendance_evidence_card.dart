@@ -127,6 +127,10 @@ class _EvidencePhotoState extends State<_EvidencePhoto> {
                 child: Image.network(
                   link,
                   fit: BoxFit.contain,
+                  // Decoded at the 220 px it is shown at; the full-screen
+                  // view loads the original.
+                  cacheHeight: (220 * MediaQuery.devicePixelRatioOf(context))
+                      .round(),
                   errorBuilder: (_, _, _) =>
                       _Placeholder(text: l10n.adminPhotoLoadFailed),
                 ),
@@ -181,8 +185,7 @@ class _EvidenceLocation extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final location = event.location;
-    if (location == null ||
-        !_valid(location.latitude, location.longitude)) {
+    if (location == null || !_valid(location.latitude, location.longitude)) {
       return _Placeholder(text: l10n.adminLocationUnavailable);
     }
     final coordinates =

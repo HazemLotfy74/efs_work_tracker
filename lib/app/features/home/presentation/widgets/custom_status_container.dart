@@ -13,10 +13,12 @@ class CustomStatusContainer extends StatelessWidget {
     super.key,
     required this.tone,
     required this.text,
+    this.dense = false,
   });
 
   final StatusTone tone;
   final String text;
+  final bool dense;
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +31,18 @@ class CustomStatusContainer extends StatelessWidget {
     };
 
     return CustomContainer(
-      borderWidth: 1,
+      borderWidth: dense ? 0 : 1,
       borderRadius: 12.5,
+      horizontalPadding: dense ? 6 : null,
+      verticalPadding: dense ? 4 : null,
       containerColor: background,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 5,
         children: [
           Container(
-            width: 8,
-            height: 8,
+            width: dense ? 5 : 8,
+            height: dense ? 5 : 8,
             decoration: BoxDecoration(
               color: foreground,
               shape: BoxShape.circle,

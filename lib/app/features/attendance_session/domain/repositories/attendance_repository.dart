@@ -21,8 +21,12 @@ abstract interface class AttendanceRepository {
   /// company's timezone.
   Future<AttendanceToday> getToday();
 
-  /// The signed-in employee's own attendance days, newest first.
-  Future<List<AttendanceSessionEntity>> getHistory({int limit = 60});
+  /// The signed-in employee's own attendance days, newest first. [month]
+  /// restricts work dates to that calendar month, including year boundaries.
+  Future<List<AttendanceSessionEntity>> getHistory({
+    int limit = 60,
+    DateTime? month,
+  });
 
   /// One of the signed-in employee's own days, with the overtime approved
   /// for its date; `null` when there is no such record.

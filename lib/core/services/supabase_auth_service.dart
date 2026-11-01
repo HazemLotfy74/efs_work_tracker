@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:efs_work_tracker/core/errors/failure.dart';
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../constants/constants.dart';
@@ -49,7 +50,7 @@ class SupabaseAuthService {
     try {
       await _auth.resetPasswordForEmail(
         email,
-        redirectTo: Constants.passwordResetRedirect,
+        redirectTo: Constants.passwordResetRedirectFor(isWeb: kIsWeb),
       );
     } on AuthException catch (e) {
       log('Password reset failed: status ${e.statusCode}, code ${e.code}');

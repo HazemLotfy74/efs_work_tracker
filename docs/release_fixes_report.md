@@ -60,7 +60,7 @@ not applied, in `docs/proposal_roles_and_cash_guard.md`.
 - **Root cause:** the backend can't do it. `employee-accounts` rejects a `role` field, the
   `auth.users` trigger always inserts `employee`, and there is no role-changing RPC.
 - **Done in the app:** an Employee/Admin selector (Employee by default), `NewEmployeeDraft.role`,
-  and the repository sending `role`, all behind `Constants.roleOnAccountCreation = false`.
+  and the repository sending `role`, all behind `Constants.accountRoleAndPhone = false`.
 - **Needs your approval:** the exact Edge Function diff and SQL are in
   `docs/proposal_roles_and_cash_guard.md`. After it is applied, set the constant to `true`.
 - Security: the role is set only server-side by an admin-verified path; employees can't

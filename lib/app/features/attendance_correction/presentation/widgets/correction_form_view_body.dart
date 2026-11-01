@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/widgets/pickers/app_pickers.dart';
+
 import '../../../../../core/widgets/feedback/app_message_type.dart';
 import '../../../../../core/widgets/feedback/app_snack_bar.dart';
 
@@ -102,8 +104,8 @@ class _CorrectionFormState extends State<_CorrectionForm> {
           widget.session.timezone,
           widget.session.scheduledEnd,
         );
-    final picked = await showTimePicker(
-      context: context,
+    final picked = await showAppTimePicker(
+      context,
       initialTime: TimeOfDay(
         hour: current.inHours,
         minute: current.inMinutes.remainder(60),

@@ -523,8 +523,143 @@
   },
   "adminEarlyDepartures": "Early departures to review",
   "adminShiftEnd": "Shift end",
+  "employeeDetails": "Employee details",
+  "adminActive": "Active",
+  "adminCreatedOn": "Created on",
+  "adminActivate": "Activate account",
+  "adminDeactivate": "Deactivate account",
+  "adminActivateTitle": "Activate {name}?",
+  "@adminActivateTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminDeactivateTitle": "Deactivate {name}?",
+  "@adminDeactivateTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminActivateMessage": "They can sign in and record attendance again.",
+  "adminDeactivateMessage": "They can't sign in or record attendance until the account is activated again. Their records are kept.",
+  "adminStatusChanged": "Account status updated.",
+  "adminChangeSchedule": "Change schedule",
+  "adminScheduleChangeTitle": "Assign \"{schedule}\"?",
+  "@adminScheduleChangeTitle": {
+    "placeholders": {
+      "schedule": {
+        "type": "String"
+      }
+    }
+  },
+  "adminScheduleChangeMessage": "It applies from the next check-in. Days already recorded keep the schedule they were saved with.",
+  "adminScheduleChanged": "Schedule updated.",
+  "adminAuditHistory": "Change history",
+  "adminAccountManagedByOperator": "Administrator accounts are activated and deactivated by the system operator.",
+  "adminRangeAll": "All",
+  "adminRangeToday": "Today",
+  "adminRange7": "Last 7 days",
+  "adminRangeMonth": "This month",
+  "adminRangeCustom": "Pick dates",
+  "adminAttendanceDays": "Attendance days",
+  "adminNoDaysInRange": "No attendance in this period.",
+  "adminStatDays": "Attendance days",
+  "adminStatWorked": "Worked (confirmed)",
+  "adminStatLate": "Late arrivals",
+  "adminStatMissing": "Missing check-out",
+  "adminStatReview": "Need review",
+  "adminStatCorrected": "Corrected",
+  "adminFlagCorrected": "Corrected",
+  "adminAttendanceDay": "Attendance day",
+  "adminScheduledShift": "Scheduled shift",
+  "adminWorked": "Worked",
+  "adminLateBy": "Late by",
+  "adminEarlyBy": "Left early by",
+  "adminEffectiveTimes": "Corrected times",
+  "adminNoCorrections": "No correction requests.",
+  "adminCheckInEvidence": "Check-in evidence",
+  "adminCheckOutEvidence": "Check-out evidence",
+  "adminNoCheckOut": "No check-out was recorded.",
+  "adminRecordedAt": "Recorded at",
+  "adminPhotoUnavailable": "No photo was saved.",
+  "adminPhotoLoadFailed": "Couldn’t load the photo.",
+  "adminOpenPhoto": "Open photo full screen",
+  "adminLocationUnavailable": "Location unavailable",
+  "adminLatitude": "Latitude",
+  "adminLongitude": "Longitude",
+  "adminAccuracy": "Accuracy",
+  "adminAccuracyMeters": "±{meters} m",
+  "@adminAccuracyMeters": {
+    "placeholders": {
+      "meters": {
+        "type": "int"
+      }
+    }
+  },
+  "adminLocationCapturedAt": "Location captured at",
+  "adminCopyCoordinates": "Copy coordinates",
+  "adminCopied": "Coordinates copied.",
+  "adminAuditEmpty": "No changes recorded.",
+  "adminAuditSystem": "System",
+  "adminAuditCreated": "Created",
+  "adminAuditChanged": "Changed",
+  "adminAuditDeleted": "Deleted",
+  "adminAuditBy": "by {name}",
+  "@adminAuditBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminAuditTableProfile": "Profile",
+  "adminAuditTableAttendance": "Attendance day",
+  "adminAuditTableEvidence": "Attendance evidence",
+  "adminAuditTableCash": "Cash request",
+  "adminAuditTableCorrection": "Correction request",
+  "adminAuditTableOvertime": "Overtime request",
+  "adminEditTimes": "Edit times",
+  "adminSaveTimes": "Save times",
+  "adminTimesSaved": "Attendance times updated.",
+  "adminRecordedTimes": "Recorded by the app",
+  "adminEditReasonHint": "Why are the times being changed?",
+  "adminConfirmEditTitle": "Save the corrected times?",
+  "adminPendingCorrection": "The employee has a correction request waiting for this day. Review it first.",
+  "adminOwnAttendance": "You can’t correct your own attendance.",
+  "adminPhone": "Phone",
+  "adminPhoneOptional": "Phone (optional)",
+  "adminPhoneHint": "International format, for example +201012345678. Leave empty if unknown.",
+  "adminInvalidPhone": "Enter the number in international format, for example +201012345678.",
+  "resetPasswordTitle": "Reset your password",
+  "authRecoveryLinkInvalid": "This reset link has expired, was already used, or was opened on another phone. Request a new one from this phone.",
   "language": "Language",
   "languageEnglish": "English",
-  "languageArabic": "العربية"
+  "languageArabic": "العربية",
+  "historyTitle": "Attendance history",
+  "historyRecordedWork": "Recorded work",
+  "historyLateArrivals": "Late arrivals",
+  "historySearch": "Search attendance",
+  "historyRecent": "Recent attendance",
+  "historyAll": "All",
+  "historyLate": "Late",
+  "historyPreviousMonth": "Previous month",
+  "historyNextMonth": "Next month",
+  "historyChooseDate": "Choose a date",
+  "historyFilters": "Filter attendance",
+  "historyNoMatches": "No matching attendance",
+  "historyNoMatchesMessage": "Try another search, filter or month.",
+  "historyStale": "Couldn’t refresh. Showing previously loaded records.",
+  "historyAttendanceDays": "{count, plural, =1{1 attendance day} other{{count} attendance days}}",
+  "@historyAttendanceDays": {"placeholders": {"count": {"type": "int"}}},
+  "historyRecords": "{count, plural, =1{1 record} other{{count} records}}",
+  "@historyRecords": {"placeholders": {"count": {"type": "int"}}},
+  "historyOvertimeDays": "{count, plural, =1{1 overtime day} other{{count} overtime days}}",
+  "@historyOvertimeDays": {"placeholders": {"count": {"type": "int"}}},
+  "historyMinutesTotal": "{minutes}m total",
+  "@historyMinutesTotal": {"placeholders": {"minutes": {"type": "int"}}}
 
 }

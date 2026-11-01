@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:efs_work_tracker/app/features/admin/presentation/views/add_employee_view.dart';
 import 'package:efs_work_tracker/app/features/admin/presentation/views/admin_dashboard_view.dart';
 import 'package:efs_work_tracker/app/features/admin/presentation/views/admin_requests_view.dart';
-import 'package:efs_work_tracker/app/features/admin/presentation/views/employee_history_view.dart';
+import 'package:efs_work_tracker/app/features/admin/presentation/views/admin_attendance_day_view.dart';
+import 'package:efs_work_tracker/app/features/admin/presentation/views/audit_history_view.dart';
+import 'package:efs_work_tracker/app/features/admin/presentation/views/employee_details_view.dart';
+import 'package:efs_work_tracker/app/features/admin/presentation/views/edit_attendance_view.dart';
 import 'package:efs_work_tracker/app/features/attendance_correction/presentation/views/correction_form_view.dart';
 import 'package:efs_work_tracker/app/features/attendance_correction/presentation/views/pending_corrections_view.dart';
 import 'package:efs_work_tracker/app/features/attendance_session/domain/entities/attendance_type.dart';
@@ -138,10 +141,27 @@ abstract final class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.adminEmployee,
-        builder: (context, state) => EmployeeHistoryView(
+        builder: (context, state) => EmployeeDetailsView(
           id: state.pathParameters['id']!,
           name: state.extra is String ? state.extra as String : null,
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.adminEmployeeAudit,
+        builder: (context, state) => AuditHistoryView(
+          employeeId: state.pathParameters['id']!,
+          name: state.extra is String ? state.extra as String : null,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.adminAttendanceDay,
+        builder: (context, state) =>
+            AdminAttendanceDayView(attendanceId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: AppRoutes.adminEditAttendance,
+        builder: (context, state) =>
+            EditAttendanceView(attendanceId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: AppRoutes.cashRequest,

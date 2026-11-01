@@ -9,7 +9,8 @@ final class AttendanceHistoryLoading extends AttendanceHistoryState {
 }
 
 final class AttendanceHistoryLoaded extends AttendanceHistoryState {
-  const AttendanceHistoryLoaded(this.sessions);
+  const AttendanceHistoryLoaded(this.sessions, {this.stale = false});
+  final bool stale;
 
   /// Newest first; empty before the first check-in.
   final List<AttendanceSessionEntity> sessions;

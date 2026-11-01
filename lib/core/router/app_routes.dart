@@ -34,6 +34,13 @@ abstract final class AppRoutes {
   static const adminAddEmployee = '/admin/employees/new';
   static const adminEmployee = '/admin/employees/:id';
   static String adminEmployeeOf(String id) => '/admin/employees/$id';
+  static const adminEmployeeAudit = '/admin/employees/:id/audit';
+  static String adminEmployeeAuditOf(String id) => '/admin/employees/$id/audit';
+  static const adminAttendanceDay = '/admin/attendance/:id';
+  static String adminAttendanceDayOf(String id) => '/admin/attendance/$id';
+  static const adminEditAttendance = '/admin/attendance/:id/edit';
+  static String adminEditAttendanceOf(String id) =>
+      '/admin/attendance/$id/edit';
 
   // Cash requests. Overtime has no screens: it is calculated automatically.
   static const cashRequest = '/cash';

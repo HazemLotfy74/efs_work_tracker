@@ -19,7 +19,7 @@ import 'admin_failure_text.dart';
 class AddEmployeeViewBody extends StatelessWidget {
   const AddEmployeeViewBody({
     super.key,
-    this.showRoleSelector = Constants.roleOnAccountCreation,
+    this.showRoleSelector = Constants.accountRoleAndPhone,
   });
 
   /// Offer Employee / Admin; only once the backend accepts a role.
@@ -80,6 +80,7 @@ class _FormState extends State<_Form> {
   final _email = TextEditingController();
   final _code = TextEditingController();
   final _password = TextEditingController();
+  final _phone = TextEditingController();
   late String? _scheduleId = widget.state.schedules.length == 1
       ? widget.state.schedules.single.id
       : null;
@@ -88,7 +89,14 @@ class _FormState extends State<_Form> {
 
   @override
   void dispose() {
-    for (final controller in [_fullName, _username, _email, _code, _password]) {
+    for (final controller in [
+      _fullName,
+      _username,
+      _email,
+      _code,
+      _password,
+      _phone,
+    ]) {
       controller.dispose();
     }
     super.dispose();
@@ -104,6 +112,7 @@ class _FormState extends State<_Form> {
         employeeCode: _code.text,
         scheduleId: _scheduleId,
         password: _password.text,
+        phone: widget.showRoleSelector ? _phone.text : '',
         role: _role,
       ),
     );
@@ -168,6 +177,16 @@ class _FormState extends State<_Form> {
             NewEmployeeField.email,
             keyboard: TextInputType.emailAddress,
           ),
+          // Optional: the account is created without it.
+          if (widget.showRoleSelector)
+            field(
+              'phone',
+              l10n.adminPhoneOptional,
+              _phone,
+              NewEmployeeField.phone,
+              keyboard: TextInputType.phone,
+              helper: l10n.adminPhoneHint,
+            ),
           field(
             'employeeCode',
             l10n.employeeCode,

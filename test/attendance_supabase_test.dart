@@ -29,6 +29,9 @@ import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'helpers/fake_correction_repository.dart';
+import 'helpers/attendance_history_adapter.dart';
+
+import 'package:efs_work_tracker/app/features/history/domain/repositories/history_repository.dart';
 
 // Times are UTC. Cairo is UTC+3 until Thursday 29 October 2026 (DST), so
 // the 8:00–16:00 shift on Sunday 25 October is 05:00–13:00 UTC.
@@ -47,6 +50,9 @@ final storagePath = RegExp(
 
 /// `profiles` with its schedule embedded, as the repository selects it.
 Map<String, dynamic> profileJson() => {
+  'full_name': 'Ahmed Mohamed',
+  'username': 'ahmed.m',
+  'employee_code': 'EMP-125',
   'schedule_id': 'schedule-1',
   'work_schedules': {
     'timezone': 'Africa/Cairo',
@@ -136,6 +142,8 @@ class FakeServer implements DatabaseServices {
 
   final rpcCalls = <(String, Map<String, dynamic>?)>[];
   final reads = <(String, Map<String, dynamic>?)>[];
+  Map<String, Object>? historyLower;
+  Map<String, Object>? historyUpper;
 
   @override
   Future<dynamic> getData({
@@ -146,8 +154,12 @@ class FakeServer implements DatabaseServices {
     String? orderBy,
     bool descending = false,
     int? limit,
+    Map<String, Object>? greaterThanOrEqual,
+    Map<String, Object>? lessThan,
   }) async {
     reads.add((path, query));
+    historyLower = greaterThanOrEqual;
+    historyUpper = lessThan;
     if (readFailure case final failure?) throw failure;
     if (path == readFailureFor) throw TimeoutException(path);
     switch (path) {
@@ -533,6 +545,37 @@ void main() {
     int callsTo(String function) =>
         server.rpcCalls.where((call) => call.$1 == function).length;
 
+    test('selfie names: opaque today, descriptive once enabled', () async {
+      await repository.checkIn(flowEvent(AttendanceType.checkIn));
+      expect(storage.uploads.single, matches(storagePath), reason: 'opaque');
+
+      server.record = null;
+      storage.uploads.clear();
+      final named = SupabaseAttendanceRepository(
+        databaseServices: server,
+        storageServices: storage,
+        currentUserId: () => userId,
+        now: () => deviceNow,
+        descriptiveEvidenceNames: true,
+      );
+      final session = await named.checkIn(
+        flowEvent(AttendanceType.checkIn, file: 'b.jpg'),
+      );
+      final path = storage.uploads.single;
+      // flowEvent's selfie was taken at 05:06 UTC on 25 October.
+      expect(
+        path,
+        matches(
+          RegExp(
+            '^$userId/Ahmed_Mohamed_EMP-125_check_in_20261025_050600_'
+            r'[0-9a-f]{8}\.jpg$',
+          ),
+        ),
+      );
+      // The attendance event references exactly the uploaded object.
+      expect(session.checkIn.selfiePath, path);
+    });
+
     test('web: a blob: selfie gets its type from its bytes', () async {
       final event = flowEvent(AttendanceType.checkIn);
       final web = AttendanceEventEntity(
@@ -892,6 +935,9 @@ void main() {
         MultiRepositoryProvider(
           providers: [
             RepositoryProvider<AttendanceRepository>.value(value: repository),
+            RepositoryProvider<HistoryRepository>.value(
+              value: AttendanceHistoryAdapter(repository),
+            ),
             RepositoryProvider<CorrectionRepository>.value(
               value: FakeCorrectionRepository(),
             ),
@@ -947,7 +993,7 @@ void main() {
         ..history = [closedDay()];
       await showPage(tester, const HistoryView(), repository);
       expect(tester.takeException(), isNull);
-      expect(find.text('Needs Review'), findsOneWidget);
+      expect(find.text('Needs Review'), findsWidgets);
       expect(find.text('Not confirmed'), findsOneWidget);
     });
 
@@ -1237,7 +1283,10 @@ class _ScriptedRepository implements AttendanceRepository {
   }
 
   @override
-  Future<List<AttendanceSessionEntity>> getHistory({int limit = 60}) async {
+  Future<List<AttendanceSessionEntity>> getHistory({
+    int limit = 60,
+    DateTime? month,
+  }) async {
     if (historyFailure case final failure?) throw failure;
     return history;
   }

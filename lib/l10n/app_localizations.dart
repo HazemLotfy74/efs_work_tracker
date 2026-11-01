@@ -2234,6 +2234,474 @@ abstract class AppLocalizations {
   /// **'Shift end'**
   String get adminShiftEnd;
 
+  /// No description provided for @employeeDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee details'**
+  String get employeeDetails;
+
+  /// No description provided for @adminActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get adminActive;
+
+  /// No description provided for @adminCreatedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Created on'**
+  String get adminCreatedOn;
+
+  /// No description provided for @adminActivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate account'**
+  String get adminActivate;
+
+  /// No description provided for @adminDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate account'**
+  String get adminDeactivate;
+
+  /// No description provided for @adminActivateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate {name}?'**
+  String adminActivateTitle(String name);
+
+  /// No description provided for @adminDeactivateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate {name}?'**
+  String adminDeactivateTitle(String name);
+
+  /// No description provided for @adminActivateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They can sign in and record attendance again.'**
+  String get adminActivateMessage;
+
+  /// No description provided for @adminDeactivateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They can\'t sign in or record attendance until the account is activated again. Their records are kept.'**
+  String get adminDeactivateMessage;
+
+  /// No description provided for @adminStatusChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Account status updated.'**
+  String get adminStatusChanged;
+
+  /// No description provided for @adminChangeSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Change schedule'**
+  String get adminChangeSchedule;
+
+  /// No description provided for @adminScheduleChangeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign \"{schedule}\"?'**
+  String adminScheduleChangeTitle(String schedule);
+
+  /// No description provided for @adminScheduleChangeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It applies from the next check-in. Days already recorded keep the schedule they were saved with.'**
+  String get adminScheduleChangeMessage;
+
+  /// No description provided for @adminScheduleChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule updated.'**
+  String get adminScheduleChanged;
+
+  /// No description provided for @adminAuditHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Change history'**
+  String get adminAuditHistory;
+
+  /// No description provided for @adminAccountManagedByOperator.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator accounts are activated and deactivated by the system operator.'**
+  String get adminAccountManagedByOperator;
+
+  /// No description provided for @adminRangeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get adminRangeAll;
+
+  /// No description provided for @adminRangeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get adminRangeToday;
+
+  /// No description provided for @adminRange7.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get adminRange7;
+
+  /// No description provided for @adminRangeMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get adminRangeMonth;
+
+  /// No description provided for @adminRangeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick dates'**
+  String get adminRangeCustom;
+
+  /// No description provided for @adminAttendanceDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance days'**
+  String get adminAttendanceDays;
+
+  /// No description provided for @adminNoDaysInRange.
+  ///
+  /// In en, this message translates to:
+  /// **'No attendance in this period.'**
+  String get adminNoDaysInRange;
+
+  /// No description provided for @adminStatDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance days'**
+  String get adminStatDays;
+
+  /// No description provided for @adminStatWorked.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked (confirmed)'**
+  String get adminStatWorked;
+
+  /// No description provided for @adminStatLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late arrivals'**
+  String get adminStatLate;
+
+  /// No description provided for @adminStatMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing check-out'**
+  String get adminStatMissing;
+
+  /// No description provided for @adminStatReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Need review'**
+  String get adminStatReview;
+
+  /// No description provided for @adminStatCorrected.
+  ///
+  /// In en, this message translates to:
+  /// **'Corrected'**
+  String get adminStatCorrected;
+
+  /// No description provided for @adminFlagCorrected.
+  ///
+  /// In en, this message translates to:
+  /// **'Corrected'**
+  String get adminFlagCorrected;
+
+  /// No description provided for @adminAttendanceDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance day'**
+  String get adminAttendanceDay;
+
+  /// No description provided for @adminScheduledShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled shift'**
+  String get adminScheduledShift;
+
+  /// No description provided for @adminWorked.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked'**
+  String get adminWorked;
+
+  /// No description provided for @adminLateBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Late by'**
+  String get adminLateBy;
+
+  /// No description provided for @adminEarlyBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Left early by'**
+  String get adminEarlyBy;
+
+  /// No description provided for @adminEffectiveTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Corrected times'**
+  String get adminEffectiveTimes;
+
+  /// No description provided for @adminNoCorrections.
+  ///
+  /// In en, this message translates to:
+  /// **'No correction requests.'**
+  String get adminNoCorrections;
+
+  /// No description provided for @adminCheckInEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in evidence'**
+  String get adminCheckInEvidence;
+
+  /// No description provided for @adminCheckOutEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-out evidence'**
+  String get adminCheckOutEvidence;
+
+  /// No description provided for @adminNoCheckOut.
+  ///
+  /// In en, this message translates to:
+  /// **'No check-out was recorded.'**
+  String get adminNoCheckOut;
+
+  /// No description provided for @adminRecordedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded at'**
+  String get adminRecordedAt;
+
+  /// No description provided for @adminPhotoUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No photo was saved.'**
+  String get adminPhotoUnavailable;
+
+  /// No description provided for @adminPhotoLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t load the photo.'**
+  String get adminPhotoLoadFailed;
+
+  /// No description provided for @adminOpenPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Open photo full screen'**
+  String get adminOpenPhoto;
+
+  /// No description provided for @adminLocationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable'**
+  String get adminLocationUnavailable;
+
+  /// No description provided for @adminLatitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get adminLatitude;
+
+  /// No description provided for @adminLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get adminLongitude;
+
+  /// No description provided for @adminAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get adminAccuracy;
+
+  /// No description provided for @adminAccuracyMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'±{meters} m'**
+  String adminAccuracyMeters(int meters);
+
+  /// No description provided for @adminLocationCapturedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Location captured at'**
+  String get adminLocationCapturedAt;
+
+  /// No description provided for @adminCopyCoordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy coordinates'**
+  String get adminCopyCoordinates;
+
+  /// No description provided for @adminCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinates copied.'**
+  String get adminCopied;
+
+  /// No description provided for @adminAuditEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes recorded.'**
+  String get adminAuditEmpty;
+
+  /// No description provided for @adminAuditSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get adminAuditSystem;
+
+  /// No description provided for @adminAuditCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get adminAuditCreated;
+
+  /// No description provided for @adminAuditChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed'**
+  String get adminAuditChanged;
+
+  /// No description provided for @adminAuditDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get adminAuditDeleted;
+
+  /// No description provided for @adminAuditBy.
+  ///
+  /// In en, this message translates to:
+  /// **'by {name}'**
+  String adminAuditBy(String name);
+
+  /// No description provided for @adminAuditTableProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get adminAuditTableProfile;
+
+  /// No description provided for @adminAuditTableAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance day'**
+  String get adminAuditTableAttendance;
+
+  /// No description provided for @adminAuditTableEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance evidence'**
+  String get adminAuditTableEvidence;
+
+  /// No description provided for @adminAuditTableCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash request'**
+  String get adminAuditTableCash;
+
+  /// No description provided for @adminAuditTableCorrection.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction request'**
+  String get adminAuditTableCorrection;
+
+  /// No description provided for @adminAuditTableOvertime.
+  ///
+  /// In en, this message translates to:
+  /// **'Overtime request'**
+  String get adminAuditTableOvertime;
+
+  /// No description provided for @adminEditTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit times'**
+  String get adminEditTimes;
+
+  /// No description provided for @adminSaveTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save times'**
+  String get adminSaveTimes;
+
+  /// No description provided for @adminTimesSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance times updated.'**
+  String get adminTimesSaved;
+
+  /// No description provided for @adminRecordedTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded by the app'**
+  String get adminRecordedTimes;
+
+  /// No description provided for @adminEditReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are the times being changed?'**
+  String get adminEditReasonHint;
+
+  /// No description provided for @adminConfirmEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save the corrected times?'**
+  String get adminConfirmEditTitle;
+
+  /// No description provided for @adminPendingCorrection.
+  ///
+  /// In en, this message translates to:
+  /// **'The employee has a correction request waiting for this day. Review it first.'**
+  String get adminPendingCorrection;
+
+  /// No description provided for @adminOwnAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'You can’t correct your own attendance.'**
+  String get adminOwnAttendance;
+
+  /// No description provided for @adminPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get adminPhone;
+
+  /// No description provided for @adminPhoneOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone (optional)'**
+  String get adminPhoneOptional;
+
+  /// No description provided for @adminPhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'International format, for example +201012345678. Leave empty if unknown.'**
+  String get adminPhoneHint;
+
+  /// No description provided for @adminInvalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the number in international format, for example +201012345678.'**
+  String get adminInvalidPhone;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @authRecoveryLinkInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'This reset link has expired, was already used, or was opened on another phone. Request a new one from this phone.'**
+  String get authRecoveryLinkInvalid;
+
   /// No description provided for @language.
   ///
   /// In en, this message translates to:
@@ -2251,6 +2719,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'العربية'**
   String get languageArabic;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance history'**
+  String get historyTitle;
+
+  /// No description provided for @historyRecordedWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded work'**
+  String get historyRecordedWork;
+
+  /// No description provided for @historyLateArrivals.
+  ///
+  /// In en, this message translates to:
+  /// **'Late arrivals'**
+  String get historyLateArrivals;
+
+  /// No description provided for @historySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search attendance'**
+  String get historySearch;
+
+  /// No description provided for @historyRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent attendance'**
+  String get historyRecent;
+
+  /// No description provided for @historyAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get historyAll;
+
+  /// No description provided for @historyLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Late'**
+  String get historyLate;
+
+  /// No description provided for @historyPreviousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get historyPreviousMonth;
+
+  /// No description provided for @historyNextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get historyNextMonth;
+
+  /// No description provided for @historyChooseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a date'**
+  String get historyChooseDate;
+
+  /// No description provided for @historyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter attendance'**
+  String get historyFilters;
+
+  /// No description provided for @historyNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching attendance'**
+  String get historyNoMatches;
+
+  /// No description provided for @historyNoMatchesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another search, filter or month.'**
+  String get historyNoMatchesMessage;
+
+  /// No description provided for @historyStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t refresh. Showing previously loaded records.'**
+  String get historyStale;
+
+  /// No description provided for @historyAttendanceDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 attendance day} other{{count} attendance days}}'**
+  String historyAttendanceDays(int count);
+
+  /// No description provided for @historyRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record} other{{count} records}}'**
+  String historyRecords(int count);
+
+  /// No description provided for @historyOvertimeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 overtime day} other{{count} overtime days}}'**
+  String historyOvertimeDays(int count);
+
+  /// No description provided for @historyMinutesTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m total'**
+  String historyMinutesTotal(int minutes);
 }
 
 class _AppLocalizationsDelegate

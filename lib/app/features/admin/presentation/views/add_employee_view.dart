@@ -10,7 +10,7 @@ import '../widgets/add_employee_view_body.dart';
 class AddEmployeeView extends StatelessWidget {
   const AddEmployeeView({
     super.key,
-    this.showRoleSelector = Constants.roleOnAccountCreation,
+    this.showRoleSelector = Constants.accountRoleAndPhone,
   });
 
   final bool showRoleSelector;

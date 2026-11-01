@@ -16,9 +16,11 @@ class AuditHistoryCubit extends Cubit<AuditHistoryState> {
   Future<void> load() async {
     emit(const AuditHistoryLoading());
     try {
-      final entries = await _repository.getAuditHistory(employeeId);
       // Names for "who": every account an admin can see.
-      final employees = await _repository.getEmployees();
+      final (entries, employees) = await (
+        _repository.getAuditHistory(employeeId),
+        _repository.getEmployees(),
+      ).wait;
       if (isClosed) return;
       emit(
         AuditHistoryLoaded(entries, {

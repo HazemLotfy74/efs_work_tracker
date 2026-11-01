@@ -245,10 +245,18 @@ void main() {
     );
     expect(find.text('Check In Now'), findsOneWidget);
 
-    // Checked in an hour ago: the card shows a running timer.
+    // Checked in an hour ago (or, just after midnight, earlier today): the
+    // card shows a running timer. Yesterday's check-in would already be
+    // closed, so the time must stay on today's date.
     final cubit = sessionCubit(tester);
-    final oneHourAgo = DateTime.now().subtract(const Duration(hours: 1));
-    await cubit.record(event(AttendanceType.checkIn, oneHourAgo));
+    final now = DateTime.now();
+    final sinceMidnight = now.difference(
+      DateTime(now.year, now.month, now.day),
+    );
+    final ago = sinceMidnight > const Duration(hours: 1, minutes: 1)
+        ? const Duration(hours: 1)
+        : Duration(seconds: sinceMidnight.inSeconds ~/ 2);
+    await cubit.record(event(AttendanceType.checkIn, now.subtract(ago)));
     // The cubit's new state reaches widgets on the next frame.
     await tester.pump();
     await tester.pump();
@@ -258,7 +266,13 @@ void main() {
     expect(find.text('Check out'), findsOneWidget);
     // Elapsed time as HH:MM:SS. (Tests can't watch it tick: the test clock
     // doesn't move DateTime.now.)
-    expect(find.textContaining('01:00:'), findsOneWidget);
+    String two(int value) => value.toString().padLeft(2, '0');
+    expect(
+      find.textContaining(
+        '${two(ago.inHours)}:${two(ago.inMinutes.remainder(60))}:',
+      ),
+      findsOneWidget,
+    );
 
     // After check-out: total time and the details button.
     await cubit.record(event(AttendanceType.checkOut, DateTime.now()));
@@ -268,7 +282,14 @@ void main() {
 
     expect(find.text('Checked Out'), findsWidgets);
     expect(find.text('Total working time'), findsOneWidget);
-    expect(find.text('1h 0m'), findsOneWidget);
+    expect(
+      find.text(
+        ago.inHours > 0
+            ? '${ago.inHours}h ${ago.inMinutes.remainder(60)}m'
+            : '${ago.inMinutes}m',
+      ),
+      findsOneWidget,
+    );
     expect(find.text('View attendance details'), findsOneWidget);
     expect(find.text('LIVE'), findsNothing);
   });

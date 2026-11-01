@@ -9,7 +9,10 @@ import 'database_services.dart';
 /// Row Level Security only allows reads on this project's tables, so the
 /// write methods fail there; use [rpc] for writes.
 class SupabaseDatabaseServices implements DatabaseServices {
-  SupabaseClient get _client => Constants.supabase;
+  SupabaseDatabaseServices({SupabaseClient? client}) : _providedClient = client;
+
+  final SupabaseClient? _providedClient;
+  SupabaseClient get _client => _providedClient ?? Constants.supabase;
 
   @override
   Future<void> addData({
@@ -42,9 +45,15 @@ class SupabaseDatabaseServices implements DatabaseServices {
     String? orderBy,
     bool descending = false,
     int? limit,
+    Map<String, Object>? greaterThanOrEqual,
+    Map<String, Object>? lessThan,
   }) async {
     var builder = _client.from(path).select(column ?? '*');
     query?.forEach((key, value) => builder = builder.eq(key, value as Object));
+    greaterThanOrEqual?.forEach(
+      (key, value) => builder = builder.gte(key, value),
+    );
+    lessThan?.forEach((key, value) => builder = builder.lt(key, value));
     if (documentId != null) {
       return await builder.eq('id', documentId).maybeSingle();
     }

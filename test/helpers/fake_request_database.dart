@@ -31,6 +31,8 @@ class FakeRequestDatabase implements DatabaseServices {
     String? orderBy,
     bool descending = false,
     int? limit,
+    Map<String, Object>? greaterThanOrEqual,
+    Map<String, Object>? lessThan,
   }) async {
     if (path != table) throw StateError('Unexpected table $path');
     readQueries.add(query);

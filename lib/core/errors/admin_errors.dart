@@ -24,6 +24,25 @@ enum AdminFailure implements Exception {
   alreadyReviewed,
   notFound,
 
+  /// Correction times outside the day: check-in on the work date before the
+  /// shift ends, check-out after it and before the close deadline.
+  invalidTimes,
+
+  /// A correction reason of 1–2000 characters is required.
+  invalidReason,
+
+  /// Only a closed day (checked out or closed automatically) is corrected.
+  notClosed,
+
+  /// The employee's own request for this day is waiting: review it first.
+  pendingCorrection,
+
+  /// These are already the corrected times.
+  noChange,
+
+  /// Admins can't correct their own attendance.
+  ownAttendance,
+
   /// Another action is already being sent.
   busy,
   network,
