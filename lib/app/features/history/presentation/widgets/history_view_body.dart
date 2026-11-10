@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../core/widgets/pickers/app_pickers.dart';
+
 import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/extensions/date_time_format.dart';
 import '../../../../../core/manager/clock_cubit.dart';
@@ -45,11 +47,13 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
 
   Future<void> _chooseDate() async {
     final cubit = context.read<AttendanceHistoryCubit>();
-    final date = await showDatePicker(
-      context: context,
+    // No attendance can exist in the future or before the app existed.
+    final today = DateTime.now();
+    final date = await showAppDatePicker(
+      context,
       initialDate: _day ?? cubit.month,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100, 12, 31),
+      firstDate: DateTime(2020),
+      lastDate: today,
     );
     if (date == null || !mounted) return;
     setState(() => _day = date);

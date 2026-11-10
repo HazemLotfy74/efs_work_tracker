@@ -21,22 +21,38 @@ class AdminDashboardCubit extends Cubit<AdminDashboardState> {
     final loadId = ++_loadId;
     if (state is! AdminDashboardLoaded) emit(const AdminDashboardLoading());
     try {
-      final employees = await _repository.getEmployees();
-      final schedules = await _repository.getSchedules();
+      // Independent reads run together; today's days need the first two.
+      final (employees, schedules, recent) = await (
+        _repository.getEmployees(),
+        _repository.getSchedules(),
+        _repository.getRecentDays(),
+      ).wait;
       final today = await _repository.getToday(employees, schedules);
       if (isClosed || loadId != _loadId) return;
+      final byId = {for (final employee in employees) employee.id: employee};
       emit(
-        AdminDashboardLoaded([
-          for (final employee in employees)
-            (employee: employee, today: today[employee.id]),
-        ]),
+        AdminDashboardLoaded(
+          [
+            for (final employee in employees)
+              (employee: employee, today: today[employee.id]),
+          ],
+          earlyDepartures: [
+            for (final day in recent)
+              if (day.session.leftEarly && byId[day.employeeId] != null)
+                (employee: byId[day.employeeId]!, today: day.session),
+          ],
+        ),
       );
     } catch (_) {
       if (isClosed || loadId != _loadId) return;
       final current = state;
       emit(
         current is AdminDashboardLoaded
-            ? AdminDashboardLoaded(current.rows, stale: true)
+            ? AdminDashboardLoaded(
+                current.rows,
+                earlyDepartures: current.earlyDepartures,
+                stale: true,
+              )
             : const AdminDashboardError(),
       );
     }

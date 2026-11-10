@@ -9,7 +9,8 @@ import '../../../home/presentation/widgets/custom_status_container.dart';
 
 /// The badge and one line of detail for an attendance day, as an admin
 /// sees it. A session still running after its shift end is flagged: it
-/// may have been forgotten, and the server closes it at the deadline.
+/// may have been forgotten, and the server closes it at the deadline. A
+/// check-out before the shift end is flagged as "Left early".
 class AdminDayStatus extends StatelessWidget {
   const AdminDayStatus({super.key, required this.session, required this.now});
 
@@ -25,6 +26,9 @@ class AdminDayStatus extends StatelessWidget {
         !now.isBefore(session.scheduledEnd);
     final (tone, label) = pastShiftEnd
         ? (StatusTone.warning, l10n.adminPastShiftEnd)
+        // Hours are confirmed, but it needs a look: left before shift end.
+        : session.leftEarly
+        ? (StatusTone.warning, l10n.adminLeftEarly)
         : (status.tone, status.label(l10n));
     final worked = session.durationAt(now)?.worked;
     final out = session.checkOutTime;

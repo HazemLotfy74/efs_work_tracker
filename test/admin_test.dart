@@ -29,6 +29,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'helpers/app_providers.dart';
 import 'helpers/fake_admin_repository.dart';
+import 'helpers/fake_evidence_storage.dart';
 
 // Cairo is UTC+3 until 29 October 2026: 12:00 Cairo on Sunday 25 October.
 const adminId = '33333333-3333-4333-8333-333333333333';
@@ -245,7 +246,11 @@ void main() {
         scheduleId: null,
         password: 'short',
       );
-      expect(value.invalidFields, NewEmployeeField.values.toSet());
+      // Everything but the phone, which is optional (empty is valid).
+      expect(
+        value.invalidFields,
+        NewEmployeeField.values.toSet()..remove(NewEmployeeField.phone),
+      );
       expect(
         NewEmployeeDraft(
           fullName: 'x',
@@ -269,6 +274,7 @@ void main() {
       server = FakeAdminServer();
       accounts = FakeAccountsFunction();
       repository = SupabaseAdminRepository(
+        storageServices: FakeEvidenceStorage(),
         databaseServices: server,
         accountsFunction: accounts.call,
         currentUserId: () => adminId,
@@ -361,6 +367,8 @@ void main() {
         'password': 'a-long-first-password',
         'employee_code': 'EMP-9',
         'schedule_id': scheduleId,
+        // The chosen role is always sent; the empty phone is not.
+        'role': 'employee',
       });
     });
 
@@ -419,6 +427,7 @@ void main() {
         );
         SupabaseAdminRepository on({required bool web}) =>
             SupabaseAdminRepository(
+              storageServices: FakeEvidenceStorage(),
               databaseServices: server,
               accountsFunction: accounts.call,
               currentUserId: () => adminId,
@@ -471,6 +480,7 @@ void main() {
 
     test('signed out: nothing is read', () async {
       final signedOut = SupabaseAdminRepository(
+        storageServices: FakeEvidenceStorage(),
         databaseServices: server,
         accountsFunction: accounts.call,
         currentUserId: () => null,

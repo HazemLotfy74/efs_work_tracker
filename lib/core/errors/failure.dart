@@ -32,6 +32,10 @@ enum AuthFailureReason {
   /// unlocked. Sign in with the new password and change it once more.
   passwordCompletionPending,
   sessionExpired,
+
+  /// A password-reset link that expired, was already used, or was opened
+  /// on another phone (the PKCE code verifier is on the requesting one).
+  recoveryLinkInvalid,
   network,
   unknown,
 }

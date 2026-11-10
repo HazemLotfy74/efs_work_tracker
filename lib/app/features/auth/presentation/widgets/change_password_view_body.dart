@@ -117,10 +117,11 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
                               color: context.colors.primary,
                             ),
                           ),
-                          Text(
-                            context.l10n.changePasswordTitle,
-                            style: context.textTheme.headlineMedium,
-                          ),
+                          Text(switch (context.watch<AuthCubit>().state) {
+                            AuthPasswordChangeRequired(fromResetLink: true) =>
+                              context.l10n.resetPasswordTitle,
+                            _ => context.l10n.changePasswordTitle,
+                          }, style: context.textTheme.headlineMedium),
                           Text(
                             context.l10n.changePasswordSubtitle,
                             style: AppTextStyles.lead.copyWith(

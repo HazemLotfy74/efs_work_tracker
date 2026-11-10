@@ -15,6 +15,7 @@ import '../../domain/entities/attendance_type.dart';
 import '../../domain/entities/location_entity.dart';
 import '../../domain/entities/shift_entity.dart';
 import '../../domain/repositories/attendance_repository.dart';
+import '../models/evidence_file_name.dart';
 import '../models/attendance_session_model.dart';
 import '../models/shift_model.dart';
 
@@ -38,7 +39,12 @@ class SupabaseAttendanceRepository implements AttendanceRepository {
     required this._currentUserId,
     this._now = DateTime.now,
     this.timeout = const Duration(seconds: 20),
+    this.descriptiveEvidenceNames = Constants.descriptiveEvidenceNames,
   });
+
+  /// Name selfies after the employee (see [EvidenceFileName]). Off until the
+  /// bucket's upload policy accepts such names.
+  final bool descriptiveEvidenceNames;
 
   final DatabaseServices _databaseServices;
   final StorageServices _storageServices;
@@ -327,8 +333,39 @@ class SupabaseAttendanceRepository implements AttendanceRepository {
     return event.location ?? (throw AttendanceFailure.invalidLocation);
   }
 
+  /// The signed-in employee's name and codes for evidence file names, read
+  /// once from their own profile (RLS); `null` falls back to the original
+  /// naming rather than blocking the check-in.
+  Future<EvidenceOwner?> _evidenceOwner(String userId) async {
+    if (_owner case (final id, final owner) when id == userId) return owner;
+    try {
+      final row = await _guard(
+        'profiles',
+        () => _databaseServices.getData(
+          path: 'profiles',
+          documentId: userId,
+          column: 'full_name, username, employee_code',
+        ),
+      );
+      if (row is! Map) return null;
+      final owner = (
+        fullName: row['full_name'] as String? ?? '',
+        username: row['username'] as String? ?? '',
+        employeeCode: row['employee_code'] as String? ?? '',
+      );
+      _owner = (userId, owner);
+      return owner;
+    } catch (e) {
+      log('Evidence owner unavailable: ${e.runtimeType}');
+      return null;
+    }
+  }
+
+  (String, EvidenceOwner)? _owner;
+
   /// Uploads the event's selfie once and returns its Storage path:
-  /// `<user id>/<uuid>.<ext>`, as the bucket's policy requires.
+  /// `<user id>/<uuid>.<ext>`, as the bucket's policy requires today, or a
+  /// descriptive name (see [EvidenceFileName]) once the policy allows it.
   Future<String> _uploadSelfie(AttendanceEventEntity event) async {
     final localPath = event.selfiePath!;
     final userId = _currentUserId();
@@ -358,9 +395,26 @@ class SupabaseAttendanceRepository implements AttendanceRepository {
     };
 
     var path = _selfiePaths[localPath];
-    // Never reuse a path made for another signed-in account.
+    // Never reuse a path made for another signed-in account. A retry of the
+    // same photo reuses its name, so it is never uploaded twice.
     if (path == null || !path.startsWith('$userId/')) {
-      path = '$userId/${_uuidV4()}.$extension';
+      final owner = descriptiveEvidenceNames
+          ? await _evidenceOwner(userId)
+          : null;
+      path = owner == null
+          ? EvidenceFileName.opaque(
+              userId: userId,
+              uniqueId: _uuidV4(),
+              extension: extension,
+            )
+          : EvidenceFileName.descriptive(
+              userId: userId,
+              owner: owner,
+              type: event.type,
+              takenAt: event.selfieCapturedAt ?? event.time ?? _now(),
+              uniqueId: _uuidV4(),
+              extension: extension,
+            );
       _selfiePaths[localPath] = path;
     }
 

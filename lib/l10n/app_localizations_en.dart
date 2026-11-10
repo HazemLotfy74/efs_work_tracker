@@ -1191,6 +1191,272 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminRequestRejected => 'Request rejected.';
 
   @override
+  String get adminLeftEarly => 'Left early';
+
+  @override
+  String adminLeftEarlyBy(String duration) {
+    return '$duration early';
+  }
+
+  @override
+  String get adminEarlyDepartures => 'Early departures to review';
+
+  @override
+  String get adminShiftEnd => 'Shift end';
+
+  @override
+  String get employeeDetails => 'Employee details';
+
+  @override
+  String get adminActive => 'Active';
+
+  @override
+  String get adminCreatedOn => 'Created on';
+
+  @override
+  String get adminActivate => 'Activate account';
+
+  @override
+  String get adminDeactivate => 'Deactivate account';
+
+  @override
+  String adminActivateTitle(String name) {
+    return 'Activate $name?';
+  }
+
+  @override
+  String adminDeactivateTitle(String name) {
+    return 'Deactivate $name?';
+  }
+
+  @override
+  String get adminActivateMessage =>
+      'They can sign in and record attendance again.';
+
+  @override
+  String get adminDeactivateMessage =>
+      'They can\'t sign in or record attendance until the account is activated again. Their records are kept.';
+
+  @override
+  String get adminStatusChanged => 'Account status updated.';
+
+  @override
+  String get adminChangeSchedule => 'Change schedule';
+
+  @override
+  String adminScheduleChangeTitle(String schedule) {
+    return 'Assign \"$schedule\"?';
+  }
+
+  @override
+  String get adminScheduleChangeMessage =>
+      'It applies from the next check-in. Days already recorded keep the schedule they were saved with.';
+
+  @override
+  String get adminScheduleChanged => 'Schedule updated.';
+
+  @override
+  String get adminAuditHistory => 'Change history';
+
+  @override
+  String get adminAccountManagedByOperator =>
+      'Administrator accounts are activated and deactivated by the system operator.';
+
+  @override
+  String get adminRangeAll => 'All';
+
+  @override
+  String get adminRangeToday => 'Today';
+
+  @override
+  String get adminRange7 => 'Last 7 days';
+
+  @override
+  String get adminRangeMonth => 'This month';
+
+  @override
+  String get adminRangeCustom => 'Pick dates';
+
+  @override
+  String get adminAttendanceDays => 'Attendance days';
+
+  @override
+  String get adminNoDaysInRange => 'No attendance in this period.';
+
+  @override
+  String get adminStatDays => 'Attendance days';
+
+  @override
+  String get adminStatWorked => 'Worked (confirmed)';
+
+  @override
+  String get adminStatLate => 'Late arrivals';
+
+  @override
+  String get adminStatMissing => 'Missing check-out';
+
+  @override
+  String get adminStatReview => 'Need review';
+
+  @override
+  String get adminStatCorrected => 'Corrected';
+
+  @override
+  String get adminFlagCorrected => 'Corrected';
+
+  @override
+  String get adminAttendanceDay => 'Attendance day';
+
+  @override
+  String get adminScheduledShift => 'Scheduled shift';
+
+  @override
+  String get adminWorked => 'Worked';
+
+  @override
+  String get adminLateBy => 'Late by';
+
+  @override
+  String get adminEarlyBy => 'Left early by';
+
+  @override
+  String get adminEffectiveTimes => 'Corrected times';
+
+  @override
+  String get adminNoCorrections => 'No correction requests.';
+
+  @override
+  String get adminCheckInEvidence => 'Check-in evidence';
+
+  @override
+  String get adminCheckOutEvidence => 'Check-out evidence';
+
+  @override
+  String get adminNoCheckOut => 'No check-out was recorded.';
+
+  @override
+  String get adminRecordedAt => 'Recorded at';
+
+  @override
+  String get adminPhotoUnavailable => 'No photo was saved.';
+
+  @override
+  String get adminPhotoLoadFailed => 'Couldn’t load the photo.';
+
+  @override
+  String get adminOpenPhoto => 'Open photo full screen';
+
+  @override
+  String get adminLocationUnavailable => 'Location unavailable';
+
+  @override
+  String get adminLatitude => 'Latitude';
+
+  @override
+  String get adminLongitude => 'Longitude';
+
+  @override
+  String get adminAccuracy => 'Accuracy';
+
+  @override
+  String adminAccuracyMeters(int meters) {
+    return '±$meters m';
+  }
+
+  @override
+  String get adminLocationCapturedAt => 'Location captured at';
+
+  @override
+  String get adminCopyCoordinates => 'Copy coordinates';
+
+  @override
+  String get adminCopied => 'Coordinates copied.';
+
+  @override
+  String get adminAuditEmpty => 'No changes recorded.';
+
+  @override
+  String get adminAuditSystem => 'System';
+
+  @override
+  String get adminAuditCreated => 'Created';
+
+  @override
+  String get adminAuditChanged => 'Changed';
+
+  @override
+  String get adminAuditDeleted => 'Deleted';
+
+  @override
+  String adminAuditBy(String name) {
+    return 'by $name';
+  }
+
+  @override
+  String get adminAuditTableProfile => 'Profile';
+
+  @override
+  String get adminAuditTableAttendance => 'Attendance day';
+
+  @override
+  String get adminAuditTableEvidence => 'Attendance evidence';
+
+  @override
+  String get adminAuditTableCash => 'Cash request';
+
+  @override
+  String get adminAuditTableCorrection => 'Correction request';
+
+  @override
+  String get adminAuditTableOvertime => 'Overtime request';
+
+  @override
+  String get adminEditTimes => 'Edit times';
+
+  @override
+  String get adminSaveTimes => 'Save times';
+
+  @override
+  String get adminTimesSaved => 'Attendance times updated.';
+
+  @override
+  String get adminRecordedTimes => 'Recorded by the app';
+
+  @override
+  String get adminEditReasonHint => 'Why are the times being changed?';
+
+  @override
+  String get adminConfirmEditTitle => 'Save the corrected times?';
+
+  @override
+  String get adminPendingCorrection =>
+      'The employee has a correction request waiting for this day. Review it first.';
+
+  @override
+  String get adminOwnAttendance => 'You can’t correct your own attendance.';
+
+  @override
+  String get adminPhone => 'Phone';
+
+  @override
+  String get adminPhoneOptional => 'Phone (optional)';
+
+  @override
+  String get adminPhoneHint =>
+      'International format, for example +201012345678. Leave empty if unknown.';
+
+  @override
+  String get adminInvalidPhone =>
+      'Enter the number in international format, for example +201012345678.';
+
+  @override
+  String get resetPasswordTitle => 'Reset your password';
+
+  @override
+  String get authRecoveryLinkInvalid =>
+      'This reset link has expired, was already used, or was opened on another phone. Request a new one from this phone.';
+
+  @override
   String get language => 'Language';
 
   @override

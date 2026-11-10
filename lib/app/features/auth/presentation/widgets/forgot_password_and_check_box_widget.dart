@@ -12,38 +12,47 @@ class ForgotPasswordAndCheckBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Both labels may shrink and wrap: long translations overflowed on
+    // narrow phones.
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      spacing: 8,
       children: [
-        Row(
-          children: [
-            ValueListenableBuilder(
-              valueListenable: _checkBox,
-              builder: (context, value, child) {
-                return Checkbox(
-                  value: _checkBox.value,
-                  onChanged: (value) {
-                    _checkBox.value = !_checkBox.value;
-                  },
-                );
-              },
-            ),
-            Text(
-              context.l10n.rememberMe,
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: context.colors.onSurfaceVariant,
+        Expanded(
+          child: Row(
+            children: [
+              ValueListenableBuilder(
+                valueListenable: _checkBox,
+                builder: (context, value, child) {
+                  return Checkbox(
+                    value: _checkBox.value,
+                    onChanged: (value) {
+                      _checkBox.value = !_checkBox.value;
+                    },
+                  );
+                },
               ),
-            ),
-          ],
+              Flexible(
+                child: Text(
+                  context.l10n.rememberMe,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.colors.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        InkWell(
-          onTap: () {
-            context.push(AppRoutes.forgotPassword);
-          },
-          child: Text(
-            context.l10n.forgotPassword,
-            style: context.textTheme.labelMedium?.copyWith(
-              color: context.colors.primary,
+        Flexible(
+          child: InkWell(
+            onTap: () {
+              context.push(AppRoutes.forgotPassword);
+            },
+            child: Text(
+              context.l10n.forgotPassword,
+              textAlign: TextAlign.end,
+              style: context.textTheme.labelMedium?.copyWith(
+                color: context.colors.primary,
+              ),
             ),
           ),
         ),

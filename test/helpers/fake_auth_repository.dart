@@ -66,4 +66,14 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Stream<void> get passwordRecovery => _recovery.stream;
+
+  final _linkFailures = StreamController<AuthFailure>.broadcast();
+
+  /// Simulates opening an expired or already-used reset link.
+  void openBadResetLink() => _linkFailures.add(
+    AuthFailure(AuthFailureReason.recoveryLinkInvalid, message: 'otp_expired'),
+  );
+
+  @override
+  Stream<AuthFailure> get recoveryLinkFailed => _linkFailures.stream;
 }

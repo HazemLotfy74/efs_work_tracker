@@ -36,4 +36,13 @@ class SupabaseStorageServices implements StorageServices {
   @override
   Future<String?> imageTypeOf(String localPath) async =>
       imageTypeFromBytes(await XFile(localPath).readAsBytes());
+
+  @override
+  Future<String> signedUrl({
+    required String bucket,
+    required String path,
+    required Duration expiresIn,
+  }) => Constants.supabase.storage
+      .from(bucket)
+      .createSignedUrl(path, expiresIn.inSeconds);
 }

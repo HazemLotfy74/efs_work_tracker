@@ -66,7 +66,6 @@ class WorkTrackApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Everything here sits above the router, so every screen shares it.
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<HistoryRepository>.value(

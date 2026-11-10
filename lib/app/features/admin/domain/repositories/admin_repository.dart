@@ -1,6 +1,11 @@
+import '../../../attendance_correction/domain/entities/correction_request_entity.dart';
 import '../../../attendance_session/domain/entities/attendance_session_entity.dart';
+import '../entities/audit_entry_entity.dart';
 import '../entities/admin_request_entity.dart';
 import '../entities/employee_entity.dart';
+
+/// One attendance day and whose it is.
+typedef EmployeeDay = ({String employeeId, AttendanceSessionEntity session});
 
 /// What an administrator reads and does. Hiding admin screens is not the
 /// security boundary: RLS, `require_actor(true)` and the
@@ -21,6 +26,9 @@ abstract interface class AdminRepository {
     List<WorkScheduleOption> schedules,
   );
 
+  /// Everyone's most recent attendance days, newest first, at most [limit].
+  Future<List<EmployeeDay>> getRecentDays({int limit = 300});
+
   /// One employee's attendance days, newest first.
   Future<List<AttendanceSessionEntity>> getHistory(
     String employeeId, {
@@ -33,6 +41,44 @@ abstract interface class AdminRepository {
   Future<String> createEmployee(
     NewEmployeeDraft draft, {
     required String requestId,
+  });
+
+  /// One account, or `null` when there is none.
+  Future<EmployeeEntity?> getEmployee(String id);
+
+  /// One attendance day with its evidence events, or `null`.
+  Future<EmployeeDay?> getDay(String attendanceId);
+
+  /// An employee's correction requests (any status), newest first.
+  Future<List<CorrectionRequestEntity>> getCorrections(String employeeId);
+
+  /// A short-lived link to a check-in or check-out selfie. The bucket is
+  /// private: Storage only signs it for an admin when the photo belongs to
+  /// a recorded attendance event.
+  Future<String> evidenceUrl(String selfiePath);
+
+  /// `admin_set_employee_active`: employee accounts only, never yourself.
+  Future<void> setEmployeeActive(String employeeId, {required bool active});
+
+  /// `admin_correct_attendance`: sets the confirmed times of a closed day
+  /// of another employee. The recorded times and evidence are kept; the
+  /// change is stored as an approved correction with [reason], and audited.
+  Future<void> correctAttendance(
+    String attendanceId, {
+    required DateTime checkIn,
+    required DateTime checkOut,
+    required String reason,
+  });
+
+  /// `admin_assign_schedule`: the schedule for future days. Days already
+  /// recorded keep the schedule they were saved with.
+  Future<void> assignSchedule(String employeeId, String scheduleId);
+
+  /// `audit_logs` rows about this employee (their profile, attendance,
+  /// requests and corrections), newest first, at most [limit].
+  Future<List<AuditEntryEntity>> getAuditHistory(
+    String employeeId, {
+    int limit = 200,
   });
 
   /// Pending cash requests of other employees, oldest first.

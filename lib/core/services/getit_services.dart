@@ -60,6 +60,7 @@ void setup() {
   getIt.registerSingleton<AdminRepository>(
     SupabaseAdminRepository(
       databaseServices: getIt<DatabaseServices>(),
+      storageServices: getIt<StorageServices>(),
       accountsFunction: invokeAccountsFunction,
       currentUserId: () => getIt<SupabaseAuthService>().currentUser?.id,
     ),

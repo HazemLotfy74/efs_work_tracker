@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:efs_work_tracker/app/features/admin/presentation/views/add_employee_view.dart';
 import 'package:efs_work_tracker/app/features/admin/presentation/views/admin_dashboard_view.dart';
 import 'package:efs_work_tracker/app/features/admin/presentation/views/admin_requests_view.dart';
-import 'package:efs_work_tracker/app/features/admin/presentation/views/employee_history_view.dart';
+import 'package:efs_work_tracker/app/features/admin/presentation/views/admin_attendance_day_view.dart';
+import 'package:efs_work_tracker/app/features/admin/presentation/views/audit_history_view.dart';
+import 'package:efs_work_tracker/app/features/admin/presentation/views/employee_details_view.dart';
+import 'package:efs_work_tracker/app/features/admin/presentation/views/edit_attendance_view.dart';
 import 'package:efs_work_tracker/app/features/attendance_correction/presentation/views/correction_form_view.dart';
 import 'package:efs_work_tracker/app/features/attendance_correction/presentation/views/pending_corrections_view.dart';
 import 'package:efs_work_tracker/app/features/attendance_session/domain/entities/attendance_type.dart';
@@ -138,10 +141,27 @@ abstract final class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.adminEmployee,
-        builder: (context, state) => EmployeeHistoryView(
+        builder: (context, state) => EmployeeDetailsView(
           id: state.pathParameters['id']!,
           name: state.extra is String ? state.extra as String : null,
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.adminEmployeeAudit,
+        builder: (context, state) => AuditHistoryView(
+          employeeId: state.pathParameters['id']!,
+          name: state.extra is String ? state.extra as String : null,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.adminAttendanceDay,
+        builder: (context, state) =>
+            AdminAttendanceDayView(attendanceId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: AppRoutes.adminEditAttendance,
+        builder: (context, state) =>
+            EditAttendanceView(attendanceId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: AppRoutes.cashRequest,
@@ -166,9 +186,20 @@ abstract final class AppRouter {
 
   /// Keeps each user on the screens their account allows. The splash is
   /// left alone so it can finish its animation and then go home. Admin
-  /// screens are hidden from employees; the database enforces the role.
-  static String? _redirect(AuthSessionState auth, GoRouterState state) {
-    final location = state.matchedLocation;
+  /// screens are hidden from employees, and cash-request screens from
+  /// admins (they review requests instead of sending them); the database
+  /// enforces the admin role on its side.
+  static String? _redirect(AuthSessionState auth, GoRouterState state) =>
+      redirectFor(auth, state.matchedLocation);
+
+  static const _employeeOnlyRoutes = {
+    AppRoutes.cashRequest,
+    AppRoutes.newCashRequest,
+  };
+
+  /// Where [auth] may not be at [location], the route to go to instead.
+  @visibleForTesting
+  static String? redirectFor(AuthSessionState auth, String location) {
     if (location == AppRoutes.splash) return null;
     return switch (auth) {
       AuthChecking() => AppRoutes.splash,
@@ -179,7 +210,8 @@ abstract final class AppRouter {
       AuthSignedIn(:final user) =>
         _signedOutRoutes.contains(location) ||
                 location == AppRoutes.changePassword ||
-                (location.startsWith(AppRoutes.adminPrefix) && !user.isAdmin)
+                (location.startsWith(AppRoutes.adminPrefix) && !user.isAdmin) ||
+                (_employeeOnlyRoutes.contains(location) && user.isAdmin)
             ? AppRoutes.home
             : null,
     };

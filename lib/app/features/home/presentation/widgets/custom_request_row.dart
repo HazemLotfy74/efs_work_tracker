@@ -27,20 +27,23 @@ class CustomRequestRow extends StatelessWidget {
           ),
           child: child,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: AppTextStyles.itemTitle),
-            Text(
-              subTitle,
-              style: AppTextStyles.meta.copyWith(
-                color: context.colors.onSurfaceVariant,
+        // Expanded: long (Arabic) text wraps instead of overflowing.
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: AppTextStyles.itemTitle),
+              Text(
+                subTitle,
+                style: AppTextStyles.meta.copyWith(
+                  color: context.colors.onSurfaceVariant,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        Spacer(),
-        Icon(Icons.arrow_forward_ios_sharp),
+        // Points the way the screen reads (left in Arabic).
+        const Icon(Icons.arrow_forward_ios_sharp, size: 18),
       ],
     );
   }

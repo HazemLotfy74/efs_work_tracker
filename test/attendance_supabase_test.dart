@@ -50,6 +50,9 @@ final storagePath = RegExp(
 
 /// `profiles` with its schedule embedded, as the repository selects it.
 Map<String, dynamic> profileJson() => {
+  'full_name': 'Ahmed Mohamed',
+  'username': 'ahmed.m',
+  'employee_code': 'EMP-125',
   'schedule_id': 'schedule-1',
   'work_schedules': {
     'timezone': 'Africa/Cairo',
@@ -262,6 +265,13 @@ class FakeStorage implements StorageServices {
 
   @override
   Future<String?> imageTypeOf(String localPath) async => sniffedType;
+
+  @override
+  Future<String> signedUrl({
+    required String bucket,
+    required String path,
+    required Duration expiresIn,
+  }) async => 'https://storage.test/$bucket/$path';
 }
 
 void main() {
@@ -534,6 +544,37 @@ void main() {
 
     int callsTo(String function) =>
         server.rpcCalls.where((call) => call.$1 == function).length;
+
+    test('selfie names: opaque today, descriptive once enabled', () async {
+      await repository.checkIn(flowEvent(AttendanceType.checkIn));
+      expect(storage.uploads.single, matches(storagePath), reason: 'opaque');
+
+      server.record = null;
+      storage.uploads.clear();
+      final named = SupabaseAttendanceRepository(
+        databaseServices: server,
+        storageServices: storage,
+        currentUserId: () => userId,
+        now: () => deviceNow,
+        descriptiveEvidenceNames: true,
+      );
+      final session = await named.checkIn(
+        flowEvent(AttendanceType.checkIn, file: 'b.jpg'),
+      );
+      final path = storage.uploads.single;
+      // flowEvent's selfie was taken at 05:06 UTC on 25 October.
+      expect(
+        path,
+        matches(
+          RegExp(
+            '^$userId/Ahmed_Mohamed_EMP-125_check_in_20261025_050600_'
+            r'[0-9a-f]{8}\.jpg$',
+          ),
+        ),
+      );
+      // The attendance event references exactly the uploaded object.
+      expect(session.checkIn.selfiePath, path);
+    });
 
     test('web: a blob: selfie gets its type from its bytes', () async {
       final event = flowEvent(AttendanceType.checkIn);

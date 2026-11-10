@@ -5,14 +5,19 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../../../../core/constants/constants.dart';
 import '../../../../../core/errors/admin_errors.dart';
 import '../../../../../core/services/accounts_function.dart';
 import '../../../../../core/services/database_services.dart';
+import '../../../../../core/services/storage_services.dart';
+import '../../../attendance_correction/data/models/correction_request_model.dart';
+import '../../../attendance_correction/domain/entities/correction_request_entity.dart';
 import '../../../attendance_session/data/models/attendance_session_model.dart';
 import '../../../attendance_session/data/models/shift_model.dart';
 import '../../../attendance_session/domain/entities/attendance_session_entity.dart';
 import '../../../auth/domain/entities/user_entity.dart';
 import '../../domain/entities/admin_request_entity.dart';
+import '../../domain/entities/audit_entry_entity.dart';
 import '../../domain/entities/employee_entity.dart';
 import '../../domain/repositories/admin_repository.dart';
 
@@ -22,17 +27,24 @@ import '../../domain/repositories/admin_repository.dart';
 class SupabaseAdminRepository implements AdminRepository {
   SupabaseAdminRepository({
     required this._databaseServices,
+    required this._storageServices,
     required this._accountsFunction,
     required this._currentUserId,
     this._now = DateTime.now,
     this.timeout = const Duration(seconds: 20),
     this.isWeb = kIsWeb,
+    this.sendsRole = Constants.accountRoleAndPhone,
   });
 
   /// Running in a web browser, where CORS applies.
   final bool isWeb;
 
+  /// The backend accepts a role for new accounts (see
+  /// `Constants.accountRoleAndPhone`); otherwise it is never sent.
+  final bool sendsRole;
+
   final DatabaseServices _databaseServices;
+  final StorageServices _storageServices;
   final AccountsFunction _accountsFunction;
   final String? Function() _currentUserId;
 
@@ -40,15 +52,25 @@ class SupabaseAdminRepository implements AdminRepository {
   final DateTime Function() _now;
   final Duration timeout;
 
-  static const _employeeColumns =
+  static const _baseEmployeeColumns =
       'id, full_name, username, employee_code, role, is_active, '
-      'must_change_password, schedule_id';
+      'must_change_password, schedule_id, created_at';
 
-  static const recordColumns =
+  /// `profiles.phone` only exists once the role-and-phone migration ran.
+  String get _employeeColumns =>
+      sendsRole ? '$_baseEmployeeColumns, phone' : _baseEmployeeColumns;
+
+  /// A day's times and flags, without its evidence: lists only need these.
+  static const summaryColumns =
       'id, employee_id, work_date, timezone, scheduled_start, scheduled_end, '
       'grace_minutes, actual_checkin, actual_checkout, auto_closed, '
       'auto_closed_at, auto_close_policy, auto_close_deadline, '
-      'effective_checkin, effective_checkout, has_correction, late_minutes, '
+      'effective_checkin, effective_checkout, has_correction, late_minutes';
+
+  /// A day with its check-in / check-out evidence (photos, locations), for
+  /// the one day being looked at.
+  static const recordColumns =
+      '$summaryColumns, '
       'attendance_events(event_type, occurred_at, latitude, longitude, '
       'accuracy_m, selfie_path)';
 
@@ -67,18 +89,195 @@ class SupabaseAdminRepository implements AdminRepository {
         orderBy: 'full_name',
       ),
     );
-    return _parse('profiles', rows, (json) {
-      return EmployeeEntity(
-        id: json['id'] as String,
-        fullName: json['full_name'] as String,
-        username: json['username'] as String,
-        employeeCode: json['employee_code'] as String,
-        role: UserRole.fromName(json['role'] as String?),
-        isActive: json['is_active'] == true,
-        mustChangePassword: json['must_change_password'] != false,
-        scheduleId: json['schedule_id'] as String,
-      );
-    });
+    return _parse('profiles', rows, _employee);
+  }
+
+  static EmployeeEntity _employee(Map<String, dynamic> json) {
+    final createdAt = json['created_at'] as String?;
+    return EmployeeEntity(
+      id: json['id'] as String,
+      fullName: json['full_name'] as String,
+      username: json['username'] as String,
+      employeeCode: json['employee_code'] as String,
+      role: UserRole.fromName(json['role'] as String?),
+      isActive: json['is_active'] == true,
+      mustChangePassword: json['must_change_password'] != false,
+      scheduleId: json['schedule_id'] as String,
+      createdAt: createdAt == null ? null : DateTime.parse(createdAt),
+      phone: json['phone'] as String?,
+    );
+  }
+
+  @override
+  Future<EmployeeEntity?> getEmployee(String id) async {
+    _requireUser();
+    final rows = await _guard(
+      'profiles',
+      () => _databaseServices.getData(
+        path: 'profiles',
+        column: _employeeColumns,
+        query: {'id': id},
+      ),
+    );
+    return _parse('profiles', rows, _employee).firstOrNull;
+  }
+
+  @override
+  Future<EmployeeDay?> getDay(String attendanceId) async {
+    _requireUser();
+    final rows = await _guard(
+      'attendance_records',
+      () => _databaseServices.getData(
+        path: 'attendance_records',
+        column: recordColumns,
+        query: {'id': attendanceId},
+      ),
+    );
+    return _parse('attendance_records', rows, _employeeDay).firstOrNull;
+  }
+
+  static EmployeeDay _employeeDay(Map<String, dynamic> json) =>
+      (employeeId: json['employee_id'] as String, session: _session(json));
+
+  @override
+  Future<List<CorrectionRequestEntity>> getCorrections(
+    String employeeId,
+  ) async {
+    _requireUser();
+    final rows = await _guard(
+      'attendance_correction_requests',
+      () => _databaseServices.getData(
+        path: 'attendance_correction_requests',
+        column:
+            'id, employee_id, attendance_id, proposed_checkin, '
+            'proposed_checkout, reason, status, review_note, reviewed_at, '
+            'created_at',
+        query: {'employee_id': employeeId},
+        orderBy: 'created_at',
+        descending: true,
+      ),
+    );
+    return _parse(
+      'attendance_correction_requests',
+      rows,
+      CorrectionRequestModel.fromJson,
+    );
+  }
+
+  @override
+  Future<String> evidenceUrl(String selfiePath) async {
+    _requireUser();
+    final url = await _guard(
+      'evidence',
+      () => _storageServices.signedUrl(
+        bucket: Constants.attendanceEvidenceBucket,
+        path: selfiePath,
+        expiresIn: const Duration(minutes: 10),
+      ),
+    );
+    return url as String;
+  }
+
+  @override
+  Future<void> setEmployeeActive(
+    String employeeId, {
+    required bool active,
+  }) async {
+    _requireUser();
+    await _guard(
+      'admin_set_employee_active',
+      () => _databaseServices.rpc(
+        function: 'admin_set_employee_active',
+        params: {'p_employee_id': employeeId, 'p_is_active': active},
+      ),
+    );
+  }
+
+  @override
+  Future<void> correctAttendance(
+    String attendanceId, {
+    required DateTime checkIn,
+    required DateTime checkOut,
+    required String reason,
+  }) async {
+    _requireUser();
+    await _guard(
+      'admin_correct_attendance',
+      () => _databaseServices.rpc(
+        function: 'admin_correct_attendance',
+        params: {
+          'p_attendance_id': attendanceId,
+          'p_checkin': checkIn.toUtc().toIso8601String(),
+          'p_checkout': checkOut.toUtc().toIso8601String(),
+          'p_reason': reason.trim(),
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<void> assignSchedule(String employeeId, String scheduleId) async {
+    _requireUser();
+    await _guard(
+      'admin_assign_schedule',
+      () => _databaseServices.rpc(
+        function: 'admin_assign_schedule',
+        params: {'p_employee_id': employeeId, 'p_schedule_id': scheduleId},
+      ),
+    );
+  }
+
+  @override
+  Future<List<AuditEntryEntity>> getAuditHistory(
+    String employeeId, {
+    int limit = 200,
+  }) async {
+    _requireUser();
+    Future<Object?> read(String filter) => _guard(
+      'audit_logs',
+      () => _databaseServices.getData(
+        path: 'audit_logs',
+        column:
+            'id, actor_id, actor_kind, action, table_name, row_key, '
+            'old_data, new_data, happened_at',
+        query: {filter: employeeId},
+        orderBy: 'happened_at',
+        descending: true,
+        limit: limit,
+      ),
+    );
+    // The profile itself, and every row that names the employee
+    // (attendance days, requests, corrections).
+    final own = await read('row_key->>id');
+    final related = await read('new_data->>employee_id');
+    final byId = <int, AuditEntryEntity>{
+      for (final entry in [
+        ..._parse('audit_logs', own, _auditEntry),
+        ..._parse('audit_logs', related, _auditEntry),
+      ])
+        entry.id: entry,
+    };
+    final entries = byId.values.toList()
+      ..sort((a, b) => b.happenedAt.compareTo(a.happenedAt));
+    return entries.take(limit).toList();
+  }
+
+  static AuditEntryEntity _auditEntry(Map<String, dynamic> json) {
+    Map<String, dynamic>? map(Object? value) =>
+        value is Map ? Map<String, dynamic>.from(value) : null;
+    return AuditEntryEntity(
+      id: (json['id'] as num).toInt(),
+      actorId: json['actor_id'] as String?,
+      actorKind: json['actor_kind'] as String? ?? 'database',
+      action: json['action'] as String,
+      table: json['table_name'] as String,
+      rowId: map(json['row_key'])?['id'] as String?,
+      happenedAt: DateTime.parse(json['happened_at'] as String),
+      changes: AuditEntryEntity.diff(
+        map(json['old_data']),
+        map(json['new_data']),
+      ),
+    );
   }
 
   @override
@@ -121,7 +320,7 @@ class SupabaseAdminRepository implements AdminRepository {
         'attendance_records',
         () => _databaseServices.getData(
           path: 'attendance_records',
-          column: recordColumns,
+          column: summaryColumns,
           query: {'work_date': date},
         ),
       );
@@ -136,6 +335,27 @@ class SupabaseAdminRepository implements AdminRepository {
   }
 
   @override
+  Future<List<EmployeeDay>> getRecentDays({int limit = 300}) async {
+    _requireUser();
+    final rows = await _guard(
+      'attendance_records',
+      () => _databaseServices.getData(
+        path: 'attendance_records',
+        column: summaryColumns,
+        orderBy: 'work_date',
+        descending: true,
+        limit: limit,
+      ),
+    );
+    return _parse('attendance_records', rows, (json) {
+      return (
+        employeeId: json['employee_id'] as String,
+        session: _session(json),
+      );
+    });
+  }
+
+  @override
   Future<List<AttendanceSessionEntity>> getHistory(
     String employeeId, {
     int limit = 60,
@@ -145,7 +365,7 @@ class SupabaseAdminRepository implements AdminRepository {
       'attendance_records',
       () => _databaseServices.getData(
         path: 'attendance_records',
-        column: recordColumns,
+        column: summaryColumns,
         query: {'employee_id': employeeId},
         orderBy: 'work_date',
         descending: true,
@@ -173,6 +393,8 @@ class SupabaseAdminRepository implements AdminRepository {
         'password': draft.password,
         'employee_code': draft.employeeCode,
         'schedule_id': draft.scheduleId,
+        if (sendsRole) 'role': draft.role.name,
+        if (sendsRole && draft.phone != null) 'phone': draft.phone,
       }).timeout(timeout);
     } on AccountsFunctionException catch (e) {
       // A refused preflight never reaches the function, so nothing was
@@ -309,7 +531,16 @@ class SupabaseAdminRepository implements AdminRepository {
     if (message.startsWith('This request has already been reviewed')) {
       return AdminFailure.alreadyReviewed;
     }
-    if (message.startsWith('Request not found')) return AdminFailure.notFound;
+    if (message.startsWith('Request not found') ||
+        message.startsWith('Employee profile not found') ||
+        message.startsWith('Schedule not found') ||
+        message.startsWith('Attendance record not found')) {
+      return AdminFailure.notFound;
+    }
+    // admin_correct_attendance (supabase/migrations/…_admin_correct_attendance).
+    for (final (prefix, failure) in _correctionFailures) {
+      if (message.startsWith(prefix)) return failure;
+    }
     return switch (code) {
       '42501' || 'PGRST301' || 'PGRST303' => AdminFailure.notAllowed,
       '22023' => AdminFailure.invalidInput,
@@ -317,6 +548,15 @@ class SupabaseAdminRepository implements AdminRepository {
       _ => AdminFailure.unknown,
     };
   }
+
+  static const _correctionFailures = [
+    ('You cannot correct your own attendance', AdminFailure.ownAttendance),
+    ('A reason of 1-2000 characters', AdminFailure.invalidReason),
+    ('Attendance must be closed', AdminFailure.notClosed),
+    ('Proposed', AdminFailure.invalidTimes),
+    ('No change was requested', AdminFailure.noChange),
+    ('A pending correction already exists', AdminFailure.pendingCorrection),
+  ];
 
   /// Maps an `employee-accounts` error answer.
   @visibleForTesting

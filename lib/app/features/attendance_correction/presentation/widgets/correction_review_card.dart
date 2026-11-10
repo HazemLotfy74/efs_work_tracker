@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/widgets/feedback/app_message_type.dart';
+import '../../../../../core/widgets/feedback/app_snack_bar.dart';
+
 import '../../../../../core/extensions/context_l10n.dart';
 import '../../../../../core/extensions/date_time_format.dart';
 import '../../../../../core/theme/theme_context_extensions.dart';
@@ -121,6 +124,10 @@ class CorrectionReviewCard extends StatelessWidget {
     final text = failure == null
         ? (approve ? l10n.correctionApprovedDone : l10n.correctionRejectedDone)
         : failure.message(l10n);
-    messenger.showSnackBar(SnackBar(content: Text(text)));
+    showAppSnackBar(
+      messenger,
+      text,
+      type: failure == null ? AppMessageType.success : AppMessageType.error,
+    );
   }
 }

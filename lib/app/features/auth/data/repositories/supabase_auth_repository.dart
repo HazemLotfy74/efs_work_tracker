@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../../core/errors/failure.dart';
@@ -63,14 +65,39 @@ class SupabaseAuthRepository implements AuthRepository {
   Future<void> signOut() => _authService.signOut();
 
   @override
-  Stream<void> get signedOut => _authService.onAuthStateChange
+  Stream<void> get signedOut => _events
       .where((state) => state.event == AuthChangeEvent.signedOut)
       .map((_) {});
 
   @override
-  Stream<void> get passwordRecovery => _authService.onAuthStateChange
+  Stream<void> get passwordRecovery => _events
       .where((state) => state.event == AuthChangeEvent.passwordRecovery)
       .map((_) {});
+
+  /// Auth state changes without their errors. supabase_flutter reports a
+  /// bad deep link (e.g. an expired reset link) as a stream error; it is
+  /// handled by [recoveryLinkFailed], never left uncaught.
+  Stream<AuthState> get _events =>
+      _authService.onAuthStateChange.handleError((Object _) {});
+
+  @override
+  Stream<AuthFailure> get recoveryLinkFailed =>
+      _authService.onAuthStateChange.transform(
+        StreamTransformer<AuthState, AuthFailure>.fromHandlers(
+          handleData: (_, _) {},
+          handleError: (error, _, sink) {
+            // Only the error code is kept: the URL can hold secrets.
+            if (error is AuthException) {
+              sink.add(
+                AuthFailure(
+                  AuthFailureReason.recoveryLinkInvalid,
+                  message: error.code ?? error.statusCode,
+                ),
+              );
+            }
+          },
+        ),
+      );
 
   /// Uses `get_account_status`: the only way to read your own profile while
   /// `must_change_password` is true (RLS hides the row until then).

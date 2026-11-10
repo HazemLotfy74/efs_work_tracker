@@ -54,7 +54,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get home => 'الرئيسية';
 
   @override
-  String get attendance => 'Attendance';
+  String get attendance => 'الحضور';
 
   @override
   String get viewDetails => 'المزيد';
@@ -78,25 +78,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get today => 'اليوم';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'أمس';
 
   @override
-  String get thisWeek => 'This Week';
+  String get thisWeek => 'هذا الأسبوع';
 
   @override
-  String get lastWeek => 'Last Week';
+  String get lastWeek => 'الأسبوع الماضي';
 
   @override
-  String get thisMonth => 'This Month';
+  String get thisMonth => 'هذا الشهر';
 
   @override
-  String get lastMonth => 'Last Month';
+  String get lastMonth => 'الشهر الماضي';
 
   @override
   String get profile => 'ملفك الشخصي';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'الإعدادات';
 
   @override
   String get history => 'التواريخ';
@@ -111,7 +111,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get requestOverTime => 'اطلب ساعات اضافية للعمل';
 
   @override
-  String get needCash => 'هل تحتاج طلب اعانة';
+  String get needCash => 'هل تحتاج طلب مصروفات؟';
 
   @override
   String get sendRequest => 'ارسل طلب للمدير';
@@ -1176,6 +1176,272 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get adminRequestRejected => 'تم رفض الطلب.';
+
+  @override
+  String get adminLeftEarly => 'انصراف مبكر';
+
+  @override
+  String adminLeftEarlyBy(String duration) {
+    return 'مبكرًا بـ $duration';
+  }
+
+  @override
+  String get adminEarlyDepartures => 'انصراف مبكر يحتاج إلى مراجعة';
+
+  @override
+  String get adminShiftEnd => 'نهاية الوردية';
+
+  @override
+  String get employeeDetails => 'بيانات الموظف';
+
+  @override
+  String get adminActive => 'نشط';
+
+  @override
+  String get adminCreatedOn => 'تاريخ الإنشاء';
+
+  @override
+  String get adminActivate => 'تفعيل الحساب';
+
+  @override
+  String get adminDeactivate => 'إيقاف الحساب';
+
+  @override
+  String adminActivateTitle(String name) {
+    return 'تفعيل حساب $name؟';
+  }
+
+  @override
+  String adminDeactivateTitle(String name) {
+    return 'إيقاف حساب $name؟';
+  }
+
+  @override
+  String get adminActivateMessage =>
+      'سيتمكن من تسجيل الدخول وتسجيل الحضور مرة أخرى.';
+
+  @override
+  String get adminDeactivateMessage =>
+      'لن يتمكن من تسجيل الدخول أو تسجيل الحضور حتى يُعاد تفعيل الحساب. تبقى سجلاته محفوظة.';
+
+  @override
+  String get adminStatusChanged => 'تم تحديث حالة الحساب.';
+
+  @override
+  String get adminChangeSchedule => 'تغيير الجدول';
+
+  @override
+  String adminScheduleChangeTitle(String schedule) {
+    return 'تعيين \"$schedule\"؟';
+  }
+
+  @override
+  String get adminScheduleChangeMessage =>
+      'يُطبَّق من تسجيل الحضور القادم. الأيام المسجلة سابقًا تحتفظ بجدولها.';
+
+  @override
+  String get adminScheduleChanged => 'تم تحديث الجدول.';
+
+  @override
+  String get adminAuditHistory => 'سجل التغييرات';
+
+  @override
+  String get adminAccountManagedByOperator =>
+      'يتولى مشغّل النظام تفعيل حسابات المسؤولين وإيقافها.';
+
+  @override
+  String get adminRangeAll => 'الكل';
+
+  @override
+  String get adminRangeToday => 'اليوم';
+
+  @override
+  String get adminRange7 => 'آخر 7 أيام';
+
+  @override
+  String get adminRangeMonth => 'هذا الشهر';
+
+  @override
+  String get adminRangeCustom => 'اختيار التواريخ';
+
+  @override
+  String get adminAttendanceDays => 'أيام الحضور';
+
+  @override
+  String get adminNoDaysInRange => 'لا يوجد حضور في هذه الفترة.';
+
+  @override
+  String get adminStatDays => 'أيام الحضور';
+
+  @override
+  String get adminStatWorked => 'ساعات العمل (المؤكدة)';
+
+  @override
+  String get adminStatLate => 'مرات التأخير';
+
+  @override
+  String get adminStatMissing => 'انصراف غير مسجل';
+
+  @override
+  String get adminStatReview => 'تحتاج إلى مراجعة';
+
+  @override
+  String get adminStatCorrected => 'تم تصحيحها';
+
+  @override
+  String get adminFlagCorrected => 'مُصحَّح';
+
+  @override
+  String get adminAttendanceDay => 'يوم الحضور';
+
+  @override
+  String get adminScheduledShift => 'الوردية المجدولة';
+
+  @override
+  String get adminWorked => 'مدة العمل';
+
+  @override
+  String get adminLateBy => 'التأخير';
+
+  @override
+  String get adminEarlyBy => 'الانصراف المبكر';
+
+  @override
+  String get adminEffectiveTimes => 'الأوقات بعد التصحيح';
+
+  @override
+  String get adminNoCorrections => 'لا توجد طلبات تصحيح.';
+
+  @override
+  String get adminCheckInEvidence => 'إثبات الحضور';
+
+  @override
+  String get adminCheckOutEvidence => 'إثبات الانصراف';
+
+  @override
+  String get adminNoCheckOut => 'لم يُسجَّل انصراف.';
+
+  @override
+  String get adminRecordedAt => 'وقت التسجيل';
+
+  @override
+  String get adminPhotoUnavailable => 'لم تُحفظ صورة.';
+
+  @override
+  String get adminPhotoLoadFailed => 'تعذر تحميل الصورة.';
+
+  @override
+  String get adminOpenPhoto => 'فتح الصورة بملء الشاشة';
+
+  @override
+  String get adminLocationUnavailable => 'الموقع غير متاح';
+
+  @override
+  String get adminLatitude => 'خط العرض';
+
+  @override
+  String get adminLongitude => 'خط الطول';
+
+  @override
+  String get adminAccuracy => 'الدقة';
+
+  @override
+  String adminAccuracyMeters(int meters) {
+    return '±$meters م';
+  }
+
+  @override
+  String get adminLocationCapturedAt => 'وقت تحديد الموقع';
+
+  @override
+  String get adminCopyCoordinates => 'نسخ الإحداثيات';
+
+  @override
+  String get adminCopied => 'تم نسخ الإحداثيات.';
+
+  @override
+  String get adminAuditEmpty => 'لا توجد تغييرات مسجلة.';
+
+  @override
+  String get adminAuditSystem => 'النظام';
+
+  @override
+  String get adminAuditCreated => 'إنشاء';
+
+  @override
+  String get adminAuditChanged => 'تعديل';
+
+  @override
+  String get adminAuditDeleted => 'حذف';
+
+  @override
+  String adminAuditBy(String name) {
+    return 'بواسطة $name';
+  }
+
+  @override
+  String get adminAuditTableProfile => 'الملف الشخصي';
+
+  @override
+  String get adminAuditTableAttendance => 'يوم الحضور';
+
+  @override
+  String get adminAuditTableEvidence => 'إثبات الحضور';
+
+  @override
+  String get adminAuditTableCash => 'طلب نقدية';
+
+  @override
+  String get adminAuditTableCorrection => 'طلب تصحيح';
+
+  @override
+  String get adminAuditTableOvertime => 'طلب عمل إضافي';
+
+  @override
+  String get adminEditTimes => 'تعديل الأوقات';
+
+  @override
+  String get adminSaveTimes => 'حفظ الأوقات';
+
+  @override
+  String get adminTimesSaved => 'تم تحديث أوقات الحضور.';
+
+  @override
+  String get adminRecordedTimes => 'المسجلة بالتطبيق';
+
+  @override
+  String get adminEditReasonHint => 'لماذا تُعدَّل الأوقات؟';
+
+  @override
+  String get adminConfirmEditTitle => 'حفظ الأوقات المصححة؟';
+
+  @override
+  String get adminPendingCorrection =>
+      'لدى الموظف طلب تصحيح بانتظار المراجعة لهذا اليوم. راجعه أولًا.';
+
+  @override
+  String get adminOwnAttendance => 'لا يمكنك تصحيح حضورك بنفسك.';
+
+  @override
+  String get adminPhone => 'الهاتف';
+
+  @override
+  String get adminPhoneOptional => 'الهاتف (اختياري)';
+
+  @override
+  String get adminPhoneHint =>
+      'بالصيغة الدولية، مثل ‎+201012345678‎. اتركه فارغًا إن لم يكن معروفًا.';
+
+  @override
+  String get adminInvalidPhone =>
+      'أدخل الرقم بالصيغة الدولية، مثل ‎+201012345678‎.';
+
+  @override
+  String get resetPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get authRecoveryLinkInvalid =>
+      'انتهت صلاحية رابط إعادة التعيين أو استُخدم من قبل أو فُتح على هاتف آخر. اطلب رابطًا جديدًا من هذا الهاتف.';
 
   @override
   String get language => 'اللغة';

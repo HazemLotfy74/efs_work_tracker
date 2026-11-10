@@ -1,27 +1,32 @@
+import 'package:efs_work_tracker/app/features/admin/domain/repositories/admin_repository.dart';
 import 'package:efs_work_tracker/app/features/attendance_correction/domain/repositories/correction_repository.dart';
 import 'package:efs_work_tracker/app/features/attendance_session/data/repositories/in_memory_attendance_repository.dart';
 import 'package:efs_work_tracker/app/features/attendance_session/domain/repositories/attendance_repository.dart';
 import 'package:efs_work_tracker/app/features/attendance_session/presentation/manager/attendance_session_cubit/attendance_session_cubit.dart';
+import 'package:efs_work_tracker/app/features/auth/domain/entities/user_entity.dart';
 import 'package:efs_work_tracker/app/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
-import 'package:efs_work_tracker/app/features/admin/domain/repositories/admin_repository.dart';
+import 'package:efs_work_tracker/app/features/history/domain/repositories/history_repository.dart';
 import 'package:efs_work_tracker/core/manager/clock_cubit.dart';
 import 'package:efs_work_tracker/core/manager/locale_cubit.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'attendance_history_adapter.dart';
 import 'fake_admin_repository.dart';
 import 'fake_auth_repository.dart';
 import 'fake_correction_repository.dart';
-import 'attendance_history_adapter.dart';
-
-import 'package:efs_work_tracker/app/features/history/domain/repositories/history_repository.dart';
 
 /// The app-wide providers from main.dart, for widget tests.
+///
+/// [user] is the signed-in account (an employee by default). [history]
+/// defaults to an adapter over [repository], so History reads the same
+/// test days as the rest of the app.
 Widget withAppProviders(
   Widget child, {
   AttendanceRepository? repository,
   CorrectionRepository? corrections,
   AdminRepository? admin,
+  UserEntity? user,
   HistoryRepository? history,
 }) {
   final repo = repository ?? InMemoryAttendanceRepository();
@@ -42,7 +47,8 @@ Widget withAppProviders(
       providers: [
         BlocProvider(
           create: (_) =>
-              AuthCubit(FakeAuthRepository(signedInUser: testUser()))..start(),
+              AuthCubit(FakeAuthRepository(signedInUser: user ?? testUser()))
+                ..start(),
         ),
         BlocProvider(create: (_) => ClockCubit()),
         BlocProvider(create: (_) => AttendanceSessionCubit(repo)..load()),

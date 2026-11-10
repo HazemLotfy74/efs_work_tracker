@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils/app_dimensions.dart';
 import 'app_palette.dart';
 import 'app_text_styles.dart';
 import 'app_theme_colors.dart';
@@ -140,6 +141,105 @@ abstract final class AppTheme {
       ),
       checkboxTheme: CheckboxThemeData(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      ),
+      // Shared by AppDialog / showAppSnackBar and any plain dialog.
+      dialogTheme: DialogThemeData(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+        ),
+        titleTextStyle: textTheme.titleMedium,
+        contentTextStyle: textTheme.bodyMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        elevation: 0,
+        backgroundColor: colorScheme.inverseSurface,
+        contentTextStyle: textTheme.bodyMedium?.copyWith(
+          color: colorScheme.onInverseSurface,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+        ),
+      ),
+      // Used by core/widgets/pickers/app_pickers.dart.
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        headerBackgroundColor: colorScheme.primary,
+        headerForegroundColor: colorScheme.onPrimary,
+        headerHeadlineStyle: textTheme.headlineSmall?.copyWith(
+          color: colorScheme.onPrimary,
+        ),
+        headerHelpStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.onPrimary,
+        ),
+        weekdayStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        dayStyle: textTheme.bodyLarge,
+        todayBorder: BorderSide(color: colorScheme.primary),
+        todayForegroundColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.onPrimary
+              : colorScheme.primary,
+        ),
+        rangeSelectionBackgroundColor: colorScheme.primaryContainer,
+        rangePickerBackgroundColor: colorScheme.surface,
+        rangePickerHeaderBackgroundColor: colorScheme.primary,
+        rangePickerHeaderForegroundColor: colorScheme.onPrimary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+        ),
+        cancelButtonStyle: TextButton.styleFrom(
+          foregroundColor: colorScheme.onSurfaceVariant,
+        ),
+        confirmButtonStyle: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          textStyle: textTheme.labelLarge,
+        ),
+      ),
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+        ),
+        hourMinuteColor: WidgetStateColor.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.primaryContainer
+              : colorScheme.surfaceContainerHighest,
+        ),
+        hourMinuteTextColor: WidgetStateColor.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : colorScheme.onSurface,
+        ),
+        dayPeriodColor: colorScheme.primaryContainer,
+        dayPeriodTextColor: colorScheme.onSurface,
+        dialBackgroundColor: colorScheme.surfaceContainerHighest,
+        dialHandColor: colorScheme.primary,
+        dialTextColor: WidgetStateColor.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colorScheme.onPrimary
+              : colorScheme.onSurface,
+        ),
+        entryModeIconColor: colorScheme.primary,
+        helpTextStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        cancelButtonStyle: TextButton.styleFrom(
+          foregroundColor: colorScheme.onSurfaceVariant,
+        ),
+        confirmButtonStyle: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          textStyle: textTheme.labelLarge,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(textStyle: textTheme.labelLarge),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colorScheme.surface,

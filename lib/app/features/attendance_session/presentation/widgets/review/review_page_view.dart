@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../../core/widgets/feedback/app_message_type.dart';
+import '../../../../../../core/widgets/feedback/app_snack_bar.dart';
+
 import '../../../../../../core/errors/attendance_errors.dart';
 import '../../../../../../core/extensions/context_l10n.dart';
 import '../../../../../../core/router/app_routes.dart';
@@ -42,8 +45,10 @@ class _ReviewPageViewState extends State<ReviewPageView> {
       });
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(attendanceErrorMessage(error, context.l10n))),
+      showAppSnackBar(
+        ScaffoldMessenger.of(context),
+        attendanceErrorMessage(error, context.l10n),
+        type: AppMessageType.error,
       );
       // The day is not what this flow expected (e.g. checked in on another
       // phone): home shows the reloaded state. After an unknown outcome the

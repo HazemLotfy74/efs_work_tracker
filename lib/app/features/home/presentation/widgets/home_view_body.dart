@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../core/manager/clock_cubit.dart';
 import '../../../attendance_session/presentation/manager/attendance_session_cubit/attendance_session_cubit.dart';
+import '../../../auth/presentation/manager/auth_cubit/auth_cubit.dart';
 
 import '../../../../../core/widgets/custom_logo_icon.dart';
 
@@ -27,6 +28,12 @@ class HomeViewBody extends StatelessWidget {
     final today = attendance is AttendanceSessionLoaded
         ? attendance.session
         : null;
+    final isAdmin = context.select<AuthCubit, bool>(
+      (cubit) => switch (cubit.state) {
+        AuthSignedIn(:final user) => user.isAdmin,
+        _ => false,
+      },
+    );
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,21 +77,26 @@ class HomeViewBody extends StatelessWidget {
             },
           ),
           // Overtime needs no request: every minute past 8 worked hours is
-          // counted automatically (see WorkDuration).
-          InkWell(
-            onTap: () {
-              context.push(AppRoutes.cashRequest);
-            },
-            child: CustomContainer(
-              containerWidth: double.infinity,
-              borderWidth: 1,
-              child: CustomRequestRow(
-                title: context.l10n.needCash,
-                subTitle: context.l10n.sendRequest,
-                child: Icon(Icons.request_quote, color: context.colors.primary),
+          // counted automatically (see WorkDuration). Cash requests are for
+          // employees; admins review them instead.
+          if (!isAdmin)
+            InkWell(
+              onTap: () {
+                context.push(AppRoutes.cashRequest);
+              },
+              child: CustomContainer(
+                containerWidth: double.infinity,
+                borderWidth: 1,
+                child: CustomRequestRow(
+                  title: context.l10n.needCash,
+                  subTitle: context.l10n.sendRequest,
+                  child: Icon(
+                    Icons.request_quote,
+                    color: context.colors.primary,
+                  ),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

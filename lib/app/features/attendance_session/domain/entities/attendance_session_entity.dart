@@ -138,6 +138,23 @@ class AttendanceSessionEntity {
   Duration earlyLeaveFor(DateTime time) =>
       WorkDuration(time.difference(checkInTime)).shortfall;
 
+  /// The employee checked out before the scheduled end of their shift.
+  ///
+  /// [scheduledEnd] is the record's own `scheduled_end`, copied by the
+  /// server from the employee's schedule at check-in, so every schedule
+  /// (morning or evening) is judged by its own end. Exact instants are
+  /// compared, so timezones and dates can't shift it. A missing check-out
+  /// (closed automatically) is a different case: see [needsReview].
+  bool get leftEarly {
+    final out = checkOutTime;
+    return out != null && !isAutoClosed && out.isBefore(scheduledEnd);
+  }
+
+  /// How long before the shift end the employee left; zero unless
+  /// [leftEarly].
+  Duration get leftEarlyBy =>
+      leftEarly ? scheduledEnd.difference(checkOutTime!) : Duration.zero;
+
   /// The one status every screen shows for this day.
   AttendanceDayStatus statusAt(DateTime now) {
     if (isActiveAt(now)) return AttendanceDayStatus.inProgress;

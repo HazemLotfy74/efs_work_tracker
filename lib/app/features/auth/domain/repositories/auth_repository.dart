@@ -1,3 +1,4 @@
+import '../../../../../core/errors/failure.dart';
 import '../entities/user_entity.dart';
 
 /// Signing in and out, and loading the signed-in account.
@@ -23,4 +24,8 @@ abstract interface class AuthRepository {
   /// Fires when a password-reset link signed the user in. They must choose
   /// a new password before anything else.
   Stream<void> get passwordRecovery;
+
+  /// Fires when a password-reset link could not sign the user in: it
+  /// expired, was already used, or was opened on another phone.
+  Stream<AuthFailure> get recoveryLinkFailed;
 }

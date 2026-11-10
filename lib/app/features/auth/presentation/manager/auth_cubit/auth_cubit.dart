@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../core/errors/failure.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/repositories/auth_repository.dart';
 
@@ -17,6 +18,7 @@ class AuthCubit extends Cubit<AuthSessionState> {
   final AuthRepository _repository;
   StreamSubscription<void>? _signedOutSubscription;
   StreamSubscription<void>? _recoverySubscription;
+  StreamSubscription<AuthFailure>? _linkFailedSubscription;
 
   /// Restores the saved session. Call once at startup.
   Future<void> start() async {
@@ -26,6 +28,15 @@ class AuthCubit extends Cubit<AuthSessionState> {
     _recoverySubscription ??= _repository.passwordRecovery.listen(
       (_) => _recovered(),
     );
+    // A reset link that can't be used: tell the user on the sign-in
+    // screen. A signed-in user is left where they are.
+    _linkFailedSubscription ??= _repository.recoveryLinkFailed.listen((
+      failure,
+    ) {
+      if (isClosed || state is AuthSignedIn) return;
+      if (state is AuthPasswordChangeRequired) return;
+      emit(AuthSignedOut(linkFailure: failure.reason));
+    });
     try {
       final user = await _repository.getSignedInUser();
       if (!isClosed) emit(_stateFor(user));
@@ -64,7 +75,9 @@ class AuthCubit extends Cubit<AuthSessionState> {
       final user = await _repository.getSignedInUser();
       if (isClosed) return;
       emit(
-        user == null ? const AuthSignedOut() : AuthPasswordChangeRequired(user),
+        user == null
+            ? const AuthSignedOut()
+            : AuthPasswordChangeRequired(user, fromResetLink: true),
       );
     } catch (_) {
       if (!isClosed) emit(const AuthSignedOut());
@@ -81,6 +94,7 @@ class AuthCubit extends Cubit<AuthSessionState> {
   Future<void> close() async {
     await _signedOutSubscription?.cancel();
     await _recoverySubscription?.cancel();
+    await _linkFailedSubscription?.cancel();
     return super.close();
   }
 }
