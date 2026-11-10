@@ -111,7 +111,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get requestOverTime => 'اطلب ساعات اضافية للعمل';
 
   @override
-  String get needCash => 'هل تحتاج طلب اعانة';
+  String get needCash => 'هل تحتاج طلب مصروفات؟';
 
   @override
   String get sendRequest => 'ارسل طلب للمدير';
