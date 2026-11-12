@@ -1545,4 +1545,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String historyMinutesTotal(int minutes) {
     return '${minutes}m total';
   }
+
+  @override
+  String get inboxSubmitted => 'Submitted';
+
+  @override
+  String get inboxAssigned => 'Assigned to you';
+
+  @override
+  String get inboxEmpty => 'No notifications yet.';
+
+  @override
+  String get inboxLoadFailed => 'Couldn’t load notifications. Try again.';
+
+  @override
+  String get inboxRequestUnavailable =>
+      'This request is no longer available to you.';
+
+  @override
+  String get inboxRetry => 'Retry';
+
+  @override
+  String get inboxMore => 'Load more';
+
+  @override
+  String get enablePhoneAlerts => 'Enable phone alerts';
+
+  @override
+  String get phoneAlertsEnabled => 'Phone alerts enabled.';
+
+  @override
+  String get phoneAlertsUnavailable =>
+      'Couldn’t enable phone alerts. Check your notification permissions and try again.';
 }

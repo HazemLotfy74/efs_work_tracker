@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "595986550546",
+    "project_id": "efs-work-tracker",
+    "storage_bucket": "efs-work-tracker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595986550546:android:d06ee2f58987b6bbbcadcb",
+        "android_client_info": {
+          "package_name": "com.efs.efs_work_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwxkXSUegQA0-cuFDdqyddJ3i1wQOrgno"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

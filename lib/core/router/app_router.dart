@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import '../../app/features/notifications/presentation/inbox_view.dart';
+
 import 'package:efs_work_tracker/app/features/admin/presentation/views/add_employee_view.dart';
 import 'package:efs_work_tracker/app/features/admin/presentation/views/admin_dashboard_view.dart';
 import 'package:efs_work_tracker/app/features/admin/presentation/views/admin_requests_view.dart';
@@ -75,9 +77,13 @@ abstract final class AppRouter {
               ),
             ],
           ),
-          // No notifications exist in the database yet.
           StatefulShellBranch(
-            routes: [_route(AppRoutes.notifications, 'Notifications')],
+            routes: [
+              GoRoute(
+                path: AppRoutes.notifications,
+                builder: (_, _) => const InboxView(),
+              ),
+            ],
           ),
           StatefulShellBranch(
             routes: [

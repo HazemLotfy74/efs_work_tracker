@@ -660,6 +660,16 @@
   "historyOvertimeDays": "{count, plural, =1{1 overtime day} other{{count} overtime days}}",
   "@historyOvertimeDays": {"placeholders": {"count": {"type": "int"}}},
   "historyMinutesTotal": "{minutes}m total",
-  "@historyMinutesTotal": {"placeholders": {"minutes": {"type": "int"}}}
+  "@historyMinutesTotal": {"placeholders": {"minutes": {"type": "int"}}},
+  "inboxSubmitted": "Submitted",
+  "inboxAssigned": "Assigned to you",
+  "inboxEmpty": "No notifications yet.",
+  "inboxLoadFailed": "Couldn’t load notifications. Try again.",
+  "inboxRequestUnavailable": "This request is no longer available to you.",
+  "inboxRetry": "Retry",
+  "inboxMore": "Load more",
+  "enablePhoneAlerts": "Enable phone alerts",
+  "phoneAlertsEnabled": "Phone alerts enabled.",
+  "phoneAlertsUnavailable": "Couldn’t enable phone alerts. Check your notification permissions and try again."
 
 }
