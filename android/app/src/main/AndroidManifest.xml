@@ -4,7 +4,7 @@
     <!-- Map tiles are downloaded over the network (debug/profile add this on their own, release does not). -->
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="efs_work_tracker"
+        android:label="Efs Attendance"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -62,6 +62,13 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<String?> getPendingLoginEmail() => _authService.pendingLoginEmail();
+
+  @override
+  Future<void> confirmLoginEmail(String email) =>
+      _authService.requestLoginEmailChange(email);
+
+  @override
   Future<void> signOut() => _authService.signOut();
 
   @override

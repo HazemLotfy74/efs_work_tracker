@@ -113,9 +113,9 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
                           SizedBox(height: 20),
                           Text(
                             context.l10n.accountSetup,
-                            style: AppTextStyles.overline.copyWith(
-                              color: context.colors.primary,
-                            ),
+                            style: context
+                                .tracked(AppTextStyles.overline)
+                                .copyWith(color: context.colors.primary),
                           ),
                           Text(switch (context.watch<AuthCubit>().state) {
                             AuthPasswordChangeRequired(fromResetLink: true) =>

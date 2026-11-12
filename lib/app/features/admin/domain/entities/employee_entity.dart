@@ -15,6 +15,8 @@ class EmployeeEntity {
     required this.scheduleId,
     this.createdAt,
     this.phone,
+    this.canReviewCash = false,
+    this.canReviewCorrections = false,
   });
 
   final String id;
@@ -35,7 +37,20 @@ class EmployeeEntity {
   /// (or the database has no phone column yet).
   final String? phone;
 
+  /// `can_review_expense_advances`: may decide cash requests assigned to
+  /// them.
+  final bool canReviewCash;
+
+  /// `can_review_attendance_corrections`: may decide correction requests
+  /// assigned to them.
+  final bool canReviewCorrections;
+
   bool get isAdmin => role == UserRole.admin;
+
+  /// `admin_assign_*_reviewer` accepts them: an active employee who has
+  /// changed their first password.
+  bool get canBeAssigned =>
+      role == UserRole.employee && isActive && !mustChangePassword;
 
   /// Case-insensitive match on name, username or employee code.
   bool matches(String query) {

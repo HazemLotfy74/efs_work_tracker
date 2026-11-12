@@ -740,6 +740,15 @@ class AppLocalizationsAr extends AppLocalizations {
       'انتهت وردية اليوم، لذلك أُغلق تسجيل الحضور.';
 
   @override
+  String attendanceCheckInOpensAt(String time) {
+    return 'يبدأ تسجيل الحضور الساعة $time.';
+  }
+
+  @override
+  String get attendanceCheckInNotOpen =>
+      'لم يبدأ تسجيل الحضور بعد. حاول مرة أخرى عند بدء فترة التسجيل.';
+
+  @override
   String get attendanceAlreadyCheckedIn => 'لقد سجّلت حضورك اليوم بالفعل.';
 
   @override
@@ -1512,5 +1521,294 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String historyMinutesTotal(int minutes) {
     return 'الإجمالي $minutes دقيقة';
+  }
+
+  @override
+  String get hrReports => 'تقارير الموارد البشرية';
+
+  @override
+  String get hrReportsSubtitle => 'الحضور وتجهيز الرواتب';
+
+  @override
+  String get hrReportsPreviousMonth => 'الشهر السابق';
+
+  @override
+  String get hrReportsNextMonth => 'الشهر التالي';
+
+  @override
+  String get hrReportsEmployees => 'الموظفون';
+
+  @override
+  String get hrReportsAttendanceDays => 'أيام الحضور';
+
+  @override
+  String get hrReportsAbsences => 'غياب (بدون تسجيل)';
+
+  @override
+  String get hrReportsLateDays => 'أيام التأخير';
+
+  @override
+  String get hrReportsOvertime => 'الوقت الإضافي المحسوب';
+
+  @override
+  String get hrReportsPendingCorrections => 'تصحيحات قيد المراجعة';
+
+  @override
+  String get hrReportsNeedsReview => 'أيام تحتاج مراجعة';
+
+  @override
+  String hrReportsHours(String hours) {
+    return '$hours س';
+  }
+
+  @override
+  String get hrReportsSource =>
+      'محسوبة من سجلات الحضور الفعلية. الإجازات والعطلات الرسمية واعتماد الوقت الإضافي غير مسجلة في النظام بعد، لذلك يوضح الملف أنها غير متاحة.';
+
+  @override
+  String get hrReportsGenerate => 'إنشاء ملف Excel';
+
+  @override
+  String get hrReportsGenerating => 'جارٍ تجهيز الملف…';
+
+  @override
+  String get hrReportsExportFailed =>
+      'تعذّر إنشاء الملف أو مشاركته. حاول مرة أخرى.';
+
+  @override
+  String get hrReportsNoEmployees => 'لا يوجد موظفون في هذه الفترة';
+
+  @override
+  String get permissionsTitle => 'الصلاحيات';
+
+  @override
+  String permissionsIntro(String name) {
+    return 'اختر ما يمكن أن يفعله $name إلى جانب حضوره وطلباته الخاصة. يسري التغيير من الإجراء التالي ويُسجَّل في سجل التدقيق.';
+  }
+
+  @override
+  String get permissionsFromRole => 'من الدور';
+
+  @override
+  String permissionsGrantedOn(String date) {
+    return 'مُنحت $date';
+  }
+
+  @override
+  String get permissionsNotYours => 'يمكنك منح الصلاحيات التي تملكها فقط';
+
+  @override
+  String get permissionsSensitive => 'يمكن للمسؤول فقط تغيير هذه الصلاحية';
+
+  @override
+  String get permissionsSave => 'مراجعة وحفظ';
+
+  @override
+  String get permissionsConfirmTitle => 'حفظ تغييرات الصلاحيات؟';
+
+  @override
+  String get permissionsAdded => 'ستُمنح';
+
+  @override
+  String get permissionsRemoved => 'ستُسحب';
+
+  @override
+  String get permissionsSaved => 'تم حفظ الصلاحيات';
+
+  @override
+  String get permissionsCategoryAttendance => 'الحضور';
+
+  @override
+  String get permissionsCategoryCash => 'طلبات النقدية';
+
+  @override
+  String get permissionsCategoryEmployees => 'الموظفون';
+
+  @override
+  String get permissionsCategoryReports => 'التقارير';
+
+  @override
+  String get permAttendanceViewAll => 'عرض حضور الجميع ومواقعهم وصورهم';
+
+  @override
+  String get permCorrectionsView => 'عرض طلبات التصحيح';
+
+  @override
+  String get permCorrectionsApprove => 'اعتماد طلبات التصحيح';
+
+  @override
+  String get permCorrectionsReject => 'رفض طلبات التصحيح';
+
+  @override
+  String get permAttendanceEdit => 'تصحيح أوقات الحضور';
+
+  @override
+  String get permScheduleEdit => 'تغيير الجداول وفترة السماح';
+
+  @override
+  String get permCashViewAll => 'عرض طلبات النقدية للجميع';
+
+  @override
+  String get permCashApprove => 'اعتماد طلبات النقدية';
+
+  @override
+  String get permCashReject => 'رفض طلبات النقدية';
+
+  @override
+  String get permEmployeesView => 'عرض الموظفين وملفاتهم';
+
+  @override
+  String get permEmployeesEdit => 'تفعيل الحسابات وإيقافها';
+
+  @override
+  String get permManagePermissions => 'منح الصلاحيات وسحبها';
+
+  @override
+  String get permReportsView => 'عرض أرقام تقارير الموارد البشرية';
+
+  @override
+  String get permReportsExport => 'تصدير ملف الموارد البشرية';
+
+  @override
+  String get permAuditView => 'عرض سجل التدقيق';
+
+  @override
+  String get permReviewAssignedCash => 'مراجعة طلبات السلف المُسندة';
+
+  @override
+  String get permReviewAssignedCorrections =>
+      'مراجعة طلبات تصحيح الحضور المُسندة';
+
+  @override
+  String get permReviewAssignedOvertime =>
+      'مراجعة طلبات الوقت الإضافي المُسندة';
+
+  @override
+  String get permReviewAssignedHint =>
+      'يمكنه اعتماد أو رفض الطلبات التي يسندها إليه المسؤول فقط، وليس طلباته الخاصة.';
+
+  @override
+  String get permOvertimeUnusedHint =>
+      'طلبات الوقت الإضافي غير مستخدمة في التطبيق حاليًا.';
+
+  @override
+  String get assignReviewer => 'إسناد مراجع';
+
+  @override
+  String assignedTo(String name) {
+    return 'مُسند إلى $name';
+  }
+
+  @override
+  String get unassignReviewer => 'إلغاء الإسناد';
+
+  @override
+  String get noEligibleReviewers =>
+      'لا يوجد موظف لديه صلاحية المراجعة هذه بعد. امنحها من صفحة صلاحيات الموظف.';
+
+  @override
+  String get reviewerAssigned => 'تم إسناد المراجع.';
+
+  @override
+  String get reviewerUnassigned => 'تم إلغاء الإسناد.';
+
+  @override
+  String get assignedReviews => 'مُسند إليّ';
+
+  @override
+  String get assignedReviewsSubtitle => 'طلبات بانتظار قرارك';
+
+  @override
+  String get assignedReviewsEmpty => 'لا توجد طلبات مُسندة إليك حاليًا.';
+
+  @override
+  String get assignedReviewsLoadFailed => 'تعذّر تحميل الطلبات المُسندة إليك.';
+
+  @override
+  String get assignedRequesterHidden => 'بيانات صاحب الطلب تظهر للمسؤولين فقط.';
+
+  @override
+  String get adminEditEmployee => 'تعديل البيانات';
+
+  @override
+  String get adminEmployeeSaved => 'تم حفظ بيانات الموظف.';
+
+  @override
+  String get adminSaveDetails => 'حفظ البيانات';
+
+  @override
+  String get adminLoginEmail => 'بريد تسجيل الدخول';
+
+  @override
+  String get adminNewLoginEmail => 'بريد تسجيل الدخول الجديد';
+
+  @override
+  String get adminRequestEmailChange => 'طلب تغيير البريد';
+
+  @override
+  String get adminEmailChangeHint =>
+      'يؤكد الموظف التغيير من صفحة حسابه ثم من رسالة التأكيد. تنتهي صلاحية الطلب بعد 24 ساعة.';
+
+  @override
+  String adminEmailChangePending(String email) {
+    return 'بانتظار تأكيد الموظف للبريد $email';
+  }
+
+  @override
+  String get adminCancelEmailChange => 'إلغاء الطلب';
+
+  @override
+  String get adminEmailChangeRequested => 'تم طلب تغيير البريد.';
+
+  @override
+  String get adminEmailChangeCancelled => 'تم إلغاء طلب تغيير البريد.';
+
+  @override
+  String get adminEmailInvalid => 'أدخل بريدًا إلكترونيًا صحيحًا ومختلفًا.';
+
+  @override
+  String emailChangeProfileNote(String email) {
+    return 'طلب المسؤول تغيير بريد تسجيل دخولك إلى $email.';
+  }
+
+  @override
+  String get emailChangeConfirm => 'إرسال رسالة التأكيد';
+
+  @override
+  String emailChangeSent(String email) {
+    return 'افتح رابط التأكيد المرسل إلى $email لإتمام التغيير.';
+  }
+
+  @override
+  String get correctionRequests => 'تصحيح الحضور';
+
+  @override
+  String get correctionRequestsSubtitle => 'اطلب تصحيح أوقات يوم';
+
+  @override
+  String get myCorrectionsEmptyTitle => 'لا توجد طلبات تصحيح';
+
+  @override
+  String get myCorrectionsEmptyMessage =>
+      'ستظهر هنا الطلبات التي ترسلها لتصحيح أوقات يوم.';
+
+  @override
+  String get correctionNewRequest => 'طلب تصحيح جديد';
+
+  @override
+  String get correctionPickDay => 'اختر اليوم المراد تصحيحه';
+
+  @override
+  String get correctionNoDays => 'لا توجد أيام حضور مغلقة لتصحيحها بعد.';
+
+  @override
+  String get correctionTypeMissingCheckOut => 'انصراف غير مسجَّل';
+
+  @override
+  String get correctionTypeTimes => 'أوقات غير صحيحة';
+
+  @override
+  String correctionSentOn(String date) {
+    return 'أُرسل $date';
   }
 }

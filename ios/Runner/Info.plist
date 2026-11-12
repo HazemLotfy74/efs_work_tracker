@@ -4,6 +4,10 @@
 <dict>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>We use your location to verify your attendance at work.</string>
+	<!-- Required by image_picker: the attendance selfie opens the camera.
+	     Without it iOS terminates the app when the camera opens. -->
+	<key>NSCameraUsageDescription</key>
+	<string>We take a selfie to verify your attendance at work.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<!-- Password-reset email link (Constants.passwordResetRedirect), read by supabase_flutter. -->

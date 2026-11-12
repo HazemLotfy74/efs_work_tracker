@@ -28,30 +28,34 @@ class UserHeader extends StatelessWidget {
     );
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      spacing: 12,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${now.formatWeekday(context)}  ${now.formatMonthDay(context)}'
-                  .toUpperCase(),
-              style: AppTextStyles.overline.copyWith(
-                color: colorScheme.onSurfaceVariant,
+        // Expanded: a long name or date wraps instead of overflowing.
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${now.formatWeekday(context)}  ${now.formatMonthDay(context)}'
+                    .toUpperCase(),
+                style: context
+                    .tracked(AppTextStyles.overline)
+                    .copyWith(color: colorScheme.onSurfaceVariant),
               ),
-            ),
-            Text(
-              DayPart.of(now).greeting(context.l10n),
-              style: textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w400,
+              Text(
+                DayPart.of(now).greeting(context.l10n),
+                style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-            ),
-            Text(
-              user?.fullName ?? '',
-              style: textTheme.headlineSmall?.copyWith(
-                color: context.appColors.headingText,
+              Text(
+                user?.fullName ?? '',
+                style: textTheme.headlineSmall?.copyWith(
+                  color: context.appColors.headingText,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),

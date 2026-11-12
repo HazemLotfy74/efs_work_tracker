@@ -17,6 +17,15 @@ abstract interface class AuthRepository {
 
   Future<void> signOut();
 
+  /// The login email an admin asked this employee to change to, while the
+  /// request is still open; `null` when there is none (or for admins).
+  Future<String?> getPendingLoginEmail();
+
+  /// Starts Supabase Auth's own email change to [email]: it emails a
+  /// confirmation link, and the change happens when the link is opened.
+  /// The database refuses any address an admin did not request.
+  Future<void> confirmLoginEmail(String email);
+
   /// Fires when the session ends on its own, e.g. a refresh is refused
   /// because the account was deactivated.
   Stream<void> get signedOut;

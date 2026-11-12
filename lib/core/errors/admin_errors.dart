@@ -43,6 +43,10 @@ enum AdminFailure implements Exception {
   /// Admins can't correct their own attendance.
   ownAttendance,
 
+  /// The day changed after the correction request was sent: reject it so
+  /// the employee can send a new one.
+  attendanceChanged,
+
   /// Another action is already being sent.
   busy,
   network,

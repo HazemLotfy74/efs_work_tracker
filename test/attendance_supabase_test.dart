@@ -1188,7 +1188,14 @@ void main() {
         today: (shift: shift, session: null),
         now: shiftEnd,
       );
-      expect(find.text('Check In Now'), findsNothing);
+      // Shown but disabled, with the reason.
+      final button = tester.widget<FilledButton>(
+        find.descendant(
+          of: find.byKey(const Key('checkInNow')),
+          matching: find.byType(FilledButton),
+        ),
+      );
+      expect(button.onPressed, isNull);
       expect(
         find.text('Today’s shift has ended, so check-in is closed.'),
         findsOneWidget,

@@ -11,7 +11,10 @@ import 'app_theme_colors.dart';
 /// themes go through [_build], so component themes, text colors and the
 /// [AppThemeColors] extension stay in sync between light and dark.
 abstract final class AppTheme {
-  static ThemeData get light {
+  static ThemeData get light => lightFor(const Locale('en'));
+
+  /// The light theme for [locale]: Arabic text uses Cairo, English Manrope.
+  static ThemeData lightFor(Locale locale) {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppPalette.green500,
       primary: AppPalette.green500,
@@ -31,6 +34,7 @@ abstract final class AppTheme {
     );
 
     return _build(
+      locale: locale,
       colorScheme: colorScheme,
       scaffoldBackground: AppPalette.neutral100,
       colors: const AppThemeColors(
@@ -64,6 +68,7 @@ abstract final class AppTheme {
     );
 
     return _build(
+      locale: const Locale('en'),
       colorScheme: colorScheme,
       scaffoldBackground: colorScheme.surfaceContainerLowest,
       colors: AppThemeColors(
@@ -93,11 +98,13 @@ abstract final class AppTheme {
   );
 
   static ThemeData _build({
+    required Locale locale,
     required ColorScheme colorScheme,
     required Color scaffoldBackground,
     required AppThemeColors colors,
   }) {
-    final textTheme = _textTheme(colorScheme);
+    final fontFamily = AppTextStyles.familyFor(locale);
+    final textTheme = _textTheme(colorScheme, locale);
     final inputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(14),
       borderSide: BorderSide(color: colorScheme.outlineVariant),
@@ -106,7 +113,8 @@ abstract final class AppTheme {
     return ThemeData(
       colorScheme: colorScheme,
       scaffoldBackgroundColor: scaffoldBackground,
-      fontFamily: AppTextStyles.fontFamily,
+      fontFamily: fontFamily,
+      fontFamilyFallback: AppTextStyles.fontFamilyFallback,
       textTheme: textTheme,
       extensions: [colors],
       appBarTheme: AppBarTheme(
@@ -265,22 +273,27 @@ abstract final class AppTheme {
     );
   }
 
-  static TextTheme _textTheme(ColorScheme colorScheme) {
+  static TextTheme _textTheme(ColorScheme colorScheme, Locale locale) {
+    final arabic = locale.languageCode == 'ar';
+    // Letter spacing pulls apart the joined letters of Arabic script.
+    TextStyle role(TextStyle style) =>
+        arabic ? style.copyWith(letterSpacing: 0) : style;
     final textTheme =
         TextTheme(
-          displaySmall: AppTextStyles.displaySmall,
-          headlineMedium: AppTextStyles.headlineMedium,
-          headlineSmall: AppTextStyles.headlineSmall,
-          titleLarge: AppTextStyles.titleLarge,
-          titleMedium: AppTextStyles.titleMedium,
-          titleSmall: AppTextStyles.titleSmall,
-          bodyLarge: AppTextStyles.bodyLarge,
-          bodyMedium: AppTextStyles.bodyMedium,
-          bodySmall: AppTextStyles.bodySmall,
-          labelLarge: AppTextStyles.labelLarge,
-          labelMedium: AppTextStyles.labelMedium,
-          labelSmall: AppTextStyles.labelSmall,
+          displaySmall: role(AppTextStyles.displaySmall),
+          headlineMedium: role(AppTextStyles.headlineMedium),
+          headlineSmall: role(AppTextStyles.headlineSmall),
+          titleLarge: role(AppTextStyles.titleLarge),
+          titleMedium: role(AppTextStyles.titleMedium),
+          titleSmall: role(AppTextStyles.titleSmall),
+          bodyLarge: role(AppTextStyles.bodyLarge),
+          bodyMedium: role(AppTextStyles.bodyMedium),
+          bodySmall: role(AppTextStyles.bodySmall),
+          labelLarge: role(AppTextStyles.labelLarge),
+          labelMedium: role(AppTextStyles.labelMedium),
+          labelSmall: role(AppTextStyles.labelSmall),
         ).apply(
+          fontFamily: AppTextStyles.familyFor(locale),
           bodyColor: colorScheme.onSurface,
           displayColor: colorScheme.onSurface,
         );

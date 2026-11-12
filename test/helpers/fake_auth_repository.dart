@@ -50,6 +50,19 @@ class FakeAuthRepository implements AuthRepository {
     if (failure case final failure?) throw failure;
   }
 
+  /// What [getPendingLoginEmail] answers.
+  String? pendingLoginEmail;
+  final confirmedEmails = <String>[];
+
+  @override
+  Future<String?> getPendingLoginEmail() async => pendingLoginEmail;
+
+  @override
+  Future<void> confirmLoginEmail(String email) async {
+    if (failure case final failure?) throw failure;
+    confirmedEmails.add(email);
+  }
+
   @override
   Future<void> signOut() async => signedInUser = null;
 

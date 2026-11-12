@@ -10,12 +10,17 @@ import '../../../../../core/theme/theme_context_extensions.dart';
 import '../../../../../core/widgets/app_primary_button.dart';
 import '../../../../../core/widgets/custom_container.dart';
 import '../../../attendance_session/presentation/widgets/prepare/info_row.dart';
+import '../../../../../core/errors/correction_errors.dart';
+import '../../../admin/presentation/widgets/assign_reviewer_button.dart';
 import '../../domain/correction_rules.dart';
+import '../../domain/repositories/correction_repository.dart';
 import '../../domain/entities/correction_request_entity.dart';
 import '../manager/pending_corrections_cubit/pending_corrections_cubit.dart';
 import 'correction_request_details.dart';
 import 'correction_text.dart';
 import 'review_decision_dialog.dart';
+import '../../../permissions/domain/entities/permission_set.dart';
+import '../../../permissions/presentation/permissions_context.dart';
 
 /// One pending request in the admin's queue, with Approve and Reject.
 class CorrectionReviewCard extends StatelessWidget {
@@ -72,35 +77,60 @@ class CorrectionReviewCard extends StatelessWidget {
             request: request,
             timezone: request.timezone,
           ),
+          AssignReviewerButton(
+            requestId: request.id,
+            requesterId: request.employeeId,
+            assignedReviewerId: request.assignedReviewerId,
+            holdsPermission: (employee) => employee.canReviewCorrections,
+            onAssign: (reviewerId) => _assign(context, reviewerId),
+          ),
           if (reviewing)
             const Center(child: CircularProgressIndicator())
           else
             Row(
               spacing: 12,
               children: [
-                Expanded(
-                  child: OutlinedButton(
-                    key: Key('reject-${request.id}'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: context.colors.error,
-                      minimumSize: const Size.fromHeight(54),
+                // attendance.reject_correction / approve_correction;
+                // review_request checks them too.
+                if (context.permissions.can(Permission.correctionsReject))
+                  Expanded(
+                    child: OutlinedButton(
+                      key: Key('reject-${request.id}'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: context.colors.error,
+                        minimumSize: const Size.fromHeight(54),
+                      ),
+                      onPressed: () => _review(context, approve: false),
+                      child: Text(l10n.correctionReject),
                     ),
-                    onPressed: () => _review(context, approve: false),
-                    child: Text(l10n.correctionReject),
                   ),
-                ),
-                Expanded(
-                  child: AppPrimaryButton(
-                    key: Key('approve-${request.id}'),
-                    onPressed: () => _review(context, approve: true),
-                    child: Text(l10n.correctionApprove),
+                if (context.permissions.can(Permission.correctionsApprove))
+                  Expanded(
+                    child: AppPrimaryButton(
+                      key: Key('approve-${request.id}'),
+                      onPressed: () => _review(context, approve: true),
+                      child: Text(l10n.correctionApprove),
+                    ),
                   ),
-                ),
               ],
             ),
         ],
       ),
     );
+  }
+
+  Future<String?> _assign(BuildContext context, String? reviewerId) async {
+    final l10n = context.l10n;
+    final cubit = context.read<PendingCorrectionsCubit>();
+    final repository = context.read<CorrectionRepository>();
+    try {
+      await repository.assignReviewer(request.id, reviewerId);
+      await cubit.load();
+      return null;
+    } on CorrectionFailure catch (failure) {
+      if (failure.needsReload) await cubit.load();
+      return failure.message(l10n);
+    }
   }
 
   Future<void> _review(BuildContext context, {required bool approve}) async {

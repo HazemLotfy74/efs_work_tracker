@@ -13,6 +13,7 @@ extension AdminFailureText on AdminFailure {
     AdminFailure.ownRequest => l10n.adminOwnRequest,
     AdminFailure.alreadyReviewed => l10n.adminAlreadyReviewed,
     AdminFailure.notFound => l10n.adminNotFound,
+    AdminFailure.attendanceChanged => l10n.correctionAttendanceChanged,
     AdminFailure.busy => l10n.adminBusy,
     AdminFailure.network => l10n.adminNetwork,
     AdminFailure.webOriginBlocked => l10n.adminWebOriginBlocked,

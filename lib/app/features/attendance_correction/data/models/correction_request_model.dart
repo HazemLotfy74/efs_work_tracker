@@ -20,6 +20,7 @@ class CorrectionRequestModel extends CorrectionRequestEntity {
     super.workDate,
     super.timezone,
     super.actualCheckIn,
+    super.assignedReviewerId,
   });
 
   /// Throws when a required column is missing or malformed.
@@ -43,6 +44,7 @@ class CorrectionRequestModel extends CorrectionRequestEntity {
       workDate: workDate == null ? null : _date(workDate),
       timezone: attendance?['timezone'] as String?,
       actualCheckIn: _time(attendance?['actual_checkin']),
+      assignedReviewerId: json['assigned_reviewer_id'] as String?,
     );
   }
 

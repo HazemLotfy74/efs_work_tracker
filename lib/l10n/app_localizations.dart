@@ -1418,6 +1418,18 @@ abstract class AppLocalizations {
   /// **'Today’s shift has ended, so check-in is closed.'**
   String get attendanceCheckInClosed;
 
+  /// No description provided for @attendanceCheckInOpensAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in opens at {time}.'**
+  String attendanceCheckInOpensAt(String time);
+
+  /// No description provided for @attendanceCheckInNotOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in has not opened yet. Try again when the check-in window opens.'**
+  String get attendanceCheckInNotOpen;
+
   /// No description provided for @attendanceAlreadyCheckedIn.
   ///
   /// In en, this message translates to:
@@ -2827,6 +2839,534 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes}m total'**
   String historyMinutesTotal(int minutes);
+
+  /// No description provided for @hrReports.
+  ///
+  /// In en, this message translates to:
+  /// **'HR reports'**
+  String get hrReports;
+
+  /// No description provided for @hrReportsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance and payroll preparation'**
+  String get hrReportsSubtitle;
+
+  /// No description provided for @hrReportsPreviousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get hrReportsPreviousMonth;
+
+  /// No description provided for @hrReportsNextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get hrReportsNextMonth;
+
+  /// No description provided for @hrReportsEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get hrReportsEmployees;
+
+  /// No description provided for @hrReportsAttendanceDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance days'**
+  String get hrReportsAttendanceDays;
+
+  /// No description provided for @hrReportsAbsences.
+  ///
+  /// In en, this message translates to:
+  /// **'Absences (no record)'**
+  String get hrReportsAbsences;
+
+  /// No description provided for @hrReportsLateDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Late arrivals'**
+  String get hrReportsLateDays;
+
+  /// No description provided for @hrReportsOvertime.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculated overtime'**
+  String get hrReportsOvertime;
+
+  /// No description provided for @hrReportsPendingCorrections.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending corrections'**
+  String get hrReportsPendingCorrections;
+
+  /// No description provided for @hrReportsNeedsReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Days needing HR review'**
+  String get hrReportsNeedsReview;
+
+  /// No description provided for @hrReportsHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String hrReportsHours(String hours);
+
+  /// No description provided for @hrReportsSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculated from the live attendance records. Leave, public holidays and overtime approval are not recorded in the system yet, so the workbook marks them as unavailable.'**
+  String get hrReportsSource;
+
+  /// No description provided for @hrReportsGenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Excel'**
+  String get hrReportsGenerate;
+
+  /// No description provided for @hrReportsGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing the workbook…'**
+  String get hrReportsGenerating;
+
+  /// No description provided for @hrReportsExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t create or share the file. Try again.'**
+  String get hrReportsExportFailed;
+
+  /// No description provided for @hrReportsNoEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'No employees in this period'**
+  String get hrReportsNoEmployees;
+
+  /// No description provided for @permissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get permissionsTitle;
+
+  /// No description provided for @permissionsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what {name} can do besides their own attendance and requests. The change applies on their next action and is recorded in the audit history.'**
+  String permissionsIntro(String name);
+
+  /// No description provided for @permissionsFromRole.
+  ///
+  /// In en, this message translates to:
+  /// **'From role'**
+  String get permissionsFromRole;
+
+  /// No description provided for @permissionsGrantedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Granted {date}'**
+  String permissionsGrantedOn(String date);
+
+  /// No description provided for @permissionsNotYours.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only grant permissions you have'**
+  String get permissionsNotYours;
+
+  /// No description provided for @permissionsSensitive.
+  ///
+  /// In en, this message translates to:
+  /// **'Only an administrator can change this'**
+  String get permissionsSensitive;
+
+  /// No description provided for @permissionsSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Review and save'**
+  String get permissionsSave;
+
+  /// No description provided for @permissionsConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save permission changes?'**
+  String get permissionsConfirmTitle;
+
+  /// No description provided for @permissionsAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be granted'**
+  String get permissionsAdded;
+
+  /// No description provided for @permissionsRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be removed'**
+  String get permissionsRemoved;
+
+  /// No description provided for @permissionsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions saved'**
+  String get permissionsSaved;
+
+  /// No description provided for @permissionsCategoryAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance'**
+  String get permissionsCategoryAttendance;
+
+  /// No description provided for @permissionsCategoryCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash requests'**
+  String get permissionsCategoryCash;
+
+  /// No description provided for @permissionsCategoryEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get permissionsCategoryEmployees;
+
+  /// No description provided for @permissionsCategoryReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get permissionsCategoryReports;
+
+  /// No description provided for @permAttendanceViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See everyone\'s attendance, locations and photos'**
+  String get permAttendanceViewAll;
+
+  /// No description provided for @permCorrectionsView.
+  ///
+  /// In en, this message translates to:
+  /// **'See correction requests'**
+  String get permCorrectionsView;
+
+  /// No description provided for @permCorrectionsApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve correction requests'**
+  String get permCorrectionsApprove;
+
+  /// No description provided for @permCorrectionsReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject correction requests'**
+  String get permCorrectionsReject;
+
+  /// No description provided for @permAttendanceEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct attendance times'**
+  String get permAttendanceEdit;
+
+  /// No description provided for @permScheduleEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Change schedules and grace period'**
+  String get permScheduleEdit;
+
+  /// No description provided for @permCashViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See everyone\'s cash requests'**
+  String get permCashViewAll;
+
+  /// No description provided for @permCashApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve cash requests'**
+  String get permCashApprove;
+
+  /// No description provided for @permCashReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject cash requests'**
+  String get permCashReject;
+
+  /// No description provided for @permEmployeesView.
+  ///
+  /// In en, this message translates to:
+  /// **'See employees and their profiles'**
+  String get permEmployeesView;
+
+  /// No description provided for @permEmployeesEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate and deactivate accounts'**
+  String get permEmployeesEdit;
+
+  /// No description provided for @permManagePermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant and remove permissions'**
+  String get permManagePermissions;
+
+  /// No description provided for @permReportsView.
+  ///
+  /// In en, this message translates to:
+  /// **'See HR report figures'**
+  String get permReportsView;
+
+  /// No description provided for @permReportsExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export the HR workbook'**
+  String get permReportsExport;
+
+  /// No description provided for @permAuditView.
+  ///
+  /// In en, this message translates to:
+  /// **'See the audit history'**
+  String get permAuditView;
+
+  /// No description provided for @permReviewAssignedCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Review assigned cash requests'**
+  String get permReviewAssignedCash;
+
+  /// No description provided for @permReviewAssignedCorrections.
+  ///
+  /// In en, this message translates to:
+  /// **'Review assigned attendance corrections'**
+  String get permReviewAssignedCorrections;
+
+  /// No description provided for @permReviewAssignedOvertime.
+  ///
+  /// In en, this message translates to:
+  /// **'Review assigned overtime requests'**
+  String get permReviewAssignedOvertime;
+
+  /// No description provided for @permReviewAssignedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Can approve or reject only the requests an administrator assigns to them, never their own.'**
+  String get permReviewAssignedHint;
+
+  /// No description provided for @permOvertimeUnusedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Overtime requests are not used in the app yet.'**
+  String get permOvertimeUnusedHint;
+
+  /// No description provided for @assignReviewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign reviewer'**
+  String get assignReviewer;
+
+  /// No description provided for @assignedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to {name}'**
+  String assignedTo(String name);
+
+  /// No description provided for @unassignReviewer.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove assignment'**
+  String get unassignReviewer;
+
+  /// No description provided for @noEligibleReviewers.
+  ///
+  /// In en, this message translates to:
+  /// **'No employee has this review permission yet. Grant it from the employee’s Permissions page.'**
+  String get noEligibleReviewers;
+
+  /// No description provided for @reviewerAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviewer assigned.'**
+  String get reviewerAssigned;
+
+  /// No description provided for @reviewerUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assignment removed.'**
+  String get reviewerUnassigned;
+
+  /// No description provided for @assignedReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to me'**
+  String get assignedReviews;
+
+  /// No description provided for @assignedReviewsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests waiting for your decision'**
+  String get assignedReviewsSubtitle;
+
+  /// No description provided for @assignedReviewsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is assigned to you right now.'**
+  String get assignedReviewsEmpty;
+
+  /// No description provided for @assignedReviewsLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t load the requests assigned to you.'**
+  String get assignedReviewsLoadFailed;
+
+  /// No description provided for @assignedRequesterHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Requester details are visible to administrators only.'**
+  String get assignedRequesterHidden;
+
+  /// No description provided for @adminEditEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit details'**
+  String get adminEditEmployee;
+
+  /// No description provided for @adminEmployeeSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee details saved.'**
+  String get adminEmployeeSaved;
+
+  /// No description provided for @adminSaveDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Save details'**
+  String get adminSaveDetails;
+
+  /// No description provided for @adminLoginEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Login email'**
+  String get adminLoginEmail;
+
+  /// No description provided for @adminNewLoginEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'New login email'**
+  String get adminNewLoginEmail;
+
+  /// No description provided for @adminRequestEmailChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Request email change'**
+  String get adminRequestEmailChange;
+
+  /// No description provided for @adminEmailChangeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The employee confirms the change from their Profile page and then from the confirmation email. The request expires after 24 hours.'**
+  String get adminEmailChangeHint;
+
+  /// No description provided for @adminEmailChangePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the employee to confirm {email}'**
+  String adminEmailChangePending(String email);
+
+  /// No description provided for @adminCancelEmailChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel request'**
+  String get adminCancelEmailChange;
+
+  /// No description provided for @adminEmailChangeRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Email change requested.'**
+  String get adminEmailChangeRequested;
+
+  /// No description provided for @adminEmailChangeCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Email change request cancelled.'**
+  String get adminEmailChangeCancelled;
+
+  /// No description provided for @adminEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a different, valid email address.'**
+  String get adminEmailInvalid;
+
+  /// No description provided for @emailChangeProfileNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your administrator asked to change your login email to {email}.'**
+  String emailChangeProfileNote(String email);
+
+  /// No description provided for @emailChangeConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Send confirmation email'**
+  String get emailChangeConfirm;
+
+  /// No description provided for @emailChangeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the confirmation link sent to {email} to finish.'**
+  String emailChangeSent(String email);
+
+  /// No description provided for @correctionRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendance corrections'**
+  String get correctionRequests;
+
+  /// No description provided for @correctionRequestsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask to fix the times of a day'**
+  String get correctionRequestsSubtitle;
+
+  /// No description provided for @myCorrectionsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No correction requests'**
+  String get myCorrectionsEmptyTitle;
+
+  /// No description provided for @myCorrectionsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests you send to fix a day’s times will appear here.'**
+  String get myCorrectionsEmptyMessage;
+
+  /// No description provided for @correctionNewRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New correction request'**
+  String get correctionNewRequest;
+
+  /// No description provided for @correctionPickDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the day to correct'**
+  String get correctionPickDay;
+
+  /// No description provided for @correctionNoDays.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no closed attendance days to correct yet.'**
+  String get correctionNoDays;
+
+  /// No description provided for @correctionTypeMissingCheckOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing check-out'**
+  String get correctionTypeMissingCheckOut;
+
+  /// No description provided for @correctionTypeTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect times'**
+  String get correctionTypeTimes;
+
+  /// No description provided for @correctionSentOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent {date}'**
+  String correctionSentOn(String date);
 }
 
 class _AppLocalizationsDelegate

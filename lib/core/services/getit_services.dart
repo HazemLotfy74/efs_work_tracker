@@ -13,6 +13,12 @@ import '../../app/features/cash_request/domain/repositories/expense_advance_repo
 import 'accounts_function.dart';
 import '../../app/features/history/data/repositories/supabase_history_repository.dart';
 import '../../app/features/history/domain/repositories/history_repository.dart';
+import '../../app/features/hr_reports/data/repositories/supabase_hr_report_repository.dart';
+import '../../app/features/hr_reports/domain/repositories/hr_report_repository.dart';
+import '../../app/features/permissions/data/repositories/supabase_permission_repository.dart';
+import '../../app/features/permissions/domain/repositories/permission_repository.dart';
+import '../../app/features/assigned_reviews/data/repositories/supabase_assigned_review_repository.dart';
+import '../../app/features/assigned_reviews/domain/repositories/assigned_review_repository.dart';
 import 'database_services.dart';
 import 'storage_services.dart';
 import 'supabase_auth_service.dart';
@@ -63,6 +69,24 @@ void setup() {
       storageServices: getIt<StorageServices>(),
       accountsFunction: invokeAccountsFunction,
       currentUserId: () => getIt<SupabaseAuthService>().currentUser?.id,
+    ),
+  );
+  getIt.registerSingleton<PermissionRepository>(
+    SupabasePermissionRepository(
+      databaseServices: getIt<DatabaseServices>(),
+      currentUserId: () => getIt<SupabaseAuthService>().currentUser?.id,
+    ),
+  );
+  getIt.registerSingleton<AssignedReviewRepository>(
+    SupabaseAssignedReviewRepository(
+      databaseServices: getIt<DatabaseServices>(),
+      currentUserId: () => getIt<SupabaseAuthService>().currentUser?.id,
+    ),
+  );
+  getIt.registerSingleton<HrReportRepository>(
+    SupabaseHrReportRepository(
+      admin: getIt<AdminRepository>(),
+      databaseServices: getIt<DatabaseServices>(),
     ),
   );
 }

@@ -54,7 +54,8 @@ class SupabaseAdminRepository implements AdminRepository {
 
   static const _baseEmployeeColumns =
       'id, full_name, username, employee_code, role, is_active, '
-      'must_change_password, schedule_id, created_at';
+      'must_change_password, schedule_id, created_at, '
+      'can_review_expense_advances, can_review_attendance_corrections';
 
   /// `profiles.phone` only exists once the role-and-phone migration ran.
   String get _employeeColumns =>
@@ -105,6 +106,8 @@ class SupabaseAdminRepository implements AdminRepository {
       scheduleId: json['schedule_id'] as String,
       createdAt: createdAt == null ? null : DateTime.parse(createdAt),
       phone: json['phone'] as String?,
+      canReviewCash: json['can_review_expense_advances'] == true,
+      canReviewCorrections: json['can_review_attendance_corrections'] == true,
     );
   }
 
@@ -425,7 +428,7 @@ class SupabaseAdminRepository implements AdminRepository {
         path: 'expense_advance_requests',
         column: _requestColumns(
           'expense_advance_requests',
-          'requested_amount, currency',
+          'requested_amount, currency, assigned_reviewer_id',
         ),
         query: {'status': 'pending'},
         orderBy: 'created_at',
@@ -461,6 +464,76 @@ class SupabaseAdminRepository implements AdminRepository {
     );
   }
 
+  @override
+  Future<void> editEmployee(
+    String employeeId, {
+    required String fullName,
+    required String username,
+    required String employeeCode,
+  }) async {
+    _requireUser();
+    await _guard(
+      'admin_edit_employee_profile',
+      () => _databaseServices.rpc(
+        function: 'admin_edit_employee_profile',
+        params: {
+          'p_employee_id': employeeId,
+          'p_full_name': fullName,
+          'p_username': username,
+          'p_employee_code': employeeCode,
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<LoginEmail> getLoginEmail(String employeeId) async {
+    _requireUser();
+    final answer = await _guard(
+      'get_employee_login_email',
+      () => _databaseServices.rpc(
+        function: 'get_employee_login_email',
+        params: {'p_employee_id': employeeId},
+      ),
+    );
+    try {
+      final json = answer as Map;
+      final expiresAt = json['expires_at'] as String?;
+      return (
+        email: json['email'] as String,
+        pendingEmail: json['pending_email'] as String?,
+        expiresAt: expiresAt == null ? null : DateTime.parse(expiresAt),
+      );
+    } catch (e) {
+      log('Unreadable login email: ${e.runtimeType}');
+      throw AdminFailure.unknown;
+    }
+  }
+
+  @override
+  Future<void> requestEmailChange(String employeeId, String? newEmail) async {
+    _requireUser();
+    await _guard(
+      'admin_request_employee_email_change',
+      () => _databaseServices.rpc(
+        function: 'admin_request_employee_email_change',
+        params: {'p_employee_id': employeeId, 'p_new_email': newEmail},
+      ),
+    );
+  }
+
+  @override
+  Future<void> assignCashReviewer(String requestId, String? reviewerId) async {
+    _requireUser();
+    await _guard(
+      'admin_assign_expense_advance_reviewer',
+      () => _databaseServices.rpc(
+        function: 'admin_assign_expense_advance_reviewer',
+        params: {'p_request_id': requestId, 'p_reviewer_id': reviewerId},
+      ),
+    );
+  }
+
   static AttendanceSessionEntity _session(Map<String, dynamic> json) =>
       AttendanceSessionModel.fromJson(json, shift: ShiftModel.fromRecord(json));
 
@@ -477,6 +550,7 @@ class SupabaseAdminRepository implements AdminRepository {
       // numeric may arrive as text when it is too precise for JSON numbers.
       amount: amount is num ? amount : num.parse(amount as String),
       currency: json['currency'] as String,
+      assignedReviewerId: json['assigned_reviewer_id'] as String?,
     );
   }
 
@@ -522,17 +596,22 @@ class SupabaseAdminRepository implements AdminRepository {
     }
   }
 
-  /// Maps a database error from the admin reads and `review_request`.
-  @visibleForTesting
+  /// Maps a database error from the admin reads and `review_request`. Also
+  /// used by the HR report reads.
   static AdminFailure failureFor(String? code, String message) {
     if (message.startsWith('You cannot review your own request')) {
       return AdminFailure.ownRequest;
     }
-    if (message.startsWith('This request has already been reviewed')) {
+    if (message.startsWith('Employees cannot be assigned their own')) {
+      return AdminFailure.ownRequest;
+    }
+    if (message.startsWith('This request has already been reviewed') ||
+        message.startsWith('Only pending requests can be assigned')) {
       return AdminFailure.alreadyReviewed;
     }
     if (message.startsWith('Request not found') ||
         message.startsWith('Employee profile not found') ||
+        message.startsWith('Employee not found') ||
         message.startsWith('Schedule not found') ||
         message.startsWith('Attendance record not found')) {
       return AdminFailure.notFound;
@@ -544,6 +623,8 @@ class SupabaseAdminRepository implements AdminRepository {
     return switch (code) {
       '42501' || 'PGRST301' || 'PGRST303' => AdminFailure.notAllowed,
       '22023' => AdminFailure.invalidInput,
+      // A username, employee code or login email that is already in use.
+      '23505' => AdminFailure.accountConflict,
       'PGRST202' || 'PGRST205' => AdminFailure.serviceUnavailable,
       _ => AdminFailure.unknown,
     };
@@ -556,6 +637,7 @@ class SupabaseAdminRepository implements AdminRepository {
     ('Proposed', AdminFailure.invalidTimes),
     ('No change was requested', AdminFailure.noChange),
     ('A pending correction already exists', AdminFailure.pendingCorrection),
+    ('Attendance changed', AdminFailure.attendanceChanged),
   ];
 
   /// Maps an `employee-accounts` error answer.

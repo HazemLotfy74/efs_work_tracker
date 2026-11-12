@@ -99,9 +99,9 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                       SizedBox(height: 20),
                       Text(
                         context.l10n.accountRecovery,
-                        style: AppTextStyles.overline.copyWith(
-                          color: context.colors.primary,
-                        ),
+                        style: context
+                            .tracked(AppTextStyles.overline)
+                            .copyWith(color: context.colors.primary),
                       ),
                       Text(
                         context.l10n.resetPassword,

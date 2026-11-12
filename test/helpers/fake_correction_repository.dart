@@ -56,6 +56,21 @@ class FakeCorrectionRepository implements CorrectionRepository {
     ));
   }
 
+  final assignments = <({String id, String? reviewerId})>[];
+
+  @override
+  Future<List<CorrectionRequestEntity>> getMine() async {
+    loads++;
+    if (failure case final failure?) throw failure;
+    return requests;
+  }
+
+  @override
+  Future<void> assignReviewer(String requestId, String? reviewerId) async {
+    if (failure case final failure?) throw failure;
+    assignments.add((id: requestId, reviewerId: reviewerId));
+  }
+
   @override
   Future<List<CorrectionRequestEntity>> getPendingForReview() async {
     loads++;

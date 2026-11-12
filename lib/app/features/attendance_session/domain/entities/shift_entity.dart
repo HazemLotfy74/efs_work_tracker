@@ -39,6 +39,13 @@ class ShiftEntity {
     return endsAt != null && !now.isBefore(endsAt);
   }
 
+  /// `true` before today's shift starts; the server refuses check-in then
+  /// ("Check-in opens at the scheduled shift start").
+  bool isBeforeStartAt(DateTime now) {
+    final startsAt = this.startsAt;
+    return startsAt != null && now.isBefore(startsAt);
+  }
+
   static DateTime _at(DateTime day, Duration offset) {
     final local = day.toLocal();
     return DateTime(local.year, local.month, local.day).add(offset);

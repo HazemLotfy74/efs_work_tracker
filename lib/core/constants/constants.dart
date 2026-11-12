@@ -36,6 +36,13 @@ abstract class Constants {
   /// since 2026-11-02).
   static const bool adminAttendanceCorrection = true;
 
+  /// Permissions per person: an admin gives an employee the live
+  /// database's reviewer flags (`profiles.can_review_*`) on the employee's
+  /// Permissions page, then assigns them requests to decide. Off, admins
+  /// can do everything and employees nothing extra. (The unapplied
+  /// 20261111090000_permissions.sql is a different design and is not used.)
+  static const bool dynamicPermissions = true;
+
   /// Whether selfies are named after the employee, e.g.
   /// `<uid>/Ahmed_Mohamed_EMP-125_check_in_20261101_060530_a81f2c0d.jpg`.
   /// Off until the bucket's upload policy (`attendance_selfie_upload`)

@@ -27,15 +27,27 @@ abstract final class AppRoutes {
       '/attendance/$id/correction';
 
   // Admin only (see AppRouter's redirect)
+  /// Requests an admin assigned to this employee to decide.
+  static const assignedReviews = '/reviews';
+
+  /// The employee's own correction requests.
+  static const myCorrections = '/corrections';
+
   static const adminPrefix = '/admin';
   static const adminDashboard = '/admin';
   static const adminCorrections = '/admin/corrections';
   static const adminRequests = '/admin/requests';
+  static const adminReports = '/admin/reports';
   static const adminAddEmployee = '/admin/employees/new';
   static const adminEmployee = '/admin/employees/:id';
   static String adminEmployeeOf(String id) => '/admin/employees/$id';
+  static const adminEditEmployee = '/admin/employees/:id/edit';
+  static String adminEditEmployeeOf(String id) => '/admin/employees/$id/edit';
   static const adminEmployeeAudit = '/admin/employees/:id/audit';
   static String adminEmployeeAuditOf(String id) => '/admin/employees/$id/audit';
+  static const adminEmployeePermissions = '/admin/employees/:id/permissions';
+  static String adminEmployeePermissionsOf(String id) =>
+      '/admin/employees/$id/permissions';
   static const adminAttendanceDay = '/admin/attendance/:id';
   static String adminAttendanceDayOf(String id) => '/admin/attendance/$id';
   static const adminEditAttendance = '/admin/attendance/:id/edit';
