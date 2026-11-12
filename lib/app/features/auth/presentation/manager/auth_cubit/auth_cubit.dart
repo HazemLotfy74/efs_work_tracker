@@ -13,9 +13,12 @@ part 'auth_state.dart';
 /// Provided once in main.dart. The router listens to it and sends the user
 /// to sign-in, the password change or home.
 class AuthCubit extends Cubit<AuthSessionState> {
-  AuthCubit(this._repository) : super(const AuthChecking());
+  AuthCubit(this._repository, {Future<void> Function()? beforeSignOut})
+    : _beforeSignOut = beforeSignOut,
+      super(const AuthChecking());
 
   final AuthRepository _repository;
+  final Future<void> Function()? _beforeSignOut;
   StreamSubscription<void>? _signedOutSubscription;
   StreamSubscription<void>? _recoverySubscription;
   StreamSubscription<AuthFailure>? _linkFailedSubscription;
@@ -71,6 +74,7 @@ class AuthCubit extends Cubit<AuthSessionState> {
       _repository.confirmLoginEmail(email);
 
   Future<void> signOut() async {
+    await _beforeSignOut?.call();
     await _repository.signOut();
     if (!isClosed) emit(const AuthSignedOut());
   }

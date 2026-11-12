@@ -557,5 +557,15 @@
   "correctionTypeMissingCheckOut": "انصراف غير مسجَّل",
   "correctionTypeTimes": "أوقات غير صحيحة",
   "correctionSentOn": "أُرسل {date}"
+  "inboxSubmitted": "تم تقديم الطلب",
+  "inboxAssigned": "تم تعيين الطلب لك",
+  "inboxEmpty": "لا توجد إشعارات بعد.",
+  "inboxLoadFailed": "تعذر تحميل الإشعارات. حاول مرة أخرى.",
+  "inboxRequestUnavailable": "لم يعد بإمكانك عرض هذا الطلب.",
+  "inboxRetry": "إعادة المحاولة",
+  "inboxMore": "تحميل المزيد",
+  "enablePhoneAlerts": "تفعيل تنبيهات الهاتف",
+  "phoneAlertsEnabled": "تم تفعيل تنبيهات الهاتف.",
+  "phoneAlertsUnavailable": "تعذر تفعيل تنبيهات الهاتف. تحقق من أذونات الإشعارات وحاول مرة أخرى."
 
 }

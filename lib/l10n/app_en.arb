@@ -790,5 +790,15 @@
       }
     }
   }
+  "inboxSubmitted": "Submitted",
+  "inboxAssigned": "Assigned to you",
+  "inboxEmpty": "No notifications yet.",
+  "inboxLoadFailed": "Couldn’t load notifications. Try again.",
+  "inboxRequestUnavailable": "This request is no longer available to you.",
+  "inboxRetry": "Retry",
+  "inboxMore": "Load more",
+  "enablePhoneAlerts": "Enable phone alerts",
+  "phoneAlertsEnabled": "Phone alerts enabled.",
+  "phoneAlertsUnavailable": "Couldn’t enable phone alerts. Check your notification permissions and try again."
 
 }
