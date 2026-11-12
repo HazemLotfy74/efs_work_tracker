@@ -17,6 +17,15 @@ abstract interface class CorrectionRepository {
     required String reason,
   });
 
+  /// The signed-in employee's own requests for every day, newest first,
+  /// each with its day's date.
+  Future<List<CorrectionRequestEntity>> getMine();
+
+  /// Admin only (`admin_assign_attendance_correction_reviewer`): asks an
+  /// employee who holds the correction review permission to decide a
+  /// pending request; `null` removes the assignment. Never the requester.
+  Future<void> assignReviewer(String requestId, String? reviewerId);
+
   /// Admin only: every employee's pending requests, oldest first, without
   /// the admin's own (which they can't review).
   Future<List<CorrectionRequestEntity>> getPendingForReview();

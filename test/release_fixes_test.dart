@@ -276,19 +276,21 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('the Home entry is hidden from admins', (tester) async {
+    testWidgets('the Home entry is shown to employees and admins', (
+      tester,
+    ) async {
       await showHome(tester, testUser());
       expect(find.text('Need a cash advance?'), findsOneWidget);
 
       await showHome(tester, adminUser());
-      expect(find.text('Need a cash advance?'), findsNothing);
+      expect(find.text('Need a cash advance?'), findsOneWidget);
     });
 
-    test('the cash routes send admins home', () {
+    test('admins and employees can open the cash routes', () {
       final admin = AuthSignedIn(adminUser());
       final worker = AuthSignedIn(testUser());
       for (final route in [AppRoutes.cashRequest, AppRoutes.newCashRequest]) {
-        expect(AppRouter.redirectFor(admin, route), AppRoutes.home);
+        expect(AppRouter.redirectFor(admin, route), isNull);
         expect(AppRouter.redirectFor(worker, route), isNull);
       }
       expect(

@@ -11,8 +11,22 @@ import 'package:flutter/material.dart';
 /// Colors are not part of the tokens: the theme applies the default text
 /// colors and widgets add a semantic color with `copyWith` where Figma
 /// differs. Avoid overriding size or weight in widgets; pick the role instead.
+///
+/// The styles carry no font family: they take it from the theme
+/// ([AppTheme.lightFor]), which uses [fontFamily] for English and
+/// [arabicFontFamily] for Arabic. Both fonts are bundled in `assets/fonts`.
+/// Arabic glyphs inside English text fall back to Cairo (Manrope has none).
 abstract final class AppTextStyles {
   static const fontFamily = 'Manrope';
+
+  /// Cairo, SIL Open Font License 1.1 (`assets/fonts/Cairo-OFL.txt`).
+  static const arabicFontFamily = 'Cairo';
+
+  static const fontFamilyFallback = [arabicFontFamily];
+
+  /// The font family for text in [locale].
+  static String familyFor(Locale locale) =>
+      locale.languageCode == 'ar' ? arabicFontFamily : fontFamily;
 
   static TextStyle _style(
     double fontSize,
@@ -20,7 +34,7 @@ abstract final class AppTextStyles {
     double height = 1.5,
     double? letterSpacing,
   }) => TextStyle(
-    fontFamily: fontFamily,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: fontSize,
     fontWeight: fontWeight,
     height: height,

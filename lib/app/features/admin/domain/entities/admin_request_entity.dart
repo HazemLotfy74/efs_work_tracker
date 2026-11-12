@@ -11,6 +11,7 @@ class AdminRequestEntity {
     required this.createdAt,
     required this.amount,
     required this.currency,
+    this.assignedReviewerId,
   });
 
   /// The `p_kind` of `review_request` for these requests.
@@ -24,4 +25,7 @@ class AdminRequestEntity {
   final DateTime createdAt;
   final num amount;
   final String currency;
+
+  /// The employee an admin asked to decide it; `null` when none.
+  final String? assignedReviewerId;
 }

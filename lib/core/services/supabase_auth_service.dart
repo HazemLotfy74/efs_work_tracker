@@ -31,6 +31,28 @@ class SupabaseAuthService {
     }
   }
 
+  /// `get_employee_login_email()` for the signed-in employee. Any failure
+  /// (an admin account, offline) simply means nothing to confirm now.
+  Future<String?> pendingLoginEmail() async {
+    try {
+      final answer = await Constants.supabase.rpc('get_employee_login_email');
+      return answer is Map ? answer['pending_email'] as String? : null;
+    } catch (e) {
+      log('Pending login email unavailable: ${e.runtimeType}');
+      return null;
+    }
+  }
+
+  /// Supabase Auth's email change: sends the confirmation link.
+  Future<void> requestLoginEmailChange(String email) async {
+    try {
+      await _auth.updateUser(UserAttributes(email: email));
+    } on AuthException catch (e) {
+      log('Email change failed: status ${e.statusCode}, code ${e.code}');
+      throw _toFailure(e);
+    }
+  }
+
   Future<void> signOut() async {
     try {
       await _auth.signOut();

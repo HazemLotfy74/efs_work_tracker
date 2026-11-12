@@ -1,4 +1,6 @@
-import 'package:timezone/data/latest.dart' as tz_data;
+// Current rules (incl. Cairo DST) for ±5 years around today: 67 KB instead
+// of the full 1970+ history (258 KB). Attendance data starts in 2026.
+import 'package:timezone/data/latest_10y.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../domain/entities/shift_entity.dart';

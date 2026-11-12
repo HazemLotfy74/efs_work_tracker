@@ -54,7 +54,7 @@ class TodayAttendanceCard extends StatelessWidget {
         ),
         AttendanceSessionLoaded(:final shift) => NotCheckedInCustomContainer(
           shift: shift,
-          canCheckIn: state.canCheckInAt(now),
+          availability: state.checkInAt(now),
         ),
       },
     );

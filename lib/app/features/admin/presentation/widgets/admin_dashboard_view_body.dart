@@ -19,10 +19,17 @@ import '../../../attendance_session/domain/entities/attendance_session_entity.da
 import '../../../attendance_session/presentation/widgets/prepare/info_row.dart';
 import '../../../home/presentation/widgets/custom_status_container.dart';
 import '../manager/admin_dashboard_cubit/admin_dashboard_cubit.dart';
+import '../../../permissions/domain/entities/permission_set.dart';
+import '../../../permissions/presentation/permissions_context.dart';
 import 'admin_day_status.dart';
 
 class AdminDashboardViewBody extends StatefulWidget {
-  const AdminDashboardViewBody({super.key});
+  const AdminDashboardViewBody({super.key, this.overview = true});
+
+  /// Everyone's attendance today and the employee list; needs
+  /// employees.view and attendance.view_all. Without them only the tools
+  /// this account may use are shown.
+  final bool overview;
 
   @override
   State<AdminDashboardViewBody> createState() => _AdminDashboardViewBodyState();
@@ -42,33 +49,36 @@ class _AdminDashboardViewBodyState extends State<AdminDashboardViewBody> {
           title: l10n.adminDashboard,
           leading: CustomBackButton(),
         ),
-        Expanded(
-          child: BlocBuilder<AdminDashboardCubit, AdminDashboardState>(
-            builder: (context, state) => switch (state) {
-              AdminDashboardLoading() => AppLoadingView(
-                title: l10n.adminDashboard,
-                message: '',
-              ),
-              AdminDashboardError() => AppErrorView(
-                title: l10n.adminLoadFailed,
-                message: l10n.authNetworkError,
-                onRetry: context.read<AdminDashboardCubit>().load,
-              ),
-              AdminDashboardLoaded(
-                :final rows,
-                :final earlyDepartures,
-                :final stale,
-              ) =>
-                _Loaded(
-                  rows: rows,
-                  earlyDepartures: earlyDepartures,
-                  stale: stale,
-                  query: _query,
-                  onQuery: (query) => setState(() => _query = query),
+        if (!widget.overview)
+          const Expanded(child: SingleChildScrollView(child: AdminActions()))
+        else
+          Expanded(
+            child: BlocBuilder<AdminDashboardCubit, AdminDashboardState>(
+              builder: (context, state) => switch (state) {
+                AdminDashboardLoading() => AppLoadingView(
+                  title: l10n.adminDashboard,
+                  message: '',
                 ),
-            },
+                AdminDashboardError() => AppErrorView(
+                  title: l10n.adminLoadFailed,
+                  message: l10n.authNetworkError,
+                  onRetry: context.read<AdminDashboardCubit>().load,
+                ),
+                AdminDashboardLoaded(
+                  :final rows,
+                  :final earlyDepartures,
+                  :final stale,
+                ) =>
+                  _Loaded(
+                    rows: rows,
+                    earlyDepartures: earlyDepartures,
+                    stale: stale,
+                    query: _query,
+                    onQuery: (query) => setState(() => _query = query),
+                  ),
+              },
+            ),
           ),
-        ),
       ],
     );
   }
@@ -133,32 +143,7 @@ class _Loaded extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          _Action(
-            key: const Key('adminAddEmployee'),
-            icon: Icons.person_add_alt_1_outlined,
-            label: l10n.adminAddEmployee,
-            onTap: () async {
-              await context.push(AppRoutes.adminAddEmployee);
-              await cubit.load();
-            },
-          ),
-          const SizedBox(height: 10),
-          _Action(
-            key: const Key('adminCorrections'),
-            icon: Icons.fact_check_outlined,
-            label: l10n.adminCorrections,
-            onTap: () async {
-              await context.push(AppRoutes.adminCorrections);
-              await cubit.load();
-            },
-          ),
-          const SizedBox(height: 10),
-          _Action(
-            key: const Key('adminRequests'),
-            icon: Icons.request_page_outlined,
-            label: l10n.adminRequests,
-            onTap: () => context.push(AppRoutes.adminRequests),
-          ),
+          AdminActions(onReturn: cubit.load),
           if (earlyDepartures.isNotEmpty) ...[
             const SizedBox(height: 16),
             Text(
@@ -243,6 +228,58 @@ class _Count extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// The admin tools this account may use (see `AppRouter._allowed` for the
+/// same rules). [onReturn] runs after a tool that changes the overview.
+class AdminActions extends StatelessWidget {
+  const AdminActions({super.key, this.onReturn});
+
+  final Future<void> Function()? onReturn;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final can = context.permissions;
+    Future<void> open(String route) async {
+      await context.push(route);
+      await onReturn?.call();
+    }
+
+    return Column(
+      spacing: 10,
+      children: [
+        if (can.isAdmin)
+          _Action(
+            key: const Key('adminAddEmployee'),
+            icon: Icons.person_add_alt_1_outlined,
+            label: l10n.adminAddEmployee,
+            onTap: () => open(AppRoutes.adminAddEmployee),
+          ),
+        if (can.can(Permission.correctionsView))
+          _Action(
+            key: const Key('adminCorrections'),
+            icon: Icons.fact_check_outlined,
+            label: l10n.adminCorrections,
+            onTap: () => open(AppRoutes.adminCorrections),
+          ),
+        if (can.can(Permission.cashViewAll))
+          _Action(
+            key: const Key('adminRequests'),
+            icon: Icons.request_page_outlined,
+            label: l10n.adminRequests,
+            onTap: () => context.push(AppRoutes.adminRequests),
+          ),
+        if (can.can(Permission.reportsView))
+          _Action(
+            key: const Key('adminReports'),
+            icon: Icons.table_view_outlined,
+            label: l10n.hrReports,
+            onTap: () => context.push(AppRoutes.adminReports),
+          ),
+      ],
     );
   }
 }

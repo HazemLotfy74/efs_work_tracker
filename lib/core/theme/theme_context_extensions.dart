@@ -15,4 +15,12 @@ extension ThemeContextX on BuildContext {
 
   /// App-specific semantic colors. Registered by both [AppTheme] themes.
   AppThemeColors get appColors => Theme.of(this).extension<AppThemeColors>()!;
+
+  /// [style] without its letter spacing in right-to-left (Arabic) text, where
+  /// spacing pulls apart the joined letters. For the tracked custom roles
+  /// (`overline`, `micro`) used outside the text theme.
+  TextStyle tracked(TextStyle style) =>
+      Directionality.of(this) == TextDirection.rtl
+      ? style.copyWith(letterSpacing: 0)
+      : style;
 }

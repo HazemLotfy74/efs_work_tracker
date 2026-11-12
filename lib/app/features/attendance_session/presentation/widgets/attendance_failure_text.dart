@@ -9,6 +9,7 @@ extension AttendanceFailureText on AttendanceFailure {
       AttendanceFailure.noSchedule => l10n.attendanceNoSchedule,
       AttendanceFailure.notWorkingDay => l10n.attendanceNotWorkingDay,
       AttendanceFailure.checkInClosed => l10n.attendanceCheckInClosed,
+      AttendanceFailure.checkInNotOpen => l10n.attendanceCheckInNotOpen,
       AttendanceFailure.alreadyCheckedIn => l10n.attendanceAlreadyCheckedIn,
       AttendanceFailure.notCheckedIn => l10n.attendanceNotCheckedIn,
       AttendanceFailure.alreadyCheckedOut => l10n.attendanceAlreadyCheckedOut,

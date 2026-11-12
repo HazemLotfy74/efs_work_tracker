@@ -329,6 +329,9 @@
   "attendanceNoSchedule": "No work schedule is assigned to your account. Contact your administrator.",
   "attendanceNotWorkingDay": "Today is not a working day in your schedule.",
   "attendanceCheckInClosed": "Today’s shift has ended, so check-in is closed.",
+  "attendanceCheckInOpensAt": "Check-in opens at {time}.",
+  "@attendanceCheckInOpensAt": {"placeholders": {"time": {"type": "String"}}},
+  "attendanceCheckInNotOpen": "Check-in has not opened yet. Try again when the check-in window opens.",
   "attendanceAlreadyCheckedIn": "You have already checked in today.",
   "attendanceNotCheckedIn": "There is no check-in to check out from today.",
   "attendanceAlreadyCheckedOut": "Your check-out was already recorded.",
@@ -661,6 +664,132 @@
   "@historyOvertimeDays": {"placeholders": {"count": {"type": "int"}}},
   "historyMinutesTotal": "{minutes}m total",
   "@historyMinutesTotal": {"placeholders": {"minutes": {"type": "int"}}},
+  "hrReports": "HR reports",
+  "hrReportsSubtitle": "Attendance and payroll preparation",
+  "hrReportsPreviousMonth": "Previous month",
+  "hrReportsNextMonth": "Next month",
+  "hrReportsEmployees": "Employees",
+  "hrReportsAttendanceDays": "Attendance days",
+  "hrReportsAbsences": "Absences (no record)",
+  "hrReportsLateDays": "Late arrivals",
+  "hrReportsOvertime": "Calculated overtime",
+  "hrReportsPendingCorrections": "Pending corrections",
+  "hrReportsNeedsReview": "Days needing HR review",
+  "hrReportsHours": "{hours} h",
+  "@hrReportsHours": {"placeholders": {"hours": {"type": "String"}}},
+  "hrReportsSource": "Calculated from the live attendance records. Leave, public holidays and overtime approval are not recorded in the system yet, so the workbook marks them as unavailable.",
+  "hrReportsGenerate": "Generate Excel",
+  "hrReportsGenerating": "Preparing the workbook…",
+  "hrReportsExportFailed": "Couldn't create or share the file. Try again.",
+  "hrReportsNoEmployees": "No employees in this period",
+  "permissionsTitle": "Permissions",
+  "permissionsIntro": "Choose what {name} can do besides their own attendance and requests. The change applies on their next action and is recorded in the audit history.",
+  "@permissionsIntro": {"placeholders": {"name": {"type": "String"}}},
+  "permissionsFromRole": "From role",
+  "permissionsGrantedOn": "Granted {date}",
+  "@permissionsGrantedOn": {"placeholders": {"date": {"type": "String"}}},
+  "permissionsNotYours": "You can only grant permissions you have",
+  "permissionsSensitive": "Only an administrator can change this",
+  "permissionsSave": "Review and save",
+  "permissionsConfirmTitle": "Save permission changes?",
+  "permissionsAdded": "Will be granted",
+  "permissionsRemoved": "Will be removed",
+  "permissionsSaved": "Permissions saved",
+  "permissionsCategoryAttendance": "Attendance",
+  "permissionsCategoryCash": "Cash requests",
+  "permissionsCategoryEmployees": "Employees",
+  "permissionsCategoryReports": "Reports",
+  "permAttendanceViewAll": "See everyone's attendance, locations and photos",
+  "permCorrectionsView": "See correction requests",
+  "permCorrectionsApprove": "Approve correction requests",
+  "permCorrectionsReject": "Reject correction requests",
+  "permAttendanceEdit": "Correct attendance times",
+  "permScheduleEdit": "Change schedules and grace period",
+  "permCashViewAll": "See everyone's cash requests",
+  "permCashApprove": "Approve cash requests",
+  "permCashReject": "Reject cash requests",
+  "permEmployeesView": "See employees and their profiles",
+  "permEmployeesEdit": "Activate and deactivate accounts",
+  "permManagePermissions": "Grant and remove permissions",
+  "permReportsView": "See HR report figures",
+  "permReportsExport": "Export the HR workbook",
+  "permAuditView": "See the audit history",
+  "permReviewAssignedCash": "Review assigned cash requests",
+  "permReviewAssignedCorrections": "Review assigned attendance corrections",
+  "permReviewAssignedOvertime": "Review assigned overtime requests",
+  "permReviewAssignedHint": "Can approve or reject only the requests an administrator assigns to them, never their own.",
+  "permOvertimeUnusedHint": "Overtime requests are not used in the app yet.",
+  "assignReviewer": "Assign reviewer",
+  "assignedTo": "Assigned to {name}",
+  "@assignedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "unassignReviewer": "Remove assignment",
+  "noEligibleReviewers": "No employee has this review permission yet. Grant it from the employee’s Permissions page.",
+  "reviewerAssigned": "Reviewer assigned.",
+  "reviewerUnassigned": "Assignment removed.",
+  "assignedReviews": "Assigned to me",
+  "assignedReviewsSubtitle": "Requests waiting for your decision",
+  "assignedReviewsEmpty": "Nothing is assigned to you right now.",
+  "assignedReviewsLoadFailed": "Couldn’t load the requests assigned to you.",
+  "assignedRequesterHidden": "Requester details are visible to administrators only.",
+  "adminEditEmployee": "Edit details",
+  "adminEmployeeSaved": "Employee details saved.",
+  "adminSaveDetails": "Save details",
+  "adminLoginEmail": "Login email",
+  "adminNewLoginEmail": "New login email",
+  "adminRequestEmailChange": "Request email change",
+  "adminEmailChangeHint": "The employee confirms the change from their Profile page and then from the confirmation email. The request expires after 24 hours.",
+  "adminEmailChangePending": "Waiting for the employee to confirm {email}",
+  "@adminEmailChangePending": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "adminCancelEmailChange": "Cancel request",
+  "adminEmailChangeRequested": "Email change requested.",
+  "adminEmailChangeCancelled": "Email change request cancelled.",
+  "adminEmailInvalid": "Enter a different, valid email address.",
+  "emailChangeProfileNote": "Your administrator asked to change your login email to {email}.",
+  "@emailChangeProfileNote": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "emailChangeConfirm": "Send confirmation email",
+  "emailChangeSent": "Open the confirmation link sent to {email} to finish.",
+  "@emailChangeSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "correctionRequests": "Attendance corrections",
+  "correctionRequestsSubtitle": "Ask to fix the times of a day",
+  "myCorrectionsEmptyTitle": "No correction requests",
+  "myCorrectionsEmptyMessage": "Requests you send to fix a day’s times will appear here.",
+  "correctionNewRequest": "New correction request",
+  "correctionPickDay": "Choose the day to correct",
+  "correctionNoDays": "You have no closed attendance days to correct yet.",
+  "correctionTypeMissingCheckOut": "Missing check-out",
+  "correctionTypeTimes": "Incorrect times",
+  "correctionSentOn": "Sent {date}",
+  "@correctionSentOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
   "inboxSubmitted": "Submitted",
   "inboxAssigned": "Assigned to you",
   "inboxEmpty": "No notifications yet.",

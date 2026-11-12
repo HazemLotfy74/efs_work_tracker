@@ -30,6 +30,9 @@ import '../manager/employee_details_cubit/employee_details_cubit.dart';
 import '../widgets/admin_day_status.dart';
 import '../widgets/admin_failure_text.dart';
 import '../widgets/attendance_flag_chips.dart';
+import '../../../../../core/constants/constants.dart';
+import '../../../permissions/domain/entities/permission_set.dart';
+import '../../../permissions/presentation/permissions_context.dart';
 
 /// Admin only: one employee's profile, attendance statistics and days,
 /// with the admin actions the database offers. Opening it changes nothing.
@@ -178,8 +181,14 @@ class _ProfileCard extends StatelessWidget {
         _ => null,
       },
     );
+    final can = context.permissions;
     // admin_set_employee_active: employee accounts only, never yourself.
     final canToggle = employee.role == UserRole.employee && employee.id != me;
+    // admin_set_user_permissions: the same rule.
+    final canManage =
+        Constants.dynamicPermissions &&
+        can.can(Permission.managePermissions) &&
+        canToggle;
     return CustomContainer(
       borderWidth: 1,
       horizontalPadding: 16,
@@ -230,7 +239,7 @@ class _ProfileCard extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
-              if (canToggle)
+              if (canToggle && can.can(Permission.employeesEdit))
                 OutlinedButton.icon(
                   key: const Key('toggleActive'),
                   onPressed: state.busy ? null : () => _toggleActive(context),
@@ -245,22 +254,42 @@ class _ProfileCard extends StatelessWidget {
                         : l10n.adminActivate,
                   ),
                 ),
-              if (state.schedules.length > 1)
+              if (state.schedules.length > 1 &&
+                  can.can(Permission.scheduleEdit))
                 OutlinedButton.icon(
                   key: const Key('changeSchedule'),
                   onPressed: state.busy ? null : () => _changeSchedule(context),
                   icon: const Icon(Icons.schedule),
                   label: Text(l10n.adminChangeSchedule),
                 ),
-              OutlinedButton.icon(
-                key: const Key('auditHistory'),
-                onPressed: () => context.push(
-                  AppRoutes.adminEmployeeAuditOf(employee.id),
-                  extra: employee.fullName,
+              // admin_edit_employee_profile: employee accounts only.
+              if (can.isAdmin && employee.role == UserRole.employee)
+                OutlinedButton.icon(
+                  key: const Key('editEmployee'),
+                  onPressed: state.busy ? null : () => _edit(context),
+                  icon: const Icon(Icons.edit_outlined),
+                  label: Text(l10n.adminEditEmployee),
                 ),
-                icon: const Icon(Icons.history),
-                label: Text(l10n.adminAuditHistory),
-              ),
+              if (can.can(Permission.auditView))
+                OutlinedButton.icon(
+                  key: const Key('auditHistory'),
+                  onPressed: () => context.push(
+                    AppRoutes.adminEmployeeAuditOf(employee.id),
+                    extra: employee.fullName,
+                  ),
+                  icon: const Icon(Icons.history),
+                  label: Text(l10n.adminAuditHistory),
+                ),
+              if (canManage)
+                OutlinedButton.icon(
+                  key: const Key('managePermissions'),
+                  onPressed: () => context.push(
+                    AppRoutes.adminEmployeePermissionsOf(employee.id),
+                    extra: employee.fullName,
+                  ),
+                  icon: const Icon(Icons.key_outlined),
+                  label: Text(l10n.permissionsTitle),
+                ),
             ],
           ),
           if (!canToggle && employee.isAdmin)
@@ -273,6 +302,15 @@ class _ProfileCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Opens the edit form; reloads this page when the details were saved.
+  Future<void> _edit(BuildContext context) async {
+    final cubit = context.read<EmployeeDetailsCubit>();
+    final saved = await context.push<bool>(
+      AppRoutes.adminEditEmployeeOf(state.employee.id),
+    );
+    if (saved == true) await cubit.load();
   }
 
   Future<void> _toggleActive(BuildContext context) async {

@@ -26,6 +26,8 @@ import '../../domain/repositories/admin_repository.dart';
 import '../manager/attendance_day_cubit/attendance_day_cubit.dart';
 import '../widgets/attendance_evidence_card.dart';
 import '../widgets/attendance_flag_chips.dart';
+import '../../../permissions/domain/entities/permission_set.dart';
+import '../../../permissions/presentation/permissions_context.dart';
 
 /// Admin only: one attendance day with its times, flags, correction
 /// requests and the check-in / check-out evidence.
@@ -128,9 +130,10 @@ class _Day extends StatelessWidget {
       },
     );
     // admin_correct_attendance: closed days of other employees only. It is
-    // the database that enforces this and the admin role.
+    // the database that enforces this and the attendance.edit permission.
     final canEdit =
         showEditAction &&
+        context.permissions.can(Permission.attendanceEdit) &&
         state.day.employeeId != me &&
         (session.checkOut != null || session.isAutoClosed);
 

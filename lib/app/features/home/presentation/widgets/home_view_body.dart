@@ -13,8 +13,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/manager/clock_cubit.dart';
+import '../../../permissions/presentation/permissions_context.dart';
 import '../../../attendance_session/presentation/manager/attendance_session_cubit/attendance_session_cubit.dart';
-import '../../../auth/presentation/manager/auth_cubit/auth_cubit.dart';
 
 import '../../../../../core/widgets/custom_logo_icon.dart';
 
@@ -28,12 +28,6 @@ class HomeViewBody extends StatelessWidget {
     final today = attendance is AttendanceSessionLoaded
         ? attendance.session
         : null;
-    final isAdmin = context.select<AuthCubit, bool>(
-      (cubit) => switch (cubit.state) {
-        AuthSignedIn(:final user) => user.isAdmin,
-        _ => false,
-      },
-    );
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,21 +71,58 @@ class HomeViewBody extends StatelessWidget {
             },
           ),
           // Overtime needs no request: every minute past 8 worked hours is
-          // counted automatically (see WorkDuration). Cash requests are for
-          // employees; admins review them instead.
-          if (!isAdmin)
+          // counted automatically (see WorkDuration). Everyone, admins
+          // included, can ask for cash; nobody can approve their own request.
+          InkWell(
+            onTap: () {
+              context.push(AppRoutes.cashRequest);
+            },
+            child: CustomContainer(
+              containerWidth: double.infinity,
+              borderWidth: 1,
+              child: CustomRequestRow(
+                title: context.l10n.needCash,
+                subTitle: context.l10n.sendRequest,
+                child: Icon(Icons.request_quote, color: context.colors.primary),
+              ),
+            ),
+          ),
+          // Beside cash requests: ask to fix a day's times, and see the
+          // requests already sent.
+          InkWell(
+            key: const Key('homeCorrections'),
+            onTap: () {
+              context.push(AppRoutes.myCorrections);
+            },
+            child: CustomContainer(
+              containerWidth: double.infinity,
+              borderWidth: 1,
+              child: CustomRequestRow(
+                title: context.l10n.correctionRequests,
+                subTitle: context.l10n.correctionRequestsSubtitle,
+                child: Icon(
+                  Icons.edit_calendar_outlined,
+                  color: context.colors.primary,
+                ),
+              ),
+            ),
+          ),
+          // Only for an employee an admin gave a review permission; the
+          // database decides what they can actually see and do.
+          if (context.permissions.hasAssignedReviews)
             InkWell(
+              key: const Key('homeAssignedReviews'),
               onTap: () {
-                context.push(AppRoutes.cashRequest);
+                context.push(AppRoutes.assignedReviews);
               },
               child: CustomContainer(
                 containerWidth: double.infinity,
                 borderWidth: 1,
                 child: CustomRequestRow(
-                  title: context.l10n.needCash,
-                  subTitle: context.l10n.sendRequest,
+                  title: context.l10n.assignedReviews,
+                  subTitle: context.l10n.assignedReviewsSubtitle,
                   child: Icon(
-                    Icons.request_quote,
+                    Icons.fact_check_outlined,
                     color: context.colors.primary,
                   ),
                 ),

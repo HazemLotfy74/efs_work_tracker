@@ -66,6 +66,13 @@ class AuthCubit extends Cubit<AuthSessionState> {
     return _repository.sendPasswordReset(email: email);
   }
 
+  /// See `AuthRepository.getPendingLoginEmail`.
+  Future<String?> pendingLoginEmail() => _repository.getPendingLoginEmail();
+
+  /// Throws an `AuthFailure`, so the profile can show what went wrong.
+  Future<void> confirmLoginEmail(String email) =>
+      _repository.confirmLoginEmail(email);
+
   Future<void> signOut() async {
     await _beforeSignOut?.call();
     await _repository.signOut();

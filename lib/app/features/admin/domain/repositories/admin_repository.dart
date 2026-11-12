@@ -4,6 +4,13 @@ import '../entities/audit_entry_entity.dart';
 import '../entities/admin_request_entity.dart';
 import '../entities/employee_entity.dart';
 
+/// An employee's login email and the change waiting for their confirmation.
+typedef LoginEmail = ({
+  String email,
+  String? pendingEmail,
+  DateTime? expiresAt,
+});
+
 /// One attendance day and whose it is.
 typedef EmployeeDay = ({String employeeId, AttendanceSessionEntity session});
 
@@ -80,6 +87,29 @@ abstract interface class AdminRepository {
     String employeeId, {
     int limit = 200,
   });
+
+  /// `admin_edit_employee_profile`: an employee account's name, username
+  /// and employee code (normalized and validated by the database).
+  Future<void> editEmployee(
+    String employeeId, {
+    required String fullName,
+    required String username,
+    required String employeeCode,
+  });
+
+  /// `get_employee_login_email`: an employee's login email and any email
+  /// change still waiting for them.
+  Future<LoginEmail> getLoginEmail(String employeeId);
+
+  /// `admin_request_employee_email_change`: lets the employee change their
+  /// login email to [newEmail] within 24 hours (they confirm it
+  /// themselves); `null` cancels the request. Never changes it directly.
+  Future<void> requestEmailChange(String employeeId, String? newEmail);
+
+  /// `admin_assign_expense_advance_reviewer`: asks an employee who holds
+  /// the cash review permission to decide a pending request; `null`
+  /// removes the assignment. Never the requester.
+  Future<void> assignCashReviewer(String requestId, String? reviewerId);
 
   /// Pending cash requests of other employees, oldest first.
   Future<List<AdminRequestEntity>> getPendingRequests();

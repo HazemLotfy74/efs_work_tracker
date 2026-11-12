@@ -215,9 +215,9 @@ class _LiveLabel extends StatelessWidget {
         ),
         Text(
           context.l10n.live,
-          style: AppTextStyles.micro.copyWith(
-            color: appColors.onBrandSurfaceMuted,
-          ),
+          style: context
+              .tracked(AppTextStyles.micro)
+              .copyWith(color: appColors.onBrandSurfaceMuted),
         ),
       ],
     );

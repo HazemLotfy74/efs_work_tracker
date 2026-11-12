@@ -743,6 +743,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Today’s shift has ended, so check-in is closed.';
 
   @override
+  String attendanceCheckInOpensAt(String time) {
+    return 'Check-in opens at $time.';
+  }
+
+  @override
+  String get attendanceCheckInNotOpen =>
+      'Check-in has not opened yet. Try again when the check-in window opens.';
+
+  @override
   String get attendanceAlreadyCheckedIn => 'You have already checked in today.';
 
   @override
@@ -1547,6 +1556,296 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get hrReports => 'HR reports';
+
+  @override
+  String get hrReportsSubtitle => 'Attendance and payroll preparation';
+
+  @override
+  String get hrReportsPreviousMonth => 'Previous month';
+
+  @override
+  String get hrReportsNextMonth => 'Next month';
+
+  @override
+  String get hrReportsEmployees => 'Employees';
+
+  @override
+  String get hrReportsAttendanceDays => 'Attendance days';
+
+  @override
+  String get hrReportsAbsences => 'Absences (no record)';
+
+  @override
+  String get hrReportsLateDays => 'Late arrivals';
+
+  @override
+  String get hrReportsOvertime => 'Calculated overtime';
+
+  @override
+  String get hrReportsPendingCorrections => 'Pending corrections';
+
+  @override
+  String get hrReportsNeedsReview => 'Days needing HR review';
+
+  @override
+  String hrReportsHours(String hours) {
+    return '$hours h';
+  }
+
+  @override
+  String get hrReportsSource =>
+      'Calculated from the live attendance records. Leave, public holidays and overtime approval are not recorded in the system yet, so the workbook marks them as unavailable.';
+
+  @override
+  String get hrReportsGenerate => 'Generate Excel';
+
+  @override
+  String get hrReportsGenerating => 'Preparing the workbook…';
+
+  @override
+  String get hrReportsExportFailed =>
+      'Couldn\'t create or share the file. Try again.';
+
+  @override
+  String get hrReportsNoEmployees => 'No employees in this period';
+
+  @override
+  String get permissionsTitle => 'Permissions';
+
+  @override
+  String permissionsIntro(String name) {
+    return 'Choose what $name can do besides their own attendance and requests. The change applies on their next action and is recorded in the audit history.';
+  }
+
+  @override
+  String get permissionsFromRole => 'From role';
+
+  @override
+  String permissionsGrantedOn(String date) {
+    return 'Granted $date';
+  }
+
+  @override
+  String get permissionsNotYours => 'You can only grant permissions you have';
+
+  @override
+  String get permissionsSensitive => 'Only an administrator can change this';
+
+  @override
+  String get permissionsSave => 'Review and save';
+
+  @override
+  String get permissionsConfirmTitle => 'Save permission changes?';
+
+  @override
+  String get permissionsAdded => 'Will be granted';
+
+  @override
+  String get permissionsRemoved => 'Will be removed';
+
+  @override
+  String get permissionsSaved => 'Permissions saved';
+
+  @override
+  String get permissionsCategoryAttendance => 'Attendance';
+
+  @override
+  String get permissionsCategoryCash => 'Cash requests';
+
+  @override
+  String get permissionsCategoryEmployees => 'Employees';
+
+  @override
+  String get permissionsCategoryReports => 'Reports';
+
+  @override
+  String get permAttendanceViewAll =>
+      'See everyone\'s attendance, locations and photos';
+
+  @override
+  String get permCorrectionsView => 'See correction requests';
+
+  @override
+  String get permCorrectionsApprove => 'Approve correction requests';
+
+  @override
+  String get permCorrectionsReject => 'Reject correction requests';
+
+  @override
+  String get permAttendanceEdit => 'Correct attendance times';
+
+  @override
+  String get permScheduleEdit => 'Change schedules and grace period';
+
+  @override
+  String get permCashViewAll => 'See everyone\'s cash requests';
+
+  @override
+  String get permCashApprove => 'Approve cash requests';
+
+  @override
+  String get permCashReject => 'Reject cash requests';
+
+  @override
+  String get permEmployeesView => 'See employees and their profiles';
+
+  @override
+  String get permEmployeesEdit => 'Activate and deactivate accounts';
+
+  @override
+  String get permManagePermissions => 'Grant and remove permissions';
+
+  @override
+  String get permReportsView => 'See HR report figures';
+
+  @override
+  String get permReportsExport => 'Export the HR workbook';
+
+  @override
+  String get permAuditView => 'See the audit history';
+
+  @override
+  String get permReviewAssignedCash => 'Review assigned cash requests';
+
+  @override
+  String get permReviewAssignedCorrections =>
+      'Review assigned attendance corrections';
+
+  @override
+  String get permReviewAssignedOvertime => 'Review assigned overtime requests';
+
+  @override
+  String get permReviewAssignedHint =>
+      'Can approve or reject only the requests an administrator assigns to them, never their own.';
+
+  @override
+  String get permOvertimeUnusedHint =>
+      'Overtime requests are not used in the app yet.';
+
+  @override
+  String get assignReviewer => 'Assign reviewer';
+
+  @override
+  String assignedTo(String name) {
+    return 'Assigned to $name';
+  }
+
+  @override
+  String get unassignReviewer => 'Remove assignment';
+
+  @override
+  String get noEligibleReviewers =>
+      'No employee has this review permission yet. Grant it from the employee’s Permissions page.';
+
+  @override
+  String get reviewerAssigned => 'Reviewer assigned.';
+
+  @override
+  String get reviewerUnassigned => 'Assignment removed.';
+
+  @override
+  String get assignedReviews => 'Assigned to me';
+
+  @override
+  String get assignedReviewsSubtitle => 'Requests waiting for your decision';
+
+  @override
+  String get assignedReviewsEmpty => 'Nothing is assigned to you right now.';
+
+  @override
+  String get assignedReviewsLoadFailed =>
+      'Couldn’t load the requests assigned to you.';
+
+  @override
+  String get assignedRequesterHidden =>
+      'Requester details are visible to administrators only.';
+
+  @override
+  String get adminEditEmployee => 'Edit details';
+
+  @override
+  String get adminEmployeeSaved => 'Employee details saved.';
+
+  @override
+  String get adminSaveDetails => 'Save details';
+
+  @override
+  String get adminLoginEmail => 'Login email';
+
+  @override
+  String get adminNewLoginEmail => 'New login email';
+
+  @override
+  String get adminRequestEmailChange => 'Request email change';
+
+  @override
+  String get adminEmailChangeHint =>
+      'The employee confirms the change from their Profile page and then from the confirmation email. The request expires after 24 hours.';
+
+  @override
+  String adminEmailChangePending(String email) {
+    return 'Waiting for the employee to confirm $email';
+  }
+
+  @override
+  String get adminCancelEmailChange => 'Cancel request';
+
+  @override
+  String get adminEmailChangeRequested => 'Email change requested.';
+
+  @override
+  String get adminEmailChangeCancelled => 'Email change request cancelled.';
+
+  @override
+  String get adminEmailInvalid => 'Enter a different, valid email address.';
+
+  @override
+  String emailChangeProfileNote(String email) {
+    return 'Your administrator asked to change your login email to $email.';
+  }
+
+  @override
+  String get emailChangeConfirm => 'Send confirmation email';
+
+  @override
+  String emailChangeSent(String email) {
+    return 'Open the confirmation link sent to $email to finish.';
+  }
+
+  @override
+  String get correctionRequests => 'Attendance corrections';
+
+  @override
+  String get correctionRequestsSubtitle => 'Ask to fix the times of a day';
+
+  @override
+  String get myCorrectionsEmptyTitle => 'No correction requests';
+
+  @override
+  String get myCorrectionsEmptyMessage =>
+      'Requests you send to fix a day’s times will appear here.';
+
+  @override
+  String get correctionNewRequest => 'New correction request';
+
+  @override
+  String get correctionPickDay => 'Choose the day to correct';
+
+  @override
+  String get correctionNoDays =>
+      'You have no closed attendance days to correct yet.';
+
+  @override
+  String get correctionTypeMissingCheckOut => 'Missing check-out';
+
+  @override
+  String get correctionTypeTimes => 'Incorrect times';
+
+  @override
+  String correctionSentOn(String date) {
+    return 'Sent $date';
+  }
   String get inboxSubmitted => 'Submitted';
 
   @override

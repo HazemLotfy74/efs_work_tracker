@@ -12,6 +12,9 @@ enum AttendanceFailure implements Exception {
 
   /// The shift has ended; the database no longer accepts a check-in today.
   checkInClosed,
+
+  /// Too early: the check-in window hasn't opened yet.
+  checkInNotOpen,
   alreadyCheckedIn,
   notCheckedIn,
   alreadyCheckedOut,

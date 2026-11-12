@@ -33,6 +33,7 @@ class CorrectionRequestEntity {
     this.workDate,
     this.timezone,
     this.actualCheckIn,
+    this.assignedReviewerId,
   });
 
   final String id;
@@ -60,6 +61,9 @@ class CorrectionRequestEntity {
 
   /// The check-in the employee actually recorded.
   final DateTime? actualCheckIn;
+
+  /// The employee an admin asked to decide it; `null` when none.
+  final String? assignedReviewerId;
 
   bool get isPending => status == CorrectionStatus.pending;
 }

@@ -27,7 +27,11 @@ class TextIconWidget extends StatelessWidget {
       spacing: 10,
       children: [
         Icon(icon, color: iconColor, size: iconSize),
-        Text(txt, style: style),
+        // Flexible: on narrow phones (360 px) and long translations the
+        // label wraps instead of overflowing the button.
+        Flexible(
+          child: Text(txt, style: style, textAlign: TextAlign.center),
+        ),
       ],
     );
   }

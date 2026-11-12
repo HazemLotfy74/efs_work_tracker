@@ -19,7 +19,11 @@ import '../../../attendance_session/presentation/widgets/prepare/info_row.dart';
 import '../../domain/entities/admin_request_entity.dart';
 import '../../domain/repositories/admin_repository.dart';
 import '../manager/admin_requests_cubit/admin_requests_cubit.dart';
+import '../../../../../core/errors/admin_errors.dart';
 import '../widgets/admin_failure_text.dart';
+import '../widgets/assign_reviewer_button.dart';
+import '../../../permissions/domain/entities/permission_set.dart';
+import '../../../permissions/presentation/permissions_context.dart';
 
 /// Admin only: pending cash requests to approve or reject.
 class AdminRequestsView extends StatelessWidget {
@@ -28,9 +32,14 @@ class AdminRequestsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BlocProvider(
-      create: (context) =>
-          AdminRequestsCubit(context.read<AdminRepository>())..load(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<ReviewerDirectory?>(create: ReviewerDirectory.of),
+        BlocProvider(
+          create: (context) =>
+              AdminRequestsCubit(context.read<AdminRepository>())..load(),
+        ),
+      ],
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 18),
@@ -118,35 +127,59 @@ class _RequestCard extends StatelessWidget {
             '${l10n.correctionReason}: ${request.reason}',
             style: context.textTheme.bodyMedium,
           ),
+          AssignReviewerButton(
+            requestId: request.id,
+            requesterId: request.employeeId,
+            assignedReviewerId: request.assignedReviewerId,
+            holdsPermission: (employee) => employee.canReviewCash,
+            onAssign: (reviewerId) => _assign(context, reviewerId),
+          ),
           if (reviewing)
             const Center(child: CircularProgressIndicator())
           else
             Row(
               spacing: 12,
               children: [
-                Expanded(
-                  child: OutlinedButton(
-                    key: Key('reject-${request.id}'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: context.colors.error,
-                      minimumSize: const Size.fromHeight(54),
+                // cash.reject / cash.approve; review_request checks them too.
+                if (context.permissions.can(Permission.cashReject))
+                  Expanded(
+                    child: OutlinedButton(
+                      key: Key('reject-${request.id}'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: context.colors.error,
+                        minimumSize: const Size.fromHeight(54),
+                      ),
+                      onPressed: () => _review(context, approve: false),
+                      child: Text(l10n.correctionReject),
                     ),
-                    onPressed: () => _review(context, approve: false),
-                    child: Text(l10n.correctionReject),
                   ),
-                ),
-                Expanded(
-                  child: AppPrimaryButton(
-                    key: Key('approve-${request.id}'),
-                    onPressed: () => _review(context, approve: true),
-                    child: Text(l10n.correctionApprove),
+                if (context.permissions.can(Permission.cashApprove))
+                  Expanded(
+                    child: AppPrimaryButton(
+                      key: Key('approve-${request.id}'),
+                      onPressed: () => _review(context, approve: true),
+                      child: Text(l10n.correctionApprove),
+                    ),
                   ),
-                ),
               ],
             ),
         ],
       ),
     );
+  }
+
+  Future<String?> _assign(BuildContext context, String? reviewerId) async {
+    final l10n = context.l10n;
+    final cubit = context.read<AdminRequestsCubit>();
+    final repository = context.read<AdminRepository>();
+    try {
+      await repository.assignCashReviewer(request.id, reviewerId);
+      await cubit.load();
+      return null;
+    } on AdminFailure catch (failure) {
+      if (failure.needsReload) await cubit.load();
+      return failure.message(l10n);
+    }
   }
 
   Future<void> _review(BuildContext context, {required bool approve}) async {

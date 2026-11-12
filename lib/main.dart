@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app/features/admin/domain/repositories/admin_repository.dart';
+import 'app/features/assigned_reviews/domain/repositories/assigned_review_repository.dart';
 import 'app/features/attendance_correction/domain/repositories/correction_repository.dart';
 import 'app/features/attendance_session/domain/repositories/attendance_repository.dart';
 import 'app/features/attendance_session/presentation/manager/attendance_session_cubit/attendance_session_cubit.dart';
@@ -18,6 +19,9 @@ import 'app/features/notifications/presentation/inbox_cubit.dart';
 import 'core/manager/clock_cubit.dart';
 import 'core/manager/locale_cubit.dart';
 import 'core/router/app_router.dart';
+import 'app/features/hr_reports/domain/repositories/hr_report_repository.dart';
+import 'app/features/permissions/domain/repositories/permission_repository.dart';
+import 'app/features/permissions/presentation/manager/permissions_cubit.dart';
 import 'core/router/app_routes.dart';
 import 'core/services/getit_services.dart';
 import 'core/theme/app_theme.dart';
@@ -45,6 +49,15 @@ Future<void> main() async {
   authCubit.stream
       .map((state) => state is AuthSignedIn ? state.user.uID : null)
       .listen(attendanceCubit.userChanged);
+  // Permissions follow the account the same way.
+  final permissionsCubit = PermissionsCubit(
+    getIt<PermissionRepository>(),
+    enabled: Constants.dynamicPermissions,
+  );
+  authCubit.stream
+      .map((state) => state is AuthSignedIn ? state.user : null)
+      .distinct((a, b) => a?.uID == b?.uID && a?.role == b?.role)
+      .listen(permissionsCubit.userChanged);
   var pendingAlertTap = false;
   void openAlertsIfReady() {
     if (!pendingAlertTap || authCubit.state is! AuthSignedIn) return;
@@ -61,9 +74,13 @@ Future<void> main() async {
   });
   authCubit.start();
   // Back in the app: the day may have changed (check-out on another phone,
-  // automatic close at the shift end).
+  // automatic close at the shift end), and so may the permissions.
   AppLifecycleListener(
     onResume: () {
+      if (authCubit.state is AuthSignedIn) {
+        attendanceCubit.load();
+        permissionsCubit.refresh();
+      }
       if (authCubit.state is AuthSignedIn) attendanceCubit.load();
       if (authCubit.state is AuthSignedIn) inboxCubit.refresh();
       phoneAlerts?.refresh();
@@ -74,6 +91,8 @@ Future<void> main() async {
     child: WorkTrackApp(
       authCubit: authCubit,
       attendanceCubit: attendanceCubit,
+      permissionsCubit: permissionsCubit,
+      router: AppRouter.create(authCubit, permissionsCubit),
       router: router,
     ),
   );
@@ -96,11 +115,13 @@ class WorkTrackApp extends StatelessWidget {
     super.key,
     required this.authCubit,
     required this.attendanceCubit,
+    required this.permissionsCubit,
     required this.router,
   });
 
   final AuthCubit authCubit;
   final AttendanceSessionCubit attendanceCubit;
+  final PermissionsCubit permissionsCubit;
   final GoRouter router;
 
   @override
@@ -122,6 +143,15 @@ class WorkTrackApp extends StatelessWidget {
         RepositoryProvider<AdminRepository>.value(
           value: getIt<AdminRepository>(),
         ),
+        RepositoryProvider<HrReportRepository>.value(
+          value: getIt<HrReportRepository>(),
+        ),
+        RepositoryProvider<AssignedReviewRepository>.value(
+          value: getIt<AssignedReviewRepository>(),
+        ),
+        RepositoryProvider<PermissionRepository>.value(
+          value: getIt<PermissionRepository>(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -129,6 +159,7 @@ class WorkTrackApp extends StatelessWidget {
           // lazy: false starts them with the app, not on first use.
           BlocProvider(create: (_) => ClockCubit(), lazy: false),
           BlocProvider.value(value: attendanceCubit),
+          BlocProvider.value(value: permissionsCubit),
           BlocProvider(
             create: (_) => LocaleCubit(SharedPreferencesLocaleStore())..load(),
             lazy: false,
@@ -140,7 +171,7 @@ class WorkTrackApp extends StatelessWidget {
           builder: (context, locale) => MaterialApp.router(
             title: 'Efs WorkTrack',
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.light,
+            theme: AppTheme.lightFor(locale),
             routerConfig: router,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

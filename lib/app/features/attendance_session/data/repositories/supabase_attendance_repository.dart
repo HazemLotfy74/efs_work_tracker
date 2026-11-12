@@ -476,8 +476,17 @@ class SupabaseAttendanceRepository implements AttendanceRepository {
       // unique (employee_id, work_date): today's check-in already exists.
       case '23505':
         return AttendanceFailure.alreadyCheckedIn;
+      // 22023 covers several check_in refusals; the message tells them
+      // apart. ("Check-in opens …" used to be shown as a bad location.)
       case '22023':
-        return message.toLowerCase().contains('selfie')
+        final text = message.toLowerCase();
+        if (text.startsWith('check-in opens')) {
+          return AttendanceFailure.checkInNotOpen;
+        }
+        if (text.startsWith('the check-in window has closed')) {
+          return AttendanceFailure.checkInClosed;
+        }
+        return text.contains('selfie')
             ? AttendanceFailure.selfieMissing
             : AttendanceFailure.invalidLocation;
       // Function or table not found in the API.

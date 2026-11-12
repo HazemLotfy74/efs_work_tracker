@@ -37,7 +37,12 @@ class SupabaseCorrectionRepository implements CorrectionRepository {
 
   static const _columns =
       'id, employee_id, attendance_id, proposed_checkin, proposed_checkout, '
-      'reason, status, review_note, reviewed_at, created_at';
+      'reason, status, review_note, reviewed_at, created_at, '
+      'assigned_reviewer_id';
+
+  static const _mineColumns =
+      '$_columns, '
+      'attendance:attendance_records(work_date, timezone, actual_checkin)';
 
   // Two foreign keys lead to `profiles` (employee_id, reviewed_by), so the
   // employee's one is named.
@@ -64,6 +69,35 @@ class SupabaseCorrectionRepository implements CorrectionRepository {
       ),
     );
     return _parse(rows);
+  }
+
+  @override
+  Future<List<CorrectionRequestEntity>> getMine() async {
+    final userId = _requireUser();
+    // Filtered by employee: an admin's RLS policy shows everyone's rows.
+    final rows = await _guard(
+      _table,
+      () => _databaseServices.getData(
+        path: _table,
+        column: _mineColumns,
+        query: {'employee_id': userId},
+        orderBy: 'created_at',
+        descending: true,
+      ),
+    );
+    return _parse(rows);
+  }
+
+  @override
+  Future<void> assignReviewer(String requestId, String? reviewerId) async {
+    _requireUser();
+    await _guard(
+      'admin_assign_attendance_correction_reviewer',
+      () => _databaseServices.rpc(
+        function: 'admin_assign_attendance_correction_reviewer',
+        params: {'p_request_id': requestId, 'p_reviewer_id': reviewerId},
+      ),
+    );
   }
 
   @override
@@ -187,6 +221,12 @@ class SupabaseCorrectionRepository implements CorrectionRepository {
     ('Attendance record not found', CorrectionFailure.notFound),
     ('Request not found', CorrectionFailure.notFound),
     ('You cannot review your own request', CorrectionFailure.ownRequest),
+    ('Employees cannot be assigned their own', CorrectionFailure.ownRequest),
+    (
+      'Only pending requests can be assigned',
+      CorrectionFailure.alreadyReviewed,
+    ),
+    ('Request is not assigned to you', CorrectionFailure.notAllowed),
     ('A reason of 1-2000 characters', CorrectionFailure.invalidReason),
     ('Review note cannot exceed', CorrectionFailure.noteTooLong),
     ('Attendance must be closed', CorrectionFailure.notClosed),

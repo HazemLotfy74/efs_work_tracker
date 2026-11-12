@@ -14,6 +14,8 @@ import '../../../attendance_session/presentation/widgets/prepare/info_row.dart';
 import '../../../attendance_session/presentation/widgets/shift_text.dart';
 import '../../../auth/domain/entities/user_entity.dart';
 import '../../../auth/presentation/manager/auth_cubit/auth_cubit.dart';
+import '../../../permissions/presentation/permissions_context.dart';
+import 'pending_email_change.dart';
 
 /// The account from `get_account_status` (and the email from Auth). The
 /// database has no phone or profile image, so neither is shown.
@@ -82,6 +84,9 @@ class ProfileViewBody extends StatelessWidget {
               ],
             ),
           ),
+          // Only employees: an admin starts the change, the employee
+          // confirms it here and in the email Supabase Auth sends.
+          if (!user.isAdmin) const PendingEmailChange(),
           CustomContainer(
             borderWidth: 1,
             horizontalPadding: 20,
@@ -116,9 +121,9 @@ class ProfileViewBody extends StatelessWidget {
               ],
             ),
           ),
-          // Only a convenience: RLS, review_request and the accounts
-          // function check the admin role themselves.
-          if (user.isAdmin)
+          // Only a convenience: RLS and every admin function check the
+          // permission (or role) themselves.
+          if (context.permissions.hasAdminArea)
             CustomContainer(
               key: const Key('adminDashboard'),
               borderWidth: 1,

@@ -174,6 +174,50 @@ class FakeAdminRepository implements AdminRepository {
     return 'new-employee';
   }
 
+  final edits = <(String, String, String, String)>[];
+  LoginEmail loginEmail = (
+    email: 'employee@example.com',
+    pendingEmail: null,
+    expiresAt: null,
+  );
+  final emailRequests = <(String, String?)>[];
+  final cashAssignments = <(String, String?)>[];
+
+  @override
+  Future<void> editEmployee(
+    String employeeId, {
+    required String fullName,
+    required String username,
+    required String employeeCode,
+  }) async {
+    await gate?.future;
+    _fail();
+    edits.add((employeeId, fullName, username, employeeCode));
+  }
+
+  @override
+  Future<LoginEmail> getLoginEmail(String employeeId) async {
+    _fail();
+    return loginEmail;
+  }
+
+  @override
+  Future<void> requestEmailChange(String employeeId, String? newEmail) async {
+    _fail();
+    emailRequests.add((employeeId, newEmail));
+    loginEmail = (
+      email: loginEmail.email,
+      pendingEmail: newEmail,
+      expiresAt: null,
+    );
+  }
+
+  @override
+  Future<void> assignCashReviewer(String requestId, String? reviewerId) async {
+    _fail();
+    cashAssignments.add((requestId, reviewerId));
+  }
+
   @override
   Future<List<AdminRequestEntity>> getPendingRequests() async {
     _fail();
