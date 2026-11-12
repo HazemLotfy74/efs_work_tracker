@@ -1247,4 +1247,35 @@ class AppLocalizationsAr extends AppLocalizations {
   String historyMinutesTotal(int minutes) {
     return 'الإجمالي $minutes دقيقة';
   }
+
+  @override
+  String get inboxSubmitted => 'تم تقديم الطلب';
+
+  @override
+  String get inboxAssigned => 'تم تعيين الطلب لك';
+
+  @override
+  String get inboxEmpty => 'لا توجد إشعارات بعد.';
+
+  @override
+  String get inboxLoadFailed => 'تعذر تحميل الإشعارات. حاول مرة أخرى.';
+
+  @override
+  String get inboxRequestUnavailable => 'لم يعد بإمكانك عرض هذا الطلب.';
+
+  @override
+  String get inboxRetry => 'إعادة المحاولة';
+
+  @override
+  String get inboxMore => 'تحميل المزيد';
+
+  @override
+  String get enablePhoneAlerts => 'تفعيل تنبيهات الهاتف';
+
+  @override
+  String get phoneAlertsEnabled => 'تم تفعيل تنبيهات الهاتف.';
+
+  @override
+  String get phoneAlertsUnavailable =>
+      'تعذر تفعيل تنبيهات الهاتف. تحقق من أذونات الإشعارات وحاول مرة أخرى.';
 }

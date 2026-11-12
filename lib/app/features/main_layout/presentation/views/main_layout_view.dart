@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/extensions/context_l10n.dart';
+import '../../../notifications/presentation/inbox_cubit.dart';
 
 /// Shell with the bottom navigation bar: Home, History, Alerts, Profile.
 class MainLayoutView extends StatelessWidget {
@@ -11,14 +13,24 @@ class MainLayoutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final inbox = context.watch<InboxCubit?>();
+    final unread = inbox?.state.unread ?? 0;
+    Widget alertIcon(IconData icon) => Badge(
+      isLabelVisible: unread > 0,
+      label: Text(unread > 99 ? '99+' : '$unread'),
+      child: Icon(icon),
+    );
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) => navigationShell.goBranch(
-          index,
-          initialLocation: index == navigationShell.currentIndex,
-        ),
+        onDestinationSelected: (index) {
+          if (index == 2) inbox?.refresh();
+          navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          );
+        },
         destinations: [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
@@ -31,8 +43,8 @@ class MainLayoutView extends StatelessWidget {
             label: context.l10n.history,
           ),
           NavigationDestination(
-            icon: Icon(Icons.notifications_outlined),
-            selectedIcon: Icon(Icons.notifications_rounded),
+            icon: alertIcon(Icons.notifications_outlined),
+            selectedIcon: alertIcon(Icons.notifications_rounded),
             label: context.l10n.alerts,
           ),
           NavigationDestination(

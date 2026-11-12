@@ -2335,6 +2335,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes}m total'**
   String historyMinutesTotal(int minutes);
+
+  /// No description provided for @inboxSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get inboxSubmitted;
+
+  /// No description provided for @inboxAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to you'**
+  String get inboxAssigned;
+
+  /// No description provided for @inboxEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet.'**
+  String get inboxEmpty;
+
+  /// No description provided for @inboxLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t load notifications. Try again.'**
+  String get inboxLoadFailed;
+
+  /// No description provided for @inboxRequestUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This request is no longer available to you.'**
+  String get inboxRequestUnavailable;
+
+  /// No description provided for @inboxRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get inboxRetry;
+
+  /// No description provided for @inboxMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get inboxMore;
+
+  /// No description provided for @enablePhoneAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable phone alerts'**
+  String get enablePhoneAlerts;
+
+  /// No description provided for @phoneAlertsEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone alerts enabled.'**
+  String get phoneAlertsEnabled;
+
+  /// No description provided for @phoneAlertsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t enable phone alerts. Check your notification permissions and try again.'**
+  String get phoneAlertsUnavailable;
 }
 
 class _AppLocalizationsDelegate

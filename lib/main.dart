@@ -12,9 +12,13 @@ import 'app/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'app/features/cash_request/domain/repositories/expense_advance_repository.dart';
 import 'core/constants/constants.dart';
 import 'app/features/history/domain/repositories/history_repository.dart';
+import 'app/features/notifications/data/inbox_repository.dart';
+import 'app/features/notifications/data/phone_alerts.dart';
+import 'app/features/notifications/presentation/inbox_cubit.dart';
 import 'core/manager/clock_cubit.dart';
 import 'core/manager/locale_cubit.dart';
 import 'core/router/app_router.dart';
+import 'core/router/app_routes.dart';
 import 'core/services/getit_services.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
@@ -27,28 +31,63 @@ Future<void> main() async {
   );
   setup();
   // Created here, not in build, so the router and its guard exist only once.
-  final authCubit = AuthCubit(getIt<AuthRepository>());
+  final phoneAlerts = await PhoneAlerts.initialize(Supabase.instance.client);
+  final authCubit = AuthCubit(
+    getIt<AuthRepository>(),
+    beforeSignOut: phoneAlerts?.beforeSignOut,
+  );
+  final router = AppRouter.create(authCubit);
   final attendanceCubit = AttendanceSessionCubit(getIt<AttendanceRepository>());
+  final inboxCubit = InboxCubit(InboxRepository(Supabase.instance.client));
   // Attendance follows the signed-in account: loaded once it can record
   // attendance, cleared on sign-out. Subscribed before start() so the
   // first state is not missed.
   authCubit.stream
       .map((state) => state is AuthSignedIn ? state.user.uID : null)
       .listen(attendanceCubit.userChanged);
+  var pendingAlertTap = false;
+  void openAlertsIfReady() {
+    if (!pendingAlertTap || authCubit.state is! AuthSignedIn) return;
+    pendingAlertTap = false;
+    inboxCubit.refresh();
+    router.go(AppRoutes.notifications);
+  }
+
+  authCubit.stream.listen((state) {
+    final recipient = state is AuthSignedIn ? state.user.uID : null;
+    inboxCubit.userChanged(recipient);
+    phoneAlerts?.userChanged(recipient);
+    openAlertsIfReady();
+  });
   authCubit.start();
   // Back in the app: the day may have changed (check-out on another phone,
   // automatic close at the shift end).
   AppLifecycleListener(
     onResume: () {
       if (authCubit.state is AuthSignedIn) attendanceCubit.load();
+      if (authCubit.state is AuthSignedIn) inboxCubit.refresh();
+      phoneAlerts?.refresh();
     },
   );
-  runApp(
-    WorkTrackApp(
+  final app = BlocProvider.value(
+    value: inboxCubit,
+    child: WorkTrackApp(
       authCubit: authCubit,
       attendanceCubit: attendanceCubit,
-      router: AppRouter.create(authCubit),
+      router: router,
     ),
+  );
+  runApp(
+    phoneAlerts == null
+        ? app
+        : RepositoryProvider.value(value: phoneAlerts, child: app),
+  );
+  phoneAlerts?.listen(
+    onTap: () {
+      pendingAlertTap = true;
+      openAlertsIfReady();
+    },
+    onForeground: inboxCubit.refresh,
   );
 }
 
