@@ -16,6 +16,7 @@ extension AuthFailureText on AuthFailureReason {
       AuthFailureReason.passwordCompletionPending =>
         l10n.authPasswordCompletionPending,
       AuthFailureReason.sessionExpired => l10n.authSessionExpired,
+      AuthFailureReason.sessionReplaced => l10n.authSessionReplaced,
       AuthFailureReason.recoveryLinkInvalid => l10n.authRecoveryLinkInvalid,
       AuthFailureReason.network => l10n.authNetworkError,
       AuthFailureReason.unknown => l10n.authUnknownError,

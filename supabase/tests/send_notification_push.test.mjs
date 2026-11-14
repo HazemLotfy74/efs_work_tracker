@@ -24,7 +24,11 @@ globalThis.fetch = async (url, options) => {
     return Response.json({access_token: 'test-access'});
   }
   if (url.endsWith('/claim_push_deliveries')) return Response.json(
-    ['sent', 'throttle', 'invalid'].map(token => ({id: token, lease: 'test-lease', token, attempts: 1})),
+    ['sent', 'throttle', 'invalid'].map(token => ({
+      id: token, lease: 'test-lease', token, attempts: 1,
+      // 'sent' is what the database returns after the migration; the others before it.
+      ...(token === 'sent' ? {request_kind: 'correction', event_type: 'rejected'} : {}),
+    })),
   );
   if (url.endsWith('/finish_push_delivery')) {
     finished.push(JSON.parse(options.body));
@@ -33,8 +37,16 @@ globalThis.fetch = async (url, options) => {
   assert.match(url, /\/efs-work-tracker\/messages:send$/);
   const {message} = JSON.parse(options.body);
   assert.deepEqual(message.data, {route: 'alerts'});
-  assert.equal(message.notification.body, 'You have a new notification.');
+  if (message.token === 'sent') {
+    assert.equal(message.notification.title, 'طلب تصحيح حضور');
+    assert.match(message.notification.body, /تم رفض طلبك/);
+  } else {
+    assert.deepEqual(message.notification, {title: 'Efs WorkTrack', body: 'لديك إشعار جديد.'});
+  }
   assert.equal(message.android.notification.tag, message.token);
+  assert.equal(message.android.notification.channel_id, 'alerts');
+  assert.equal(message.android.priority, 'HIGH');
+  assert.equal(message.android.ttl, '86400s');
   if (message.token === 'throttle') return new Response(null, {status: 429, headers: {'Retry-After': '120'}});
   if (message.token === 'invalid') return Response.json(
     {error: {details: [{errorCode: 'UNREGISTERED'}]}}, {status: 404},
@@ -50,5 +62,5 @@ assert.deepEqual(await result.json(), {sent: 1, retry: 1, failed: 1, leasePendin
 assert.equal(finished.find(job => job.p_id === 'throttle').p_retry_seconds, 120);
 assert.equal(finished.find(job => job.p_id === 'invalid').p_invalid_token, 'invalid');
 assert.equal(finished.find(job => job.p_id === 'sent').p_retry_seconds, null);
-console.log('Push sender passed: authentication, generic payload, retry delay, and invalid token handling.');
+console.log('Push sender passed: authentication, payload text and channel, retry delay, and invalid token handling.');
 

@@ -72,6 +72,28 @@ class EmployeeDetailsCubit extends Cubit<EmployeeDetailsState> {
   Future<AdminFailure?> setActive(bool active) =>
       _act(() => _repository.setEmployeeActive(employeeId, active: active));
 
+  /// Permanently deletes the account. On success the page is left as it is
+  /// (still busy) for the screen to close: there is nothing to reload.
+  /// On failure the employee is reloaded and stays on screen.
+  Future<AdminFailure?> delete() async {
+    final current = state;
+    if (current is! EmployeeDetailsLoaded || current.busy) {
+      return AdminFailure.busy;
+    }
+    emit(current.copyWith(busy: true));
+    try {
+      await _repository.deleteEmployee(employeeId);
+      return null;
+    } catch (error) {
+      final failure = error is AdminFailure ? error : AdminFailure.unknown;
+      if (isClosed) return failure;
+      await load();
+      final latest = state;
+      if (latest is EmployeeDetailsLoaded) emit(latest.copyWith(busy: false));
+      return failure;
+    }
+  }
+
   Future<AdminFailure?> assignSchedule(String scheduleId) =>
       _act(() => _repository.assignSchedule(employeeId, scheduleId));
 

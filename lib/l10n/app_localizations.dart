@@ -1328,6 +1328,60 @@ abstract class AppLocalizations {
   /// **'Your session has ended. Please sign in again.'**
   String get authSessionExpired;
 
+  /// No description provided for @authSessionReplaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was signed in on another device. Please sign in again to continue.'**
+  String get authSessionReplaced;
+
+  /// No description provided for @validatorEmailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get validatorEmailRequired;
+
+  /// No description provided for @validatorEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get validatorEmailInvalid;
+
+  /// No description provided for @validatorPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get validatorPasswordRequired;
+
+  /// No description provided for @validatorPasswordShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get validatorPasswordShort;
+
+  /// No description provided for @validatorNewPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a new password'**
+  String get validatorNewPasswordRequired;
+
+  /// No description provided for @validatorNewPasswordShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 12 characters'**
+  String get validatorNewPasswordShort;
+
+  /// No description provided for @validatorPasswordTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too long'**
+  String get validatorPasswordTooLong;
+
+  /// No description provided for @validatorPasswordsDontMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get validatorPasswordsDontMatch;
+
   /// No description provided for @authNetworkError.
   ///
   /// In en, this message translates to:
@@ -1793,13 +1847,13 @@ abstract class AppLocalizations {
   /// No description provided for @correctionApproveTitle.
   ///
   /// In en, this message translates to:
-  /// **'Approve this correction?'**
+  /// **'Confirm correction approval'**
   String get correctionApproveTitle;
 
   /// No description provided for @correctionRejectTitle.
   ///
   /// In en, this message translates to:
-  /// **'Reject this correction?'**
+  /// **'Confirm correction rejection'**
   String get correctionRejectTitle;
 
   /// No description provided for @correctionApproveMessage.
@@ -1819,6 +1873,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Note (optional)'**
   String get correctionNoteOptional;
+
+  /// No description provided for @correctionApprovalReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval reason'**
+  String get correctionApprovalReason;
+
+  /// No description provided for @correctionRejectionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejection reason'**
+  String get correctionRejectionReason;
+
+  /// No description provided for @correctionApprovalReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Explain why this correction is approved…'**
+  String get correctionApprovalReasonHint;
+
+  /// No description provided for @correctionRejectionReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Explain why this correction is rejected…'**
+  String get correctionRejectionReasonHint;
+
+  /// No description provided for @correctionConfirmApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm approval'**
+  String get correctionConfirmApprove;
+
+  /// No description provided for @correctionConfirmReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm rejection'**
+  String get correctionConfirmReject;
+
+  /// No description provided for @correctionDecisionReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required. The employee will see it.'**
+  String get correctionDecisionReasonRequired;
+
+  /// No description provided for @correctionNoDecisionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'No reason was recorded for this decision.'**
+  String get correctionNoDecisionReason;
+
+  /// No description provided for @correctionDecidedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Decided on {date}'**
+  String correctionDecidedOn(String date);
 
   /// No description provided for @correctionCancel.
   ///
@@ -2305,6 +2413,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account status updated.'**
   String get adminStatusChanged;
+
+  /// No description provided for @adminDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete employee account'**
+  String get adminDeleteAccount;
+
+  /// No description provided for @adminDeleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete employee account'**
+  String get adminDeleteAccountTitle;
+
+  /// No description provided for @adminDeleteAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to permanently delete this employee’s account?\nThis removes the employee’s account from the app and the database, and data linked to it may be lost.\nThis cannot be undone.'**
+  String get adminDeleteAccountMessage;
+
+  /// No description provided for @adminDeleteAccountEmployee.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee: {name}'**
+  String adminDeleteAccountEmployee(String name);
+
+  /// No description provided for @adminDeleteAccountAcknowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'I understand this is permanent and cannot be undone'**
+  String get adminDeleteAccountAcknowledge;
+
+  /// No description provided for @adminDeleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete permanently'**
+  String get adminDeleteAccountConfirm;
+
+  /// No description provided for @adminDeleteAccountDone.
+  ///
+  /// In en, this message translates to:
+  /// **'The employee account was permanently deleted.'**
+  String get adminDeleteAccountDone;
 
   /// No description provided for @adminChangeSchedule.
   ///
@@ -3367,6 +3517,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sent {date}'**
   String correctionSentOn(String date);
+
   /// No description provided for @inboxSubmitted.
   ///
   /// In en, this message translates to:
@@ -3382,8 +3533,20 @@ abstract class AppLocalizations {
   /// No description provided for @inboxEmpty.
   ///
   /// In en, this message translates to:
-  /// **'No notifications yet.'**
+  /// **'No notifications yet'**
   String get inboxEmpty;
+
+  /// No description provided for @inboxEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates on your requests, and requests waiting for your review, will appear here.'**
+  String get inboxEmptyMessage;
+
+  /// No description provided for @inboxUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get inboxUnread;
 
   /// No description provided for @inboxLoadFailed.
   ///

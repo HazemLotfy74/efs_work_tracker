@@ -86,7 +86,7 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
             CustomTextFormField(
               textEditingController: _emailController,
               validator: (p0) {
-                return emailValidator(p0);
+                return emailValidator(p0, context.l10n);
               },
               prefixIcon: const Icon(Icons.email_outlined),
               hintTxt: context.l10n.workEmail,
@@ -101,7 +101,7 @@ class _LoginViewFormFieldState extends State<LoginViewFormField> {
                 return CustomTextFormField(
                   textEditingController: _passwordController,
                   validator: (p0) {
-                    return passwordValidator(p0);
+                    return passwordValidator(p0, context.l10n);
                   },
                   prefixIcon: const Icon(Icons.lock_outlined),
                   hintTxt: context.l10n.password,

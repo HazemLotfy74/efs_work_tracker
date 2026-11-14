@@ -144,6 +144,11 @@ class CorrectionReviewCard extends StatelessWidget {
       message: approve
           ? l10n.correctionApproveMessage
           : l10n.correctionRejectMessage,
+      reasonRequired: true,
+      details: CorrectionRequestDetails(
+        request: request,
+        timezone: request.timezone,
+      ),
     );
     if (note == null) return;
     final failure = await cubit.review(

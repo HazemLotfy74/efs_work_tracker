@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:efs_work_tracker/core/theme/theme_context_extensions.dart';
 
+import '../../extensions/context_l10n.dart';
 import 'app_state_view.dart';
 
 class AppErrorView extends StatelessWidget {
@@ -25,7 +26,7 @@ class AppErrorView extends StatelessWidget {
       iconBackgroundColor: colorScheme.errorContainer,
       title: title,
       message: message,
-      actionLabel: 'Try again',
+      actionLabel: context.l10n.tryAgain,
       onAction: onRetry,
     );
   }

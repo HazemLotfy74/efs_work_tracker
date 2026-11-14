@@ -68,6 +68,19 @@ class FakeAdminRepository implements AdminRepository {
     return 'https://storage.test/$selfiePath?token=t';
   }
 
+  final deleted = <String>[];
+
+  @override
+  Future<void> deleteEmployee(String employeeId) async {
+    await gate?.future;
+    _fail();
+    deleted.add(employeeId);
+    employees = [
+      for (final e in employees)
+        if (e.id != employeeId) e,
+    ];
+  }
+
   @override
   Future<void> setEmployeeActive(
     String employeeId, {

@@ -117,7 +117,7 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                       CustomTextFormField(
                         textEditingController: _emailController,
                         validator: (p0) {
-                          return emailValidator(p0);
+                          return emailValidator(p0, context.l10n);
                         },
                         prefixIcon: const Icon(Icons.email_outlined),
                         hintTxt: context.l10n.workEmail,

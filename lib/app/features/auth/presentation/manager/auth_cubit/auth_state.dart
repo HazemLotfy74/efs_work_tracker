@@ -12,8 +12,9 @@ final class AuthChecking extends AuthSessionState {
 final class AuthSignedOut extends AuthSessionState {
   const AuthSignedOut({this.linkFailure});
 
-  /// Why a password-reset link couldn't sign the user in (expired, used,
-  /// or opened on another phone); shown once on the sign-in screen.
+  /// Why the user is back on the sign-in screen without having asked: a
+  /// password-reset link that couldn't be used, or the account was signed
+  /// in on another phone. Shown once on the sign-in screen.
   final AuthFailureReason? linkFailure;
 }
 

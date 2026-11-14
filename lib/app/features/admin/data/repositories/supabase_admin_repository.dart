@@ -79,18 +79,89 @@ class SupabaseAdminRepository implements AdminRepository {
       'id, employee_id, reason, created_at, $extra, '
       'employee:profiles!${table}_employee_id_fkey(full_name, employee_code)';
 
-  @override
-  Future<List<EmployeeEntity>> getEmployees() async {
-    _requireUser();
-    final rows = await _guard(
+  /// `profiles.deleted_at` exists once the account-deletion migration ran.
+  /// Found out on the first read, so the app works with either database.
+  bool _hasDeletedColumn = true;
+
+  /// Reads `profiles` rows, leaving out permanently deleted accounts: the
+  /// database keeps those only as a locked record for their history.
+  Future<List<EmployeeEntity>> _readEmployees({
+    Map<String, dynamic>? query,
+    String? orderBy,
+  }) async {
+    Object? rows;
+    if (_hasDeletedColumn) {
+      try {
+        rows = await _databaseServices
+            .getData(
+              path: 'profiles',
+              column: '$_employeeColumns, deleted_at',
+              query: query,
+              orderBy: orderBy,
+            )
+            .timeout(timeout);
+      } on PostgrestException catch (e) {
+        // 42703: no such column — a database without the migration.
+        if (e.code != '42703') {
+          log('profiles failed: code ${e.code}');
+          throw failureFor(e.code, e.message);
+        }
+        _hasDeletedColumn = false;
+      } on Exception catch (e) {
+        log('profiles failed: ${e.runtimeType}');
+        throw AdminFailure.network;
+      }
+    }
+    rows ??= await _guard(
       'profiles',
       () => _databaseServices.getData(
         path: 'profiles',
         column: _employeeColumns,
-        orderBy: 'full_name',
+        query: query,
+        orderBy: orderBy,
       ),
     );
-    return _parse('profiles', rows, _employee);
+    final visible = rows is List
+        ? [
+            for (final row in rows)
+              if (row is! Map || row['deleted_at'] == null) row,
+          ]
+        : rows;
+    return _parse('profiles', visible, _employee);
+  }
+
+  @override
+  Future<List<EmployeeEntity>> getEmployees() async {
+    _requireUser();
+    return _readEmployees(orderBy: 'full_name');
+  }
+
+  @override
+  Future<void> deleteEmployee(String employeeId) async {
+    // The server refuses this too; no need to ask it.
+    if (_requireUser() == employeeId) throw AdminFailure.notAllowed;
+    try {
+      await _accountsFunction({
+        'action': 'delete_employee',
+        'employee_id': employeeId,
+      }).timeout(timeout);
+    } on AccountsFunctionException catch (e) {
+      if (e.code == AccountsFunctionException.unreachable) {
+        throw isWeb
+            ? AdminFailure.webOriginBlocked
+            : AdminFailure.outcomeUnknown;
+      }
+      throw switch (e.code) {
+        'not_found' => AdminFailure.notFound,
+        // The deployed function is older than this action.
+        'invalid_input' => AdminFailure.serviceUnavailable,
+        _ => accountFailureFor(e.status, e.code),
+      };
+    } on Exception catch (e) {
+      // No answer: it may have been deleted. Repeating it is safe.
+      log('delete_employee failed: ${e.runtimeType}');
+      throw AdminFailure.outcomeUnknown;
+    }
   }
 
   static EmployeeEntity _employee(Map<String, dynamic> json) {
@@ -114,15 +185,7 @@ class SupabaseAdminRepository implements AdminRepository {
   @override
   Future<EmployeeEntity?> getEmployee(String id) async {
     _requireUser();
-    final rows = await _guard(
-      'profiles',
-      () => _databaseServices.getData(
-        path: 'profiles',
-        column: _employeeColumns,
-        query: {'id': id},
-      ),
-    );
-    return _parse('profiles', rows, _employee).firstOrNull;
+    return (await _readEmployees(query: {'id': id})).firstOrNull;
   }
 
   @override
@@ -633,6 +696,7 @@ class SupabaseAdminRepository implements AdminRepository {
   static const _correctionFailures = [
     ('You cannot correct your own attendance', AdminFailure.ownAttendance),
     ('A reason of 1-2000 characters', AdminFailure.invalidReason),
+    ('A decision reason', AdminFailure.invalidReason),
     ('Attendance must be closed', AdminFailure.notClosed),
     ('Proposed', AdminFailure.invalidTimes),
     ('No change was requested', AdminFailure.noChange),

@@ -7,7 +7,13 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Owns registration for this installation. The inbox works without Firebase.
+/// Push alerts on this phone (Android, Firebase Cloud Messaging).
+///
+/// The server sends them (`send-notification-push`), so they arrive while the
+/// app is in the background or closed; Android shows them itself. This class
+/// only registers the phone for the signed-in account and reacts to taps.
+/// A phone is registered to one account and one session: signing in on another
+/// phone moves the alerts there (the database drops this registration).
 class PhoneAlerts {
   PhoneAlerts._(this._client, this._preferences, this._installation);
 
@@ -21,7 +27,10 @@ class PhoneAlerts {
   bool get enabled => _preferences.getBool(_enabledKey) ?? false;
 
   static Future<PhoneAlerts?> initialize(SupabaseClient client) async {
-    if (!const bool.fromEnvironment('ENABLE_PHONE_ALERTS')) return null;
+    // On unless a build turns it off: --dart-define=ENABLE_PHONE_ALERTS=false
+    if (!const bool.fromEnvironment('ENABLE_PHONE_ALERTS', defaultValue: true)) {
+      return null;
+    }
     if (kIsWeb || defaultTargetPlatform != TargetPlatform.android) return null;
     try {
       await Firebase.initializeApp().timeout(const Duration(seconds: 5));
@@ -43,7 +52,7 @@ class PhoneAlerts {
 
   Future<void> listen({
     required VoidCallback onTap,
-    required VoidCallback onForeground,
+    required void Function(String? title, String? body) onForeground,
   }) async {
     // The HTTP v1 sender addresses FCM registration tokens.
     // ignore: deprecated_member_use
@@ -52,7 +61,10 @@ class PhoneAlerts {
       onError: (Object _) {},
     );
     FirebaseMessaging.onMessage.listen((message) {
-      if (message.data['route'] == 'alerts') onForeground();
+      // Android shows nothing by itself while the app is open.
+      if (message.data['route'] == 'alerts') {
+        onForeground(message.notification?.title, message.notification?.body);
+      }
     });
     void handleTap(RemoteMessage message) {
       if (message.data['route'] == 'alerts') onTap();
@@ -70,14 +82,25 @@ class PhoneAlerts {
   void userChanged(String? recipient) {
     if (_recipient == recipient) return;
     _recipient = recipient;
-    if (recipient != null) refresh();
+    if (recipient == null) return;
+    // First sign-in on this phone: ask for the notification permission once.
+    // Before this, nothing registered a phone unless the user found the bell
+    // on the alerts screen, so no push was ever sent.
+    if (_preferences.getBool(_enabledKey) == null) {
+      enable();
+    } else {
+      refresh();
+    }
   }
 
   Future<bool> enable() async {
     try {
       final settings = await FirebaseMessaging.instance.requestPermission();
-      if (settings.authorizationStatus != AuthorizationStatus.authorized)
+      if (settings.authorizationStatus != AuthorizationStatus.authorized) {
+        // Remember the answer: the bell on the alerts screen asks again.
+        await _preferences.setBool(_enabledKey, false);
         return false;
+      }
       await _enqueue(_register);
       return await _preferences.setBool(_enabledKey, true);
     } catch (_) {

@@ -61,7 +61,12 @@ class SupabaseAssignedReviewRepository implements AssignedReviewRepository {
     String id, {
     required bool approve,
     String? note,
-  }) => _review('review_assigned_attendance_correction', id, approve, note);
+  }) {
+    // A correction decision always carries a reason; the database refuses
+    // one without.
+    if (note == null || note.trim().isEmpty) throw AdminFailure.invalidReason;
+    return _review('review_assigned_attendance_correction', id, approve, note);
+  }
 
   Future<Object?> _read(String table, String columns) {
     final userId = _currentUserId() ?? (throw AdminFailure.notAllowed);
