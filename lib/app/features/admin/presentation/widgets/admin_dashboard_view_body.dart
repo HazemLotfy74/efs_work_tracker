@@ -336,10 +336,16 @@ class _EmployeeTile extends StatelessWidget {
       borderWidth: 1,
       horizontalPadding: 14,
       verticalPadding: 12,
-      onTap: () => context.push(
-        AppRoutes.adminEmployeeOf(employee.id),
-        extra: employee.fullName,
-      ),
+      // The employee page pops `true` after a permanent deletion: reload so
+      // the list no longer shows the account.
+      onTap: () async {
+        final cubit = context.read<AdminDashboardCubit>();
+        final changed = await context.push<bool>(
+          AppRoutes.adminEmployeeOf(employee.id),
+          extra: employee.fullName,
+        );
+        if (changed == true) await cubit.load();
+      },
       child: Row(
         spacing: 12,
         children: [
@@ -402,10 +408,16 @@ class _EarlyDepartureTile extends StatelessWidget {
       horizontalPadding: 14,
       verticalPadding: 12,
       borderColor: context.appColors.warning,
-      onTap: () => context.push(
-        AppRoutes.adminEmployeeOf(employee.id),
-        extra: employee.fullName,
-      ),
+      // The employee page pops `true` after a permanent deletion: reload so
+      // the list no longer shows the account.
+      onTap: () async {
+        final cubit = context.read<AdminDashboardCubit>();
+        final changed = await context.push<bool>(
+          AppRoutes.adminEmployeeOf(employee.id),
+          extra: employee.fullName,
+        );
+        if (changed == true) await cubit.load();
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 6,

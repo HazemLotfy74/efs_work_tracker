@@ -131,7 +131,8 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
                           SizedBox(height: 20),
                           CustomTextFormField(
                             textEditingController: _passwordController,
-                            validator: newPasswordValidator,
+                            validator: (value) =>
+                                newPasswordValidator(value, context.l10n),
                             prefixIcon: const Icon(Icons.lock_outlined),
                             hintTxt: context.l10n.passwordRules,
                             obscureText: isObscure,
@@ -145,6 +146,7 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
                             validator: (value) => confirmPasswordValidator(
                               value,
                               _passwordController.text,
+                              context.l10n,
                             ),
                             prefixIcon: const Icon(Icons.lock_outlined),
                             hintTxt: context.l10n.confirmNewPassword,

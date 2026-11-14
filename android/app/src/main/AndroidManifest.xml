@@ -7,8 +7,15 @@
     <application
         android:label="Efs Attendance"
         android:name="${applicationName}"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="firebase_messaging_auto_init_enabled" android:value="false" />
+        <!-- Push alerts use the "alerts" channel created in MainActivity (sound + heads-up). -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="alerts" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

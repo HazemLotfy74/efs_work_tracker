@@ -1,4 +1,8 @@
-type Delivery = { id: string; lease: string; token: string; attempts: number };
+type Delivery = {
+  id: string; lease: string; token: string; attempts: number;
+  // Present once claim_push_deliveries returns them (migration 20261113090000).
+  request_kind?: string | null; event_type?: string | null;
+};
 type FirebaseAccount = { project_id: string; client_email: string; private_key: string };
 
 const tokenEndpoint = 'https://oauth2.googleapis.com/token';
@@ -57,6 +61,28 @@ async function rpc(name: string, body: Record<string, unknown> = {}) {
   return result ? JSON.parse(result) : null;
 }
 
+// What the phone shows. It says what happened and nothing personal: no name,
+// amount or reason is put on a lock screen. Arabic is the app's default language.
+const subjects: Record<string, string> = {
+  correction: 'طلب تصحيح حضور',
+  expense_advance: 'طلب سلفة',
+  overtime: 'طلب عمل إضافي',
+};
+const events: Record<string, string> = {
+  submitted: 'طلب جديد بانتظار المراجعة.',
+  assigned: 'تم إسناد طلب إليك للمراجعة.',
+  approved: 'تمت الموافقة على طلبك.',
+  rejected: 'تم رفض طلبك. افتح التطبيق لمعرفة السبب.',
+};
+
+export function notificationText(delivery: Pick<Delivery, 'request_kind' | 'event_type'>) {
+  const title = subjects[delivery.request_kind ?? ''];
+  const body = events[delivery.event_type ?? ''];
+  return title && body
+    ? { title, body }
+    : { title: 'Efs WorkTrack', body: 'لديك إشعار جديد.' };
+}
+
 function retrySeconds(delivery: Delivery, retryAfter: string | null): number {
   const requested = retryAfter == null ? 0 : /^\d+$/.test(retryAfter)
     ? Number(retryAfter) : Math.ceil((Date.parse(retryAfter) - Date.now()) / 1000);
@@ -73,9 +99,16 @@ async function send(delivery: Delivery, project: string, accessToken: string) {
       headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: {
         token: delivery.token,
-        notification: { title: 'Efs WorkTrack', body: 'You have a new notification.' },
+        notification: notificationText(delivery),
         data: { route: 'alerts' },
-        android: { ttl: '300s', notification: { tag: delivery.id } },
+        // HIGH + the app's "alerts" channel: shown at once, with sound, also
+        // when the phone is idle. Kept for a day if the phone is offline.
+        // The tag makes a retried send replace, not duplicate, the alert.
+        android: {
+          priority: 'HIGH',
+          ttl: '86400s',
+          notification: { tag: delivery.id, channel_id: 'alerts' },
+        },
       } }),
       signal: requestTimeout(),
     });

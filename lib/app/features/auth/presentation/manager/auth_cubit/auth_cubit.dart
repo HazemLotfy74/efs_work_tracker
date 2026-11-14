@@ -43,11 +43,62 @@ class AuthCubit extends Cubit<AuthSessionState> {
     try {
       final user = await _repository.getSignedInUser();
       if (!isClosed) emit(_stateFor(user));
-    } catch (_) {
+    } on AuthFailure catch (failure) {
       // Offline at startup: the saved session is kept for the next launch.
+      if (!isClosed) emit(_signedOutAfter(failure));
+    } catch (_) {
       if (!isClosed) emit(const AuthSignedOut());
     }
   }
+
+  /// Asks the server whether this phone still holds the account's session.
+  /// Called when the app comes back and while it is open. The database
+  /// already refuses a replaced session; this only moves the user to the
+  /// sign-in screen and says why.
+  Future<void> verifySession() async {
+    final before = state;
+    if (before is! AuthSignedIn || _verifying) return;
+    _verifying = true;
+    try {
+      final user = await _repository.getSignedInUser();
+      if (isClosed || !identical(state, before)) return;
+      final next = _stateFor(user);
+      // The same account: keep the state object, so nothing reloads.
+      if (next is AuthSignedIn &&
+          next.user.uID == before.user.uID &&
+          next.user.role == before.user.role) {
+        return;
+      }
+      emit(next);
+    } on AuthFailure catch (failure) {
+      // Offline: nothing to conclude; the next check decides.
+      if (failure.reason == AuthFailureReason.network ||
+          failure.reason == AuthFailureReason.unknown) {
+        return;
+      }
+      if (!isClosed) emit(_signedOutAfter(failure));
+    } catch (_) {
+      // Not a verdict on the session.
+    } finally {
+      _verifying = false;
+    }
+  }
+
+  bool _verifying = false;
+
+  /// The sign-in screen has shown why the session ended: don't repeat it
+  /// when that screen is opened again.
+  void noticeShown() {
+    final current = state;
+    if (current is AuthSignedOut && current.linkFailure != null) {
+      emit(const AuthSignedOut());
+    }
+  }
+
+  static AuthSignedOut _signedOutAfter(AuthFailure failure) =>
+      failure.reason == AuthFailureReason.sessionReplaced
+      ? const AuthSignedOut(linkFailure: AuthFailureReason.sessionReplaced)
+      : const AuthSignedOut();
 
   /// Throws an `AuthFailure`, so the form can show what went wrong.
   Future<void> signIn({required String email, required String password}) async {

@@ -259,7 +259,14 @@ void main() {
         }
 
         await repository.reviewCash('c1', approve: true, note: '  ok ');
-        await repository.reviewCorrection('k1', approve: false);
+        // A correction decision needs a reason: without one nothing is sent.
+        for (final note in [null, '', '  ']) {
+          expect(
+            () => repository.reviewCorrection('k1', approve: false, note: note),
+            throwsA(AdminFailure.invalidReason),
+          );
+        }
+        await repository.reviewCorrection('k1', approve: false, note: ' no ');
         expect(database.calls[0].$1, 'review_assigned_expense_advance');
         expect(database.calls[0].$2, {
           'p_request_id': 'c1',
@@ -267,7 +274,8 @@ void main() {
           'p_note': 'ok',
         });
         expect(database.calls[1].$1, 'review_assigned_attendance_correction');
-        expect(database.calls[1].$2!['p_note'], isNull);
+        expect(database.calls, hasLength(2));
+        expect(database.calls[1].$2!['p_note'], 'no');
       },
     );
 

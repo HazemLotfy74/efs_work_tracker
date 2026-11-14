@@ -34,7 +34,7 @@ class AddressService {
           .timeout(_timeout);
       return places.isEmpty ? null : formatPlacemark(places.first);
     } catch (error) {
-      debugPrint('Address: device geocoder failed: $error');
+      debugPrint('Address: device geocoder failed: ${error.runtimeType}');
       return null;
     }
   }
@@ -64,7 +64,7 @@ class AddressService {
       final json = jsonDecode(utf8.decode(response.bodyBytes));
       return formatOpenStreetMap(Map<String, dynamic>.from(json['address']));
     } catch (error) {
-      debugPrint('Address: OpenStreetMap failed: $error');
+      debugPrint('Address: OpenStreetMap failed: ${error.runtimeType}');
       return null;
     }
   }

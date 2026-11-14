@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -8,6 +10,16 @@ plugins {
 // Local inbox-only builds can run without a Firebase project file.
 if (file("google-services.json").isFile) {
     apply(plugin = "com.google.gms.google-services")
+}
+
+// Release signing: android/key.properties (never committed) with storeFile,
+// storePassword, keyAlias and keyPassword. Without it the release build is
+// signed with the debug key, which no store accepts and must not be shipped.
+val keystoreProperties = Properties()
+val keystoreFile = rootProject.file("key.properties")
+val hasReleaseKey = keystoreFile.isFile
+if (hasReleaseKey) {
+    keystoreFile.inputStream().use { keystoreProperties.load(it) }
 }
 
 android {
@@ -35,11 +47,20 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (hasReleaseKey) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(if (hasReleaseKey) "release" else "debug")
             // Keep rules for plugins called through JNI (see proguard-rules.pro).
             proguardFiles("proguard-rules.pro")
         }

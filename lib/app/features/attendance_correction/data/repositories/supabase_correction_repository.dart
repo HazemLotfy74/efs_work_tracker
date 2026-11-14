@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../../core/errors/correction_errors.dart';
 import '../../../../../core/services/database_services.dart';
+import '../../domain/correction_rules.dart';
 import '../../domain/entities/correction_request_entity.dart';
 import '../../domain/repositories/correction_repository.dart';
 import '../models/correction_request_model.dart';
@@ -148,6 +149,11 @@ class SupabaseCorrectionRepository implements CorrectionRepository {
   }) async {
     _requireUser();
     final text = note?.trim();
+    // A decision always carries a reason; the database refuses one without.
+    if (text == null || text.isEmpty) throw CorrectionFailure.invalidReason;
+    if (text.length > CorrectionRules.maxTextLength) {
+      throw CorrectionFailure.noteTooLong;
+    }
     await _guard(
       'review_request',
       () => _databaseServices.rpc(
@@ -156,7 +162,7 @@ class SupabaseCorrectionRepository implements CorrectionRepository {
           'p_kind': 'correction',
           'p_request_id': requestId,
           'p_approve': approve,
-          'p_note': text == null || text.isEmpty ? null : text,
+          'p_note': text,
         },
       ),
     );
@@ -228,6 +234,7 @@ class SupabaseCorrectionRepository implements CorrectionRepository {
     ),
     ('Request is not assigned to you', CorrectionFailure.notAllowed),
     ('A reason of 1-2000 characters', CorrectionFailure.invalidReason),
+    ('A decision reason', CorrectionFailure.invalidReason),
     ('Review note cannot exceed', CorrectionFailure.noteTooLong),
     ('Attendance must be closed', CorrectionFailure.notClosed),
     ('Proposed', CorrectionFailure.invalidTimes),

@@ -197,6 +197,9 @@ class _ProfileCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 8,
         children: [
+          // An admin action (status, schedule, deletion) is being sent.
+          if (state.busy)
+            const LinearProgressIndicator(key: Key('employeeBusy')),
           Text(employee.fullName, style: context.textTheme.titleLarge),
           Wrap(
             spacing: 6,
@@ -280,6 +283,19 @@ class _ProfileCard extends StatelessWidget {
                   icon: const Icon(Icons.history),
                   label: Text(l10n.adminAuditHistory),
                 ),
+              // Permanent deletion: admins only, employee accounts only,
+              // never yourself. The server checks all three again.
+              if (can.isAdmin && canToggle)
+                OutlinedButton.icon(
+                  key: const Key('deleteEmployee'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: context.colors.error,
+                    side: BorderSide(color: context.colors.error),
+                  ),
+                  onPressed: state.busy ? null : () => _delete(context),
+                  icon: const Icon(Icons.delete_forever_outlined),
+                  label: Text(l10n.adminDeleteAccount),
+                ),
               if (canManage)
                 OutlinedButton.icon(
                   key: const Key('managePermissions'),
@@ -302,6 +318,28 @@ class _ProfileCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Warns, then deletes. The page closes only after the server confirmed;
+  /// on failure the employee stays and the reason is shown.
+  Future<void> _delete(BuildContext context) async {
+    final l10n = context.l10n;
+    final cubit = context.read<EmployeeDetailsCubit>();
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (_) => _DeleteAccountDialog(name: state.employee.fullName),
+    );
+    if (confirmed != true) return;
+    final failure = await cubit.delete();
+    showAppSnackBar(
+      messenger,
+      failure?.message(l10n) ?? l10n.adminDeleteAccountDone,
+      type: failure == null ? AppMessageType.success : AppMessageType.error,
+    );
+    // `true` tells the list behind to reload without this employee.
+    if (failure == null) await navigator.maybePop(true);
   }
 
   /// Opens the edit form; reloads this page when the details were saved.
@@ -375,6 +413,73 @@ class _ProfileCard extends StatelessWidget {
       messenger,
       failure?.message(l10n) ?? l10n.adminScheduleChanged,
       type: failure == null ? AppMessageType.success : AppMessageType.error,
+    );
+  }
+}
+
+/// The warning before a permanent deletion. Names the employee, and the
+/// delete button works only after the admin ticks that it can't be undone,
+/// so one stray tap never deletes an account. Pops `true` to go ahead.
+class _DeleteAccountDialog extends StatefulWidget {
+  const _DeleteAccountDialog({required this.name});
+
+  final String name;
+
+  @override
+  State<_DeleteAccountDialog> createState() => _DeleteAccountDialogState();
+}
+
+class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
+  bool _understood = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return AppDialog(
+      title: l10n.adminDeleteAccountTitle,
+      message: l10n.adminDeleteAccountMessage,
+      type: AppMessageType.error,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: 8,
+        children: [
+          Text(
+            l10n.adminDeleteAccountEmployee(widget.name),
+            key: const Key('deleteEmployeeName'),
+            textAlign: TextAlign.center,
+            style: context.textTheme.titleMedium,
+          ),
+          CheckboxListTile(
+            key: const Key('deleteAcknowledge'),
+            contentPadding: EdgeInsets.zero,
+            controlAffinity: ListTileControlAffinity.leading,
+            activeColor: context.colors.error,
+            value: _understood,
+            onChanged: (value) => setState(() => _understood = value ?? false),
+            title: Text(
+              l10n.adminDeleteAccountAcknowledge,
+              style: context.textTheme.bodyMedium,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        AppDialogAction(
+          key: const Key('cancelDelete'),
+          label: l10n.correctionCancel,
+          onPressed: () => Navigator.of(context).pop(false),
+        ),
+        AppDialogAction(
+          key: const Key('confirmDelete'),
+          label: l10n.adminDeleteAccountConfirm,
+          primary: true,
+          destructive: true,
+          onPressed: _understood
+              ? () => Navigator.of(context).pop(true)
+              : null,
+        ),
+      ],
     );
   }
 }

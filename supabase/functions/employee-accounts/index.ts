@@ -1,4 +1,6 @@
-// employee-accounts — deployed version 1 plus optional `role` and `phone` on
+// employee-accounts — action "delete_employee" added 2026-11-13 (needs
+// supabase/migrations/20261113110000_delete_employee.sql applied first).
+// Before that: deployed version 1 plus optional `role` and `phone` on
 // create_employee (see supabase/migrations/20261102090100_account_role_and_phone.sql).
 // Only employeeInput() changed. Deploy with:
 //   supabase functions deploy employee-accounts --no-verify-jwt
@@ -46,7 +48,7 @@ export function employeeInput(body) {
   return { requestId: body.request_id, details, password: body.password };
 }
 
-export function createAccountHandler({authenticate, rpc, createUser, sendReset, updatePassword, allowedOrigin=''}) {
+export function createAccountHandler({authenticate, rpc, createUser, sendReset, updatePassword, deleteUser, allowedOrigin=''}) {
   return async function handler(request) {
     const origin = request.headers.get('origin');
     const headers = {'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin'};
@@ -120,6 +122,27 @@ export function createAccountHandler({authenticate, rpc, createUser, sendReset, 
         await sendReset(email); // Fixed server-configured redirect, never a caller-supplied URL.
         return respond(202,{message:'If delivery is available, password reset instructions will be emailed'});
       }
+      if (body.action==='delete_employee') {
+        if (Object.keys(body).some(k=>!['action','employee_id'].includes(k)) || !uuid.test(body.employee_id??'')) fail('A valid employee_id is required');
+        const target = body.employee_id.toLowerCase();
+        if (target===String(actor.id).toLowerCase()) throw new AccountError(403,'forbidden','You cannot delete your own account');
+        // The database decides: the caller must be an active admin and the target an
+        // employee (never an admin, so the last administrator is out of reach). In one
+        // transaction it ends the sessions, removes phones, notifications and
+        // permissions, and either deletes the profile ("hard") or, when attendance,
+        // requests or audit history refer to it, locks it ("anonymized").
+        const result = await rpc('backend_delete_employee',{p_actor:actor.id,p_employee_id:target});
+        const mode = result?.mode;
+        if (mode!=='hard' && mode!=='anonymized' && mode!=='gone') throw new AccountError(503,'account_service_unavailable','Retry safely');
+        // Then the login itself. A kept record still points at its Auth user, so that
+        // user is soft-deleted: email and password are destroyed for good and the row
+        // stays only as an anchor. Repeating the request finishes a half-done deletion.
+        let removed;
+        try { removed = await deleteUser(target, mode==='anonymized'); }
+        catch { throw new AccountError(503,'auth_delete_pending','The account can no longer be used. Repeat the request to finish removing its login'); }
+        if (mode==='gone' && !removed) return respond(404,{error:'not_found',message:'Employee not found'});
+        return respond(200,{deleted:true,mode:mode==='gone'?'hard':mode});
+      }
       fail('Unsupported action');
     } catch (error) {
       if (error.code==='42501') return respond(403,{error:'forbidden',message:'Active authorized admin with completed password change required'});
@@ -144,7 +167,9 @@ export function supabaseTransport({url,publicKey,serviceKey,resetRedirect,fetchI
       const code=data?.code??data?.error_code??'upstream_error';
       // Only controlled messages leave the server.
       const status = response.status===429 ? 429 : response.status>=500 ? 503 : 400;
-      throw new AccountError(status,code,response.status===429?'Try again later':'Account operation was rejected');
+      const error = new AccountError(status,code,response.status===429?'Try again later':'Account operation was rejected');
+      error.upstreamStatus = response.status;
+      throw error;
     }
     return data;
   }
@@ -155,6 +180,14 @@ export function supabaseTransport({url,publicKey,serviceKey,resetRedirect,fetchI
     },
     rpc: (name,args) => request('/rest/v1/rpc/'+name,{body:args}),
     createUser: body => request('/auth/v1/admin/users',{body}),
+    // true when a user was removed, false when Auth has no such user (already gone).
+    deleteUser: async (id,soft) => {
+      try { await request('/auth/v1/admin/users/'+id,{method:'DELETE',body:{should_soft_delete:soft}}); return true; }
+      catch (error) {
+        if (error.upstreamStatus===404 || error.code==='user_not_found') return false;
+        throw error;
+      }
+    },
     updatePassword: (token,attributes) => request('/auth/v1/user',{
       method:'PUT',token,key:publicKey,body:attributes,
     }),

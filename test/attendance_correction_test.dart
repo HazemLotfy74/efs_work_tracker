@@ -298,10 +298,14 @@ class FakeCorrectionServer implements DatabaseServices {
         ..['has_correction'] = true;
     }
     final text = note?.trim();
+    // The table's trigger: a decision needs a reason with visible text.
+    if (text == null || text.isEmpty) {
+      _raise('A decision reason of 1-2000 characters is required', '22023');
+    }
     row
       ..['status'] = approve ? 'approved' : 'rejected'
       ..['reviewed_at'] = nextDay.toIso8601String()
-      ..['review_note'] = text == null || text.isEmpty ? null : text;
+      ..['review_note'] = text;
   }
 
   // Tables are never written directly; every write is a function.
@@ -593,8 +597,8 @@ void main() {
         await submit();
         server.actAs(adminId, admin: true);
         final id = (await admin.getPendingForReview()).single.id;
-        await admin.review(id, approve: false, note: '   ');
-        expect(server.rpcCalls.last.$2!['p_note'], isNull);
+        await admin.review(id, approve: false, note: ' Wrong day ');
+        expect(server.rpcCalls.last.$2!['p_note'], 'Wrong day');
         expect(sessionOf(server.record).needsReview, isTrue);
 
         server.actAs(employeeId);
@@ -643,7 +647,11 @@ void main() {
       expect(await admin.getPendingForReview(), isEmpty);
       // The database refuses it anyway.
       await expectLater(
-        admin.review(server.rows.single['id'] as String, approve: true),
+        admin.review(
+          server.rows.single['id'] as String,
+          approve: true,
+          note: 'ok',
+        ),
         throwsA(CorrectionFailure.ownRequest),
       );
     });
@@ -651,8 +659,66 @@ void main() {
     test('an employee can’t review', () async {
       await submit();
       await expectLater(
-        employee.review(server.rows.single['id'] as String, approve: true),
+        employee.review(
+          server.rows.single['id'] as String,
+          approve: true,
+          note: 'ok',
+        ),
         throwsA(CorrectionFailure.notAllowed),
+      );
+    });
+
+    test('a decision without a reason is refused, approve or reject', () async {
+      await submit();
+      server.actAs(adminId, admin: true);
+      final id = server.rows.single['id'] as String;
+      final sent = server.rpcCalls.length;
+      for (final approve in [true, false]) {
+        for (final note in [null, '', '   ', '\n\t ']) {
+          await expectLater(
+            admin.review(id, approve: approve, note: note),
+            throwsA(CorrectionFailure.invalidReason),
+            reason: 'approve=$approve note=${note?.codeUnits}',
+          );
+        }
+        await expectLater(
+          admin.review(id, approve: approve, note: 'x' * 2001),
+          throwsA(CorrectionFailure.noteTooLong),
+        );
+      }
+      // Nothing was sent, and the request is still pending.
+      expect(server.rpcCalls, hasLength(sent));
+      expect(server.rows.single['status'], 'pending');
+    });
+
+    test('the database refuses a direct call without a reason', () async {
+      await submit();
+      server.actAs(adminId, admin: true);
+      final id = server.rows.single['id'] as String;
+      // Not through the repository: what a hand-made API request would do.
+      for (final approve in [true, false]) {
+        await expectLater(
+          server.rpc(
+            function: 'review_request',
+            params: {
+              'p_kind': 'correction',
+              'p_request_id': id,
+              'p_approve': approve,
+              'p_note': null,
+            },
+          ),
+          throwsA(
+            isA<PostgrestException>().having((e) => e.code, 'code', '22023'),
+          ),
+        );
+      }
+      expect(server.rows.single['status'], 'pending');
+      expect(
+        SupabaseCorrectionRepository.failureFor(
+          '22023',
+          'A decision reason of 1-2000 characters is required',
+        ),
+        CorrectionFailure.invalidReason,
       );
     });
 
@@ -660,11 +726,14 @@ void main() {
       await submit();
       server.actAs(adminId, admin: true);
       final id = server.rows.single['id'] as String;
-      await admin.review(id, approve: false);
+      await admin.review(id, approve: false, note: 'no');
+      // The first decision and its reason can't be replaced.
       await expectLater(
-        admin.review(id, approve: true),
+        admin.review(id, approve: true, note: 'changed my mind'),
         throwsA(CorrectionFailure.alreadyReviewed),
       );
+      expect(server.rows.single['status'], 'rejected');
+      expect(server.rows.single['review_note'], 'no');
     });
 
     test('no answer is a network failure; signed out is not allowed', () async {
@@ -980,7 +1049,17 @@ void main() {
         );
         await tester.scrollUntilVisible(find.text('Request correction'), 100);
         expect(find.text('Rejected'), findsOneWidget);
-        expect(find.text('Reviewer note: Wrong times'), findsOneWidget);
+        // The decision's reason, set apart and labelled by the decision.
+        final reason = find.byKey(const Key('decisionReason'));
+        expect(reason, findsOneWidget);
+        expect(
+          find.descendant(of: reason, matching: find.text('Rejection reason')),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(of: reason, matching: find.text('Wrong times')),
+          findsOneWidget,
+        );
       },
     );
 
@@ -1020,8 +1099,25 @@ void main() {
 
       await tester.tap(find.byKey(const Key('approve-request-1')));
       await tester.pumpAndSettle();
-      expect(find.text('Approve this correction?'), findsOneWidget);
+      expect(find.text('Confirm correction approval'), findsOneWidget);
+      expect(find.text('Approval reason'), findsOneWidget);
+      // No reason yet: confirming is disabled and sends nothing.
+      FilledButton confirm() => tester.widget(
+        find.descendant(
+          of: find.byKey(const Key('confirmReview')),
+          matching: find.byType(FilledButton),
+        ),
+      );
+      expect(confirm().onPressed, isNull);
+      await tester.enterText(find.byKey(const Key('reviewNote')), '   ');
+      await tester.pump();
+      expect(confirm().onPressed, isNull);
+      await tester.tap(find.byKey(const Key('confirmReview')));
+      await tester.pump();
+      expect(corrections.reviews, isEmpty);
       await tester.enterText(find.byKey(const Key('reviewNote')), 'Confirmed');
+      await tester.pump();
+      expect(confirm().onPressed, isNotNull);
       await tester.tap(find.byKey(const Key('confirmReview')));
       await tester.pumpAndSettle();
 
@@ -1054,6 +1150,10 @@ void main() {
       corrections.failure = CorrectionFailure.ownRequest;
       await tester.tap(find.byKey(const Key('reject-request-1')));
       await tester.pumpAndSettle();
+      expect(find.text('Confirm correction rejection'), findsOneWidget);
+      expect(find.text('Rejection reason'), findsOneWidget);
+      await tester.enterText(find.byKey(const Key('reviewNote')), 'Not you');
+      await tester.pump();
       await tester.tap(find.byKey(const Key('confirmReview')));
       await tester.pumpAndSettle();
       expect(find.text('You can’t review your own request.'), findsOneWidget);

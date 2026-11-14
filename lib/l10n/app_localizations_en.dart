@@ -691,6 +691,35 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your session has ended. Please sign in again.';
 
   @override
+  String get authSessionReplaced =>
+      'Your account was signed in on another device. Please sign in again to continue.';
+
+  @override
+  String get validatorEmailRequired => 'Please enter your email';
+
+  @override
+  String get validatorEmailInvalid => 'Please enter a valid email';
+
+  @override
+  String get validatorPasswordRequired => 'Please enter your password';
+
+  @override
+  String get validatorPasswordShort => 'Password must be at least 6 characters';
+
+  @override
+  String get validatorNewPasswordRequired => 'Please enter a new password';
+
+  @override
+  String get validatorNewPasswordShort =>
+      'Password must be at least 12 characters';
+
+  @override
+  String get validatorPasswordTooLong => 'Password is too long';
+
+  @override
+  String get validatorPasswordsDontMatch => 'Passwords do not match';
+
+  @override
   String get authNetworkError =>
       'Can’t reach the server. Check your connection and try again.';
 
@@ -955,10 +984,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get correctionReject => 'Reject';
 
   @override
-  String get correctionApproveTitle => 'Approve this correction?';
+  String get correctionApproveTitle => 'Confirm correction approval';
 
   @override
-  String get correctionRejectTitle => 'Reject this correction?';
+  String get correctionRejectTitle => 'Confirm correction rejection';
 
   @override
   String get correctionApproveMessage =>
@@ -970,6 +999,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get correctionNoteOptional => 'Note (optional)';
+
+  @override
+  String get correctionApprovalReason => 'Approval reason';
+
+  @override
+  String get correctionRejectionReason => 'Rejection reason';
+
+  @override
+  String get correctionApprovalReasonHint =>
+      'Explain why this correction is approved…';
+
+  @override
+  String get correctionRejectionReasonHint =>
+      'Explain why this correction is rejected…';
+
+  @override
+  String get correctionConfirmApprove => 'Confirm approval';
+
+  @override
+  String get correctionConfirmReject => 'Confirm rejection';
+
+  @override
+  String get correctionDecisionReasonRequired =>
+      'Required. The employee will see it.';
+
+  @override
+  String get correctionNoDecisionReason =>
+      'No reason was recorded for this decision.';
+
+  @override
+  String correctionDecidedOn(String date) {
+    return 'Decided on $date';
+  }
 
   @override
   String get correctionCancel => 'Cancel';
@@ -1248,6 +1310,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminStatusChanged => 'Account status updated.';
+
+  @override
+  String get adminDeleteAccount => 'Delete employee account';
+
+  @override
+  String get adminDeleteAccountTitle => 'Permanently delete employee account';
+
+  @override
+  String get adminDeleteAccountMessage =>
+      'Are you sure you want to permanently delete this employee’s account?\nThis removes the employee’s account from the app and the database, and data linked to it may be lost.\nThis cannot be undone.';
+
+  @override
+  String adminDeleteAccountEmployee(String name) {
+    return 'Employee: $name';
+  }
+
+  @override
+  String get adminDeleteAccountAcknowledge =>
+      'I understand this is permanent and cannot be undone';
+
+  @override
+  String get adminDeleteAccountConfirm => 'Delete permanently';
+
+  @override
+  String get adminDeleteAccountDone =>
+      'The employee account was permanently deleted.';
 
   @override
   String get adminChangeSchedule => 'Change schedule';
@@ -1846,13 +1934,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String correctionSentOn(String date) {
     return 'Sent $date';
   }
+
+  @override
   String get inboxSubmitted => 'Submitted';
 
   @override
   String get inboxAssigned => 'Assigned to you';
 
   @override
-  String get inboxEmpty => 'No notifications yet.';
+  String get inboxEmpty => 'No notifications yet';
+
+  @override
+  String get inboxEmptyMessage =>
+      'Updates on your requests, and requests waiting for your review, will appear here.';
+
+  @override
+  String get inboxUnread => 'Unread';
 
   @override
   String get inboxLoadFailed => 'Couldn’t load notifications. Try again.';

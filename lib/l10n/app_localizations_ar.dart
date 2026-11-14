@@ -689,6 +689,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authSessionExpired => 'انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.';
 
   @override
+  String get authSessionReplaced =>
+      'تم تسجيل الدخول إلى حسابك من جهاز آخر. يرجى تسجيل الدخول مرة أخرى للمتابعة.';
+
+  @override
+  String get validatorEmailRequired => 'يرجى إدخال البريد الإلكتروني';
+
+  @override
+  String get validatorEmailInvalid => 'يرجى إدخال بريد إلكتروني صحيح';
+
+  @override
+  String get validatorPasswordRequired => 'يرجى إدخال كلمة المرور';
+
+  @override
+  String get validatorPasswordShort => 'كلمة المرور يجب ألا تقل عن 6 أحرف';
+
+  @override
+  String get validatorNewPasswordRequired => 'يرجى إدخال كلمة مرور جديدة';
+
+  @override
+  String get validatorNewPasswordShort => 'كلمة المرور يجب ألا تقل عن 12 حرفًا';
+
+  @override
+  String get validatorPasswordTooLong => 'كلمة المرور طويلة جدًا';
+
+  @override
+  String get validatorPasswordsDontMatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
   String get authNetworkError =>
       'تعذّر الوصول إلى الخادم. تحقق من اتصالك وحاول مرة أخرى.';
 
@@ -949,10 +977,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get correctionReject => 'رفض';
 
   @override
-  String get correctionApproveTitle => 'قبول هذا التصحيح؟';
+  String get correctionApproveTitle => 'تأكيد قبول طلب التصحيح';
 
   @override
-  String get correctionRejectTitle => 'رفض هذا التصحيح؟';
+  String get correctionRejectTitle => 'تأكيد رفض طلب التصحيح';
 
   @override
   String get correctionApproveMessage =>
@@ -964,6 +992,36 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get correctionNoteOptional => 'ملاحظة (اختياري)';
+
+  @override
+  String get correctionApprovalReason => 'سبب الموافقة';
+
+  @override
+  String get correctionRejectionReason => 'سبب الرفض';
+
+  @override
+  String get correctionApprovalReasonHint =>
+      'اكتب سبب الموافقة على طلب التصحيح...';
+
+  @override
+  String get correctionRejectionReasonHint => 'اكتب سبب رفض طلب التصحيح...';
+
+  @override
+  String get correctionConfirmApprove => 'تأكيد الموافقة';
+
+  @override
+  String get correctionConfirmReject => 'تأكيد الرفض';
+
+  @override
+  String get correctionDecisionReasonRequired => 'السبب مطلوب وسيظهر للموظف.';
+
+  @override
+  String get correctionNoDecisionReason => 'لم يُسجَّل سبب لهذا القرار.';
+
+  @override
+  String correctionDecidedOn(String date) {
+    return 'تاريخ القرار: $date';
+  }
 
   @override
   String get correctionCancel => 'إلغاء';
@@ -1235,6 +1293,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get adminStatusChanged => 'تم تحديث حالة الحساب.';
+
+  @override
+  String get adminDeleteAccount => 'حذف حساب الموظف';
+
+  @override
+  String get adminDeleteAccountTitle => 'حذف حساب الموظف نهائياً';
+
+  @override
+  String get adminDeleteAccountMessage =>
+      'هل أنت متأكد أنك تريد حذف حساب هذا الموظف نهائياً؟\nسيؤدي هذا الإجراء إلى حذف حساب الموظف من التطبيق وقاعدة البيانات، وقد يؤدي إلى فقدان البيانات المرتبطة به.\nلا يمكن التراجع عن هذا الإجراء بعد تنفيذه.';
+
+  @override
+  String adminDeleteAccountEmployee(String name) {
+    return 'الموظف: $name';
+  }
+
+  @override
+  String get adminDeleteAccountAcknowledge =>
+      'أفهم أن هذا الإجراء نهائي ولا يمكن التراجع عنه';
+
+  @override
+  String get adminDeleteAccountConfirm => 'حذف نهائياً';
+
+  @override
+  String get adminDeleteAccountDone => 'تم حذف حساب الموظف نهائياً.';
 
   @override
   String get adminChangeSchedule => 'تغيير الجدول';
@@ -1673,7 +1756,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get permAuditView => 'عرض سجل التدقيق';
 
   @override
-  String get permReviewAssignedCash => 'مراجعة طلبات السلف المُسندة';
+  String get permReviewAssignedCash => 'مراجعة طلبات المصروفات المُسندة';
 
   @override
   String get permReviewAssignedCorrections =>
@@ -1811,13 +1894,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String correctionSentOn(String date) {
     return 'أُرسل $date';
   }
+
+  @override
   String get inboxSubmitted => 'تم تقديم الطلب';
 
   @override
   String get inboxAssigned => 'تم تعيين الطلب لك';
 
   @override
-  String get inboxEmpty => 'لا توجد إشعارات بعد.';
+  String get inboxEmpty => 'لا توجد إشعارات بعد';
+
+  @override
+  String get inboxEmptyMessage =>
+      'ستظهر هنا مستجدات طلباتك والطلبات التي تنتظر مراجعتك.';
+
+  @override
+  String get inboxUnread => 'غير مقروء';
 
   @override
   String get inboxLoadFailed => 'تعذر تحميل الإشعارات. حاول مرة أخرى.';

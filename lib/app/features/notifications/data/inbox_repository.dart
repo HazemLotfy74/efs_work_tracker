@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 enum RequestKind {
@@ -23,6 +25,17 @@ class InboxNotification {
       createdAt = DateTime.parse(row['created_at'] as String),
       unread = row['read_at'] == null;
 
+  /// `null` for a row this version of the app can't show (a request type or
+  /// event added to the database later). One such row must not empty the
+  /// whole list.
+  static InboxNotification? tryFromJson(Map<String, dynamic> row) {
+    try {
+      return InboxNotification.fromJson(row);
+    } catch (_) {
+      return null;
+    }
+  }
+
   final String id;
   final RequestKind kind;
   final String requestId;
@@ -45,7 +58,7 @@ class InboxRepository {
         .order('id', ascending: false)
         .range(offset, offset + pageSize - 1)
         .timeout(const Duration(seconds: 15));
-    return rows.map(InboxNotification.fromJson).toList();
+    return rows.map(InboxNotification.tryFromJson).nonNulls.toList();
   }
 
   Future<int> unreadCount(String recipient) => client
@@ -61,10 +74,56 @@ class InboxRepository {
           .timeout(const Duration(seconds: 15)) ==
       true;
 
+  /// Fires whenever [recipient]'s notifications change on the server, and
+  /// each time the live connection opens (first connect, and again after the
+  /// internet comes back, so anything missed meanwhile is fetched).
+  ///
+  /// Supabase Realtime, over the row-level security of `notifications`: the
+  /// server only sends an account its own rows. It carries no data here; the
+  /// listener reloads the list. One channel per listener, removed on cancel.
+  /// Needs `notifications` in the `supabase_realtime` publication
+  /// (supabase/migrations/20261113100000_notifications_realtime.sql); until
+  /// then the stream is silent and the app's periodic refresh does the work.
+  Stream<void> watch(String recipient) {
+    late final StreamController<void> controller;
+    RealtimeChannel? channel;
+    void changed() {
+      if (!controller.isClosed) controller.add(null);
+    }
+
+    controller = StreamController<void>(
+      onListen: () {
+        channel = client
+            .channel('inbox-$recipient')
+            .onPostgresChanges(
+              event: PostgresChangeEvent.all,
+              schema: 'public',
+              table: 'notifications',
+              filter: PostgresChangeFilter(
+                type: PostgresChangeFilterType.eq,
+                column: 'recipient_id',
+                value: recipient,
+              ),
+              callback: (_) => changed(),
+            )
+            .subscribe((status, _) {
+              if (status == RealtimeSubscribeStatus.subscribed) changed();
+            });
+      },
+      onCancel: () async {
+        final open = channel;
+        channel = null;
+        if (open != null) await client.removeChannel(open);
+      },
+    );
+    return controller.stream;
+  }
+
   /// Request policies remain authoritative after reassignment or revocation.
   Future<Map<String, dynamic>?> request(InboxNotification item) => client
       .from(item.kind.table)
-      .select('id,status,reason')
+      // review_note: the reviewer's reason, shown with a decision.
+      .select('id,status,reason,review_note')
       .eq('id', item.requestId)
       .maybeSingle()
       .timeout(const Duration(seconds: 15));

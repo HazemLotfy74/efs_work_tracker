@@ -24,8 +24,15 @@ class SupabaseAuthRepository implements AuthRepository {
     try {
       return await _loadAccount();
     } on AuthFailure catch (failure) {
-      if (failure.reason == AuthFailureReason.network) rethrow;
+      // No verdict on the account (offline, a server hiccup): keep the
+      // session. Only a definite answer signs the phone out.
+      if (failure.reason == AuthFailureReason.network ||
+          failure.reason == AuthFailureReason.unknown) {
+        rethrow;
+      }
       await _authService.signOut();
+      // Say why the session ended; anything else is a plain sign-out.
+      if (failure.reason == AuthFailureReason.sessionReplaced) rethrow;
       return null;
     }
   }
@@ -124,6 +131,14 @@ class SupabaseAuthRepository implements AuthRepository {
       throw AuthFailure(AuthFailureReason.network);
     }
     if (data is! Map) throw AuthFailure(AuthFailureReason.unknown);
+    // Only the newest sign-in of an account is active. Absent on a database
+    // without the single-session rule: then every session is current.
+    switch (data['session_state']) {
+      case 'replaced':
+        throw AuthFailure(AuthFailureReason.sessionReplaced);
+      case 'ended':
+        throw AuthFailure(AuthFailureReason.sessionExpired);
+    }
 
     final account = UserModel.fromAccountStatus(
       Map<String, dynamic>.from(data),

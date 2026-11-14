@@ -19,6 +19,9 @@ class _Inbox extends Fake implements InboxRepository {
   Future<int> unreadCount(String recipient) async => read ? 0 : 1;
 
   @override
+  Stream<void> watch(String recipient) => const Stream.empty();
+
+  @override
   Future<bool> markRead(String id) async {
     expect(id, 'notification');
     read = true;

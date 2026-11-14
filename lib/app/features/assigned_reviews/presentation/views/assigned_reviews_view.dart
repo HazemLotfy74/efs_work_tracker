@@ -222,6 +222,12 @@ class _CorrectionCard extends StatelessWidget {
             message: (approve) => approve
                 ? l10n.correctionApproveMessage
                 : l10n.correctionRejectMessage,
+            // Every correction decision carries a written reason.
+            reasonRequired: true,
+            details: CorrectionRequestDetails(
+              request: request,
+              timezone: request.timezone,
+            ),
             send: (cubit, approve, note) => cubit.reviewCorrection(
               request.id,
               approve: approve,
@@ -234,7 +240,8 @@ class _CorrectionCard extends StatelessWidget {
   }
 }
 
-/// Reject and Approve, each confirmed with an optional note.
+/// Reject and Approve, each confirmed with a note: optional for a cash
+/// request, a mandatory reason for an attendance correction.
 class _Decision extends StatelessWidget {
   const _Decision({
     required this.id,
@@ -243,6 +250,8 @@ class _Decision extends StatelessWidget {
     required this.rejectTitle,
     required this.message,
     required this.send,
+    this.reasonRequired = false,
+    this.details,
   });
 
   final String id;
@@ -250,6 +259,8 @@ class _Decision extends StatelessWidget {
   final String approveTitle;
   final String rejectTitle;
   final String Function(bool approve) message;
+  final bool reasonRequired;
+  final Widget? details;
   final Future<AdminFailure?> Function(
     AssignedReviewsCubit cubit,
     bool approve,
@@ -296,6 +307,8 @@ class _Decision extends StatelessWidget {
       approve: approve,
       title: approve ? approveTitle : rejectTitle,
       message: message(approve),
+      reasonRequired: reasonRequired,
+      details: details,
     );
     if (note == null) return;
     final failure = await send(cubit, approve, note);

@@ -33,6 +33,10 @@ enum AuthFailureReason {
   passwordCompletionPending,
   sessionExpired,
 
+  /// The account was signed in on another phone: only the newest sign-in
+  /// stays active (the database refuses this one).
+  sessionReplaced,
+
   /// A password-reset link that expired, was already used, or was opened
   /// on another phone (the PKCE code verifier is on the requesting one).
   recoveryLinkInvalid,
