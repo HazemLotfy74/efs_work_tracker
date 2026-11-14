@@ -67,12 +67,13 @@ abstract interface class AdminRepository {
   /// `admin_set_employee_active`: employee accounts only, never yourself.
   Future<void> setEmployeeActive(String employeeId, {required bool active});
 
-  /// Permanently deletes an employee account through the
-  /// `employee-accounts` Edge Function (action `delete_employee`): the
-  /// login is destroyed in Supabase Auth and sessions, registered phones,
-  /// notifications and permissions are removed. Attendance, requests and
-  /// audit history are kept by the database. Employee accounts only, never
-  /// yourself; the server checks the caller is an admin.
+  /// Permanently deletes an employee account through the database's
+  /// `admin_delete_employee`: profile and login go in one transaction.
+  /// Only an employee with no history can be deleted; one with attendance,
+  /// requests, evidence, notifications or devices is refused
+  /// (`AdminFailure.hasHistory`) and is deactivated instead. Employee
+  /// accounts only, never yourself; the database checks the caller is an
+  /// admin.
   Future<void> deleteEmployee(String employeeId);
 
   /// `admin_correct_attendance`: sets the confirmed times of a closed day

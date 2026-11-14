@@ -467,6 +467,8 @@
   "correctionUnknownError": "Something went wrong. Please try again.",
   "adminDashboard": "Admin dashboard",
   "adminToday": "Today",
+  "adminTools": "Admin tools",
+  "adminEmployees": "Employees",
   "adminCheckedInNow": "Checked in now",
   "adminPastShiftEnd": "Still checked in after the shift end",
   "adminSearchHint": "Search by name, username or code",
@@ -577,6 +579,7 @@
   "adminDeleteAccountAcknowledge": "I understand this is permanent and cannot be undone",
   "adminDeleteAccountConfirm": "Delete permanently",
   "adminDeleteAccountDone": "The employee account was permanently deleted.",
+  "adminDeleteAccountHasHistory": "This employee has attendance, requests or other records, so the account can’t be deleted. Deactivate it instead to keep the history.",
   "adminChangeSchedule": "Change schedule",
   "adminScheduleChangeTitle": "Assign \"{schedule}\"?",
   "@adminScheduleChangeTitle": {

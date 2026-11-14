@@ -1091,6 +1091,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get adminToday => 'اليوم';
 
   @override
+  String get adminTools => 'أدوات الإدارة';
+
+  @override
+  String get adminEmployees => 'الموظفون';
+
+  @override
   String get adminCheckedInNow => 'حاضرون الآن';
 
   @override
@@ -1318,6 +1324,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get adminDeleteAccountDone => 'تم حذف حساب الموظف نهائياً.';
+
+  @override
+  String get adminDeleteAccountHasHistory =>
+      'لهذا الموظف سجلات حضور أو طلبات أو بيانات أخرى، لذلك لا يمكن حذف الحساب. قم بإيقاف الحساب بدلاً من ذلك للاحتفاظ بالسجل.';
 
   @override
   String get adminChangeSchedule => 'تغيير الجدول';
