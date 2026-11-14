@@ -200,7 +200,8 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      expect(find.text('Early departures to review'), findsOneWidget);
+      // Section headings are shown in capitals.
+      expect(find.text('EARLY DEPARTURES TO REVIEW'), findsOneWidget);
       final tile = find.byKey(const Key('earlyDeparture-record-1'));
       expect(tile, findsOneWidget);
       // intl puts a narrow no-break space before AM/PM.

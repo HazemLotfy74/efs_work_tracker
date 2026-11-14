@@ -47,6 +47,10 @@ enum AdminFailure implements Exception {
   /// the employee can send a new one.
   attendanceChanged,
 
+  /// The employee has attendance, requests, evidence or other linked
+  /// records, so the account can't be deleted: deactivate it instead.
+  hasHistory,
+
   /// Another action is already being sent.
   busy,
   network,

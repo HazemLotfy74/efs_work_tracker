@@ -2054,6 +2054,18 @@ abstract class AppLocalizations {
   /// **'Today'**
   String get adminToday;
 
+  /// No description provided for @adminTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin tools'**
+  String get adminTools;
+
+  /// No description provided for @adminEmployees.
+  ///
+  /// In en, this message translates to:
+  /// **'Employees'**
+  String get adminEmployees;
+
   /// No description provided for @adminCheckedInNow.
   ///
   /// In en, this message translates to:
@@ -2455,6 +2467,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The employee account was permanently deleted.'**
   String get adminDeleteAccountDone;
+
+  /// No description provided for @adminDeleteAccountHasHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'This employee has attendance, requests or other records, so the account can’t be deleted. Deactivate it instead to keep the history.'**
+  String get adminDeleteAccountHasHistory;
 
   /// No description provided for @adminChangeSchedule.
   ///

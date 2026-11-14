@@ -7,7 +7,6 @@ import 'package:efs_work_tracker/app/features/admin/presentation/views/employee_
 import 'package:efs_work_tracker/app/features/auth/domain/entities/user_entity.dart';
 import 'package:efs_work_tracker/app/features/permissions/domain/entities/permission_set.dart';
 import 'package:efs_work_tracker/core/errors/admin_errors.dart';
-import 'package:efs_work_tracker/core/services/accounts_function.dart';
 import 'package:efs_work_tracker/core/services/database_services.dart';
 import 'package:efs_work_tracker/core/theme/app_theme.dart';
 import 'package:efs_work_tracker/l10n/app_localizations.dart';
@@ -49,26 +48,37 @@ UserEntity account(String id, UserRole role) => UserEntity(
   mustChangePassword: false,
 );
 
-Map<String, dynamic> profileRow(String id, String name, {String? deletedAt}) =>
-    {
-      'id': id,
-      'full_name': name,
-      'username': 'u-$id',
-      'employee_code': 'C-$id',
-      'role': 'employee',
-      'is_active': deletedAt == null,
-      'must_change_password': false,
-      'schedule_id': scheduleId,
-      'created_at': '2026-10-20T09:00:00Z',
-      'deleted_at': deletedAt,
-    };
+Map<String, dynamic> profileRow(String id, String name) => {
+  'id': id,
+  'full_name': name,
+  'username': 'u-$id',
+  'employee_code': 'C-$id',
+  'role': 'employee',
+  'is_active': true,
+  'must_change_password': false,
+  'schedule_id': scheduleId,
+  'created_at': '2026-10-20T09:00:00Z',
+};
 
-/// `profiles` as the database returns it. [hasDeletedColumn] false is a
-/// database where the account-deletion migration has not run.
-class _Profiles extends Fake implements DatabaseServices {
+/// `profiles` and the `admin_delete_employee` function of the database.
+class _Database extends Fake implements DatabaseServices {
   List<Map<String, dynamic>> rows = [];
-  bool hasDeletedColumn = true;
   final columns = <String>[];
+  final calls = <(String, Map<String, dynamic>?)>[];
+
+  /// What `admin_delete_employee` answers, or throws.
+  Object? answer = true;
+  Object? error;
+
+  @override
+  Future<dynamic> rpc({
+    required String function,
+    Map<String, dynamic>? params,
+  }) async {
+    calls.add((function, params));
+    if (error case final error?) throw error;
+    return answer;
+  }
 
   @override
   Future<dynamic> getData({
@@ -83,29 +93,10 @@ class _Profiles extends Fake implements DatabaseServices {
     Map<String, Object>? lessThan,
   }) async {
     columns.add(column ?? '');
-    final asksDeleted = (column ?? '').contains('deleted_at');
-    if (asksDeleted && !hasDeletedColumn) {
-      throw const PostgrestException(
-        message: 'column profiles.deleted_at does not exist',
-        code: '42703',
-      );
-    }
     return [
       for (final row in rows)
-        if (query == null || query['id'] == row['id'])
-          {...row}..removeWhere((key, _) => key == 'deleted_at' && !asksDeleted),
+        if (query == null || query['id'] == row['id']) row,
     ];
-  }
-}
-
-class _Accounts {
-  final calls = <Map<String, dynamic>>[];
-  Object? error;
-
-  Future<Object?> call(Map<String, dynamic> body) async {
-    calls.add(body);
-    if (error case final error?) throw error;
-    return {'deleted': true, 'mode': 'anonymized'};
   }
 }
 
@@ -174,28 +165,29 @@ void main() {
   setUp(() => returned = null);
 
   group('SupabaseAdminRepository.deleteEmployee', () {
-    late _Profiles db;
-    late _Accounts accounts;
-    SupabaseAdminRepository repository({String? me = adminId, bool web = false}) =>
+    late _Database db;
+    final accountCalls = <Map<String, dynamic>>[];
+    SupabaseAdminRepository repository({String? me = adminId}) =>
         SupabaseAdminRepository(
           storageServices: FakeEvidenceStorage(),
           databaseServices: db,
-          accountsFunction: accounts.call,
+          accountsFunction: (body) async {
+            accountCalls.add(body);
+            return null;
+          },
           currentUserId: () => me,
-          isWeb: web,
         );
 
     setUp(() {
-      db = _Profiles();
-      accounts = _Accounts();
+      db = _Database();
+      accountCalls.clear();
     });
 
-    test('goes to the server function with the employee id and nothing else', () async {
+    test('calls admin_delete_employee with the employee id only', () async {
       await repository().deleteEmployee(monaId);
-      expect(accounts.calls.single, {
-        'action': 'delete_employee',
-        'employee_id': monaId,
-      });
+      expect(db.calls.single.$1, 'admin_delete_employee');
+      expect(db.calls.single.$2, {'p_employee_id': monaId});
+      expect(accountCalls, isEmpty, reason: 'not the edge function');
     });
 
     test('never asks the server to delete the signed-in account', () async {
@@ -203,7 +195,7 @@ void main() {
         repository().deleteEmployee(adminId),
         throwsA(AdminFailure.notAllowed),
       );
-      expect(accounts.calls, isEmpty);
+      expect(db.calls, isEmpty);
     });
 
     test('signed out: nothing is sent', () async {
@@ -211,12 +203,20 @@ void main() {
         repository(me: null).deleteEmployee(monaId),
         throwsA(AdminFailure.notAllowed),
       );
-      expect(accounts.calls, isEmpty);
+      expect(db.calls, isEmpty);
+    });
+
+    test('false from the database: there is no such employee', () async {
+      db.answer = false;
+      await expectLater(
+        repository().deleteEmployee(monaId),
+        throwsA(AdminFailure.notFound),
+      );
     });
 
     test('server answers become clear failures', () async {
       Future<void> expectFailure(Object error, AdminFailure failure) async {
-        accounts.error = error;
+        db.error = error;
         await expectLater(
           repository().deleteEmployee(monaId),
           throwsA(failure),
@@ -224,55 +224,38 @@ void main() {
         );
       }
 
-      // Not an admin, an admin target, or your own account.
+      // Not an admin, or the target is an admin.
       await expectFailure(
-        const AccountsFunctionException(403, 'forbidden'),
+        const PostgrestException(
+          message: 'Only employee accounts can be deleted',
+          code: '42501',
+        ),
         AdminFailure.notAllowed,
       );
+      // Attendance, requests, evidence, notifications or devices exist.
       await expectFailure(
-        const AccountsFunctionException(404, 'not_found'),
-        AdminFailure.notFound,
-      );
-      // The login could not be removed yet: repeating finishes it.
-      await expectFailure(
-        const AccountsFunctionException(503, 'auth_delete_pending'),
-        AdminFailure.outcomeUnknown,
-      );
-      // A deployed function that does not know the action yet.
-      await expectFailure(
-        const AccountsFunctionException(400, 'invalid_input'),
-        AdminFailure.serviceUnavailable,
-      );
-      await expectFailure(
-        const AccountsFunctionException(
-          0,
-          AccountsFunctionException.unreachable,
+        const PostgrestException(
+          message:
+              'Employee has linked records. Deactivate this employee to '
+              'retain their history.',
+          code: 'PT409',
         ),
-        AdminFailure.outcomeUnknown,
+        AdminFailure.hasHistory,
+      );
+      // The function is missing from the database.
+      await expectFailure(
+        const PostgrestException(message: 'not found', code: 'PGRST202'),
+        AdminFailure.serviceUnavailable,
       );
       await expectFailure(TimeoutException('slow'), AdminFailure.outcomeUnknown);
     });
 
-    test('deleted accounts are left out of the employee list and pages', () async {
-      db.rows = [
-        profileRow('a', 'Active One'),
-        profileRow('b', 'Deleted One', deletedAt: '2026-11-13T10:00:00Z'),
-      ];
-      final repo = repository();
-      expect((await repo.getEmployees()).map((e) => e.fullName), ['Active One']);
-      expect(await repo.getEmployee('b'), isNull);
-      expect((await repo.getEmployee('a'))?.fullName, 'Active One');
-    });
-
-    test('a database without the deletion column still lists employees', () async {
-      db
-        ..hasDeletedColumn = false
-        ..rows = [profileRow('a', 'Active One')];
+    test('the employee list reads only columns the database has', () async {
+      db.rows = [profileRow('a', 'Active One')];
       final repo = repository();
       expect((await repo.getEmployees()).single.fullName, 'Active One');
-      // Asked once, then never again.
-      await repo.getEmployees();
-      expect(db.columns.where((c) => c.contains('deleted_at')), hasLength(1));
+      expect(await repo.getEmployee('b'), isNull);
+      expect(db.columns.where((c) => c.contains('deleted_at')), isEmpty);
     });
   });
 

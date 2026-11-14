@@ -1107,6 +1107,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminToday => 'Today';
 
   @override
+  String get adminTools => 'Admin tools';
+
+  @override
+  String get adminEmployees => 'Employees';
+
+  @override
   String get adminCheckedInNow => 'Checked in now';
 
   @override
@@ -1336,6 +1342,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get adminDeleteAccountDone =>
       'The employee account was permanently deleted.';
+
+  @override
+  String get adminDeleteAccountHasHistory =>
+      'This employee has attendance, requests or other records, so the account can’t be deleted. Deactivate it instead to keep the history.';
 
   @override
   String get adminChangeSchedule => 'Change schedule';

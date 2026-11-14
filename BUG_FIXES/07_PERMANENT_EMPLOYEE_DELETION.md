@@ -1,5 +1,13 @@
 # 07 — Permanent employee account deletion (2026-11-13)
 
+> **Superseded 2026-11-14.** The design below was never deployed and its files
+> (the `delete_employee` Edge Function action, `backend_delete_employee`
+> migration, rollback and tests) were removed from the repo. The app now calls
+> the database function `public.admin_delete_employee(p_employee_id)`: it
+> deletes the profile and the login in one transaction, only for an employee
+> with no linked history; anyone with attendance, requests, evidence,
+> notifications or devices is refused and should be deactivated instead.
+
 **Status: implemented and tested locally; NOT deployed, NOT verified on the real backend.**
 The Supabase connector was not attached to this session, so the migration could not be applied or
 checked against the live schema, and the Edge Function could not be deployed. Until both are done,

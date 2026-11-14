@@ -79,40 +79,12 @@ class SupabaseAdminRepository implements AdminRepository {
       'id, employee_id, reason, created_at, $extra, '
       'employee:profiles!${table}_employee_id_fkey(full_name, employee_code)';
 
-  /// `profiles.deleted_at` exists once the account-deletion migration ran.
-  /// Found out on the first read, so the app works with either database.
-  bool _hasDeletedColumn = true;
-
-  /// Reads `profiles` rows, leaving out permanently deleted accounts: the
-  /// database keeps those only as a locked record for their history.
+  /// Reads `profiles` rows. A deleted account has no row left.
   Future<List<EmployeeEntity>> _readEmployees({
     Map<String, dynamic>? query,
     String? orderBy,
   }) async {
-    Object? rows;
-    if (_hasDeletedColumn) {
-      try {
-        rows = await _databaseServices
-            .getData(
-              path: 'profiles',
-              column: '$_employeeColumns, deleted_at',
-              query: query,
-              orderBy: orderBy,
-            )
-            .timeout(timeout);
-      } on PostgrestException catch (e) {
-        // 42703: no such column — a database without the migration.
-        if (e.code != '42703') {
-          log('profiles failed: code ${e.code}');
-          throw failureFor(e.code, e.message);
-        }
-        _hasDeletedColumn = false;
-      } on Exception catch (e) {
-        log('profiles failed: ${e.runtimeType}');
-        throw AdminFailure.network;
-      }
-    }
-    rows ??= await _guard(
+    final rows = await _guard(
       'profiles',
       () => _databaseServices.getData(
         path: 'profiles',
@@ -121,13 +93,7 @@ class SupabaseAdminRepository implements AdminRepository {
         orderBy: orderBy,
       ),
     );
-    final visible = rows is List
-        ? [
-            for (final row in rows)
-              if (row is! Map || row['deleted_at'] == null) row,
-          ]
-        : rows;
-    return _parse('profiles', visible, _employee);
+    return _parse('profiles', rows, _employee);
   }
 
   @override
@@ -136,32 +102,34 @@ class SupabaseAdminRepository implements AdminRepository {
     return _readEmployees(orderBy: 'full_name');
   }
 
+  /// The database's `admin_delete_employee(p_employee_id)`: in one
+  /// transaction it removes the profile and the login of an employee who has
+  /// no history. It answers `false` when there is no such employee, and
+  /// refuses (PT409) one with attendance, requests, evidence, notifications
+  /// or devices: those accounts are deactivated instead.
   @override
   Future<void> deleteEmployee(String employeeId) async {
     // The server refuses this too; no need to ask it.
     if (_requireUser() == employeeId) throw AdminFailure.notAllowed;
+    final Object? deleted;
     try {
-      await _accountsFunction({
-        'action': 'delete_employee',
-        'employee_id': employeeId,
-      }).timeout(timeout);
-    } on AccountsFunctionException catch (e) {
-      if (e.code == AccountsFunctionException.unreachable) {
-        throw isWeb
-            ? AdminFailure.webOriginBlocked
-            : AdminFailure.outcomeUnknown;
-      }
-      throw switch (e.code) {
-        'not_found' => AdminFailure.notFound,
-        // The deployed function is older than this action.
-        'invalid_input' => AdminFailure.serviceUnavailable,
-        _ => accountFailureFor(e.status, e.code),
-      };
+      deleted = await _databaseServices
+          .rpc(
+            function: 'admin_delete_employee',
+            params: {'p_employee_id': employeeId},
+          )
+          .timeout(timeout);
+    } on PostgrestException catch (e) {
+      log('admin_delete_employee failed: code ${e.code}');
+      throw e.code == 'PT409'
+          ? AdminFailure.hasHistory
+          : failureFor(e.code, e.message);
     } on Exception catch (e) {
       // No answer: it may have been deleted. Repeating it is safe.
-      log('delete_employee failed: ${e.runtimeType}');
+      log('admin_delete_employee failed: ${e.runtimeType}');
       throw AdminFailure.outcomeUnknown;
     }
+    if (deleted == false) throw AdminFailure.notFound;
   }
 
   static EmployeeEntity _employee(Map<String, dynamic> json) {
